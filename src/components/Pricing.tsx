@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Check, Users, Child } from 'lucide-react';
+import { Check, Users, Baby } from 'lucide-react';
 
 const Pricing = () => {
   return (
@@ -46,7 +46,7 @@ const Pricing = () => {
 
           <div className="bg-white rounded-lg shadow-md border border-border p-8 transition-all duration-300 hover:shadow-xl">
             <div className="flex items-center mb-4">
-              <Child className="w-8 h-8 text-hibachi-orange mr-2" />
+              <Baby className="w-8 h-8 text-hibachi-orange mr-2" />
               <h3 className="text-2xl font-bold">Children</h3>
               <span className="text-sm bg-gray-100 text-gray-700 rounded-full px-2 ml-2 flex-shrink-0">Under 13</span>
             </div>
