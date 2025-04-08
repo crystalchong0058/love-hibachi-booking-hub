@@ -6,6 +6,13 @@ import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // These would come from a backend API in a real application
 const BOOKED_DATES = [
@@ -21,6 +28,13 @@ const UNAVAILABLE_DATES = [
   new Date(2025, 3, 12),
 ];
 
+// Available time slots from 9pm to 11pm in 15 minute increments
+const TIME_SLOTS = [
+  "9:00 PM", "9:15 PM", "9:30 PM", "9:45 PM",
+  "10:00 PM", "10:15 PM", "10:30 PM", "10:45 PM",
+  "11:00 PM"
+];
+
 type BookingModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -29,20 +43,30 @@ type BookingModalProps = {
 
 const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedTime, setSelectedTime] = useState<string>("");
   const [region, setRegion] = useState<string>('');
   const [location, setLocation] = useState<string>('');
-  const [guests, setGuests] = useState<string>('');
+  const [adultCount, setAdultCount] = useState<string>('2');
+  const [childrenCount, setChildrenCount] = useState<string>('0');
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [isBookingComplete, setIsBookingComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Calculate total guests
+  const totalGuests = Number(adultCount) + Number(childrenCount);
+
   const handleBooking = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!selectedDate || !region || !location || !guests || !name || !email || !phone) {
+    if (!selectedDate || !selectedTime || !region || !location || !adultCount || !name || !email || !phone) {
       toast.error("Please fill all required fields");
+      return;
+    }
+    
+    if (totalGuests < 10) {
+      toast.error("Total guest count must be at least 10");
       return;
     }
     
@@ -57,9 +81,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
       console.log("Booking details:", {
         plan,
         date: selectedDate,
+        time: selectedTime,
         region,
         location,
-        guests,
+        adultCount,
+        childrenCount,
+        totalGuests,
         name,
         email,
         phone
@@ -117,6 +144,13 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
                     </div>
                   </li>
                   <li className="flex items-start">
+                    <Clock className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
+                    <div>
+                      <span className="font-medium block">Time</span>
+                      <span>{selectedTime}</span>
+                    </div>
+                  </li>
+                  <li className="flex items-start">
                     <MapPin className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
                     <div>
                       <span className="font-medium block">Location</span>
@@ -127,7 +161,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
                     <Users className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
                     <div>
                       <span className="font-medium block">Package</span>
-                      <span>{plan} Plan - {guests} guests</span>
+                      <span>{plan} Plan - {adultCount} adults, {childrenCount} children ({totalGuests} total)</span>
                     </div>
                   </li>
                   <li className="flex items-start">
@@ -185,6 +219,29 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
                       </div>
                     </div>
                   </div>
+                  
+                  <div className="mt-6">
+                    <h3 className="font-semibold mb-4 text-lg flex items-center">
+                      <Clock className="w-5 h-5 mr-2" /> Select Time
+                    </h3>
+                    <div className="border rounded-md p-4 bg-gray-50">
+                      <Select
+                        value={selectedTime}
+                        onValueChange={setSelectedTime}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select a time (9pm-11pm)" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {TIME_SLOTS.map((time) => (
+                            <SelectItem key={time} value={time}>
+                              {time}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
                 </div>
                 
                 <div>
@@ -217,17 +274,34 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
                         />
                       </div>
                       
-                      <div>
-                        <label htmlFor="guests" className="block text-sm font-medium text-gray-700 mb-1">Number of Guests *</label>
-                        <Input
-                          id="guests"
-                          type="number"
-                          value={guests}
-                          onChange={(e) => setGuests(e.target.value)}
-                          required
-                          min="10"
-                          placeholder="Minimum 10 guests"
-                        />
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label htmlFor="adultCount" className="block text-sm font-medium text-gray-700 mb-1">Number of Adults *</label>
+                          <Input
+                            id="adultCount"
+                            type="number"
+                            value={adultCount}
+                            onChange={(e) => setAdultCount(e.target.value)}
+                            required
+                            min="1"
+                            placeholder="Number of adults"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="childrenCount" className="block text-sm font-medium text-gray-700 mb-1">Number of Children</label>
+                          <Input
+                            id="childrenCount"
+                            type="number"
+                            value={childrenCount}
+                            onChange={(e) => setChildrenCount(e.target.value)}
+                            min="0"
+                            placeholder="Number of children"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="bg-yellow-50 p-3 rounded-md border border-yellow-200 text-sm text-yellow-800">
+                        <p>Total guests: <strong>{totalGuests}</strong> (Minimum 10 guests required)</p>
                       </div>
                       
                       <div className="pt-4 border-t">
@@ -272,7 +346,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
                     <div className="mt-6">
                       <Button 
                         type="submit" 
-                        disabled={!selectedDate || isLoading}
+                        disabled={!selectedDate || !selectedTime || totalGuests < 10 || isLoading}
                         className="w-full bg-hibachi-red hover:bg-hibachi-red/90 text-white"
                       >
                         {isLoading ? 'Processing...' : 'Complete Booking'}
