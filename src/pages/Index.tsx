@@ -1,13 +1,12 @@
-
 import React from 'react';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import Services from '../components/Services';
 import Pricing from '../components/Pricing';
 import Locations from '../components/Locations';
-import Testimonials from '../components/Testimonials';
 import Chefs from '../components/Chefs';
 import ContactForm from '../components/ContactForm';
+import MomentsGallery from '../components/MomentsGallery';
 import QRCodeSection from '../components/QRCodeSection';
 import Footer from '../components/Footer';
 
@@ -21,9 +20,9 @@ const Index = () => {
         <Pricing />
         <Locations />
         <Chefs />
-        <Testimonials />
         <QRCodeSection />
         <ContactForm />
+        <MomentsGallery />
       </main>
       <Footer />
     </div>

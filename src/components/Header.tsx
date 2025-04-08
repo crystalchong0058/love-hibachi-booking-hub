@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Menu, X, Flame } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -29,7 +28,6 @@ const Header = () => {
           <a href="#services" className="text-foreground hover:text-hibachi-red font-medium">Services</a>
           <a href="#pricing" className="text-foreground hover:text-hibachi-red font-medium">Pricing</a>
           <a href="#chefs" className="text-foreground hover:text-hibachi-red font-medium">Our Chefs</a>
-          <a href="#testimonials" className="text-foreground hover:text-hibachi-red font-medium">Testimonials</a>
           <a href="#contact" className="btn-primary">Book Now</a>
         </nav>
 
@@ -52,7 +50,6 @@ const Header = () => {
             <a href="#services" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Services</a>
             <a href="#pricing" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Pricing</a>
             <a href="#chefs" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Our Chefs</a>
-            <a href="#testimonials" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Testimonials</a>
             <a href="#contact" onClick={toggleMenu} className="btn-primary text-center">Book Now</a>
           </nav>
         </div>

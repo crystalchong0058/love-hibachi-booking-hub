@@ -1,11 +1,11 @@
-
 import React, { useState } from 'react';
 import { format } from 'date-fns';
-import { CalendarIcon, X, MapPin, Users, Clock, CheckCircle, Mail } from 'lucide-react';
+import { CalendarIcon, X, MapPin, Users, Clock, CheckCircle, Mail, Phone } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import emailjs from '@emailjs/browser';
 import { 
   Select,
   SelectContent,
@@ -13,6 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+
+// Initialize EmailJS with Gmail service
+emailjs.init("LCOpJ2w6UegSang_j");
 
 // These would come from a backend API in a real application
 const BOOKED_DATES = [
@@ -22,28 +26,20 @@ const BOOKED_DATES = [
   new Date(2025, 3, 29),
 ];
 
-const UNAVAILABLE_DATES = [
-  new Date(2025, 3, 10),
-  new Date(2025, 3, 11),
-  new Date(2025, 3, 12),
-];
+const UNAVAILABLE_DATES = [];
 
-// Available time slots from 9pm to 11pm in 15 minute increments
-const TIME_SLOTS = [
-  "9:00 PM", "9:15 PM", "9:30 PM", "9:45 PM",
-  "10:00 PM", "10:15 PM", "10:30 PM", "10:45 PM",
-  "11:00 PM"
-];
+// Available time slots from 9am to 11pm in 15 minute increments
+const HOURS = Array.from({ length: 15 }, (_, i) => i + 9); // 9 AM to 11 PM
+const MINUTES = ['00', '15', '30', '45'];
 
-type BookingModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
+interface BookingModalProps {
   plan: string;
-};
+}
 
-const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) => {
+const BookingModal: React.FC<BookingModalProps> = ({ plan }) => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [selectedTime, setSelectedTime] = useState<string>("");
+  const [startTime, setStartTime] = useState<string>("");
+  const [endTime, setEndTime] = useState<string>("");
   const [region, setRegion] = useState<string>('');
   const [location, setLocation] = useState<string>('');
   const [adultCount, setAdultCount] = useState<string>('2');
@@ -53,14 +49,32 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
   const [phone, setPhone] = useState<string>('');
   const [isBookingComplete, setIsBookingComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [bookedDates, setBookedDates] = useState<Date[]>([]);
+  const [bookedTimeSlots, setBookedTimeSlots] = useState<{[key: string]: string[]}>({});
 
   // Calculate total guests
   const totalGuests = Number(adultCount) + Number(childrenCount);
 
-  const handleBooking = (e: React.FormEvent) => {
+  // Function to check if a date is booked
+  const isDateBooked = (date: Date) => {
+    return bookedDates.some(bookedDate => 
+      bookedDate.getDate() === date.getDate() && 
+      bookedDate.getMonth() === date.getMonth() && 
+      bookedDate.getFullYear() === date.getFullYear()
+    );
+  };
+
+  // Function to check if a time slot is booked
+  const isTimeSlotBooked = (time: string) => {
+    if (!selectedDate) return false;
+    const dateKey = format(selectedDate, 'yyyy-MM-dd');
+    return bookedTimeSlots[dateKey]?.includes(time) || false;
+  };
+
+  const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!selectedDate || !selectedTime || !region || !location || !adultCount || !name || !email || !phone) {
+    if (!selectedDate || !startTime || !endTime || !region || !location || !adultCount || !name || !email || !phone) {
       toast.error("Please fill all required fields");
       return;
     }
@@ -69,31 +83,119 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
       toast.error("Total guest count must be at least 10");
       return;
     }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
     
     setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsBookingComplete(true);
-      
-      // In a real app, this would send emails through a backend API
-      console.log("Booking details:", {
-        plan,
-        date: selectedDate,
-        time: selectedTime,
-        region,
-        location,
-        adultCount,
-        childrenCount,
-        totalGuests,
-        name,
-        email,
-        phone
+    try {
+      // Generate a random 5-digit order ID
+      const randomDigits = Math.floor(10000 + Math.random() * 90000);
+      const orderId = "HIB-" + randomDigits.toString();
+
+      // Prepare email template parameters
+      const emailParams = {
+        to_name: name,
+        to_email: email.trim(),
+        date: format(selectedDate, 'EEEE, MMMM do, yyyy'),
+        time: `${startTime} - ${endTime}`,
+        location: `${region} - ${location}`,
+        plan: plan,
+        adults: adultCount,
+        children: childrenCount,
+        total_guests: totalGuests,
+        contact_email: email.trim(),
+        contact_phone: phone,
+        business_phone: "(929) 688-1138",
+        customer_name: name,
+        booking_date: format(selectedDate, 'EEEE, MMMM do, yyyy'),
+        booking_time: `${startTime} - ${endTime}`,
+        booking_location: `${region} - ${location}`,
+        package_type: plan,
+        adult_count: adultCount,
+        children_count: childrenCount,
+        total_guest_count: totalGuests,
+        email: email.trim(),
+        phone_number: phone,
+        order_id: orderId
+      };
+
+      console.log('Attempting to send customer email with params:', emailParams);
+
+      // Send email to customer
+      const customerResult = await emailjs.send(
+        "service_df3zxal",
+        "template_uy7nh4f",
+        emailParams
+      ).catch(error => {
+        console.error('Customer email error details:', {
+          error,
+          status: error.status,
+          text: error.text,
+          response: error.response,
+          params: emailParams
+        });
+        throw new Error(`Customer email failed: ${error.text || error.message}`);
       });
-      
-      toast.success("Booking confirmed! A confirmation has been sent to your email.");
-    }, 1500);
+
+      console.log('Customer email result:', customerResult);
+
+      if (customerResult.status !== 200) {
+        throw new Error(`Failed to send customer email: ${customerResult.status}`);
+      }
+
+      // Send email to business
+      const businessParams = {
+        ...emailParams,
+        to_email: "crystalyschong@gmail.com",
+        to_name: "4 U Love Hibachi"
+      };
+
+      console.log('Attempting to send business email with params:', businessParams);
+
+      const businessResult = await emailjs.send(
+        "service_df3zxal",
+        "template_y12igxq",
+        businessParams
+      ).catch(error => {
+        console.error('Business email error details:', {
+          error,
+          status: error.status,
+          text: error.text,
+          response: error.response
+        });
+        throw new Error(`Business email failed: ${error.text || error.message}`);
+      });
+
+      console.log('Business email result:', businessResult);
+
+      if (businessResult.status !== 200) {
+        throw new Error(`Failed to send business email: ${businessResult.status}`);
+      }
+
+      // After successful booking, update booked dates and times
+      if (selectedDate) {
+        setBookedDates(prev => [...prev, selectedDate]);
+        const dateKey = format(selectedDate, 'yyyy-MM-dd');
+        setBookedTimeSlots(prev => ({
+          ...prev,
+          [dateKey]: [...(prev[dateKey] || []), startTime, endTime]
+        }));
+      }
+
+      setIsBookingComplete(true);
+      toast.success("Booking confirmed! Confirmations have been sent to your email and the business.");
+    } catch (error) {
+      console.error('Detailed error in handleBooking:', error);
+      toast.error(`Failed to send notifications: ${error.message}. Please try again or contact us directly.`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const isDateUnavailable = (date: Date) => {
@@ -110,14 +212,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
     );
   };
 
-  if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 relative">
           <button 
-            onClick={onClose} 
+            onClick={() => window.location.reload()} 
             className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
             aria-label="Close"
           >
@@ -147,7 +247,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
                     <Clock className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
                     <div>
                       <span className="font-medium block">Time</span>
-                      <span>{selectedTime}</span>
+                      <span>{startTime} - {endTime}</span>
                     </div>
                   </li>
                   <li className="flex items-start">
@@ -171,10 +271,17 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
                       <span>{email}</span>
                     </div>
                   </li>
+                  <li className="flex items-start">
+                    <Phone className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
+                    <div>
+                      <span className="font-medium block">Business Contact</span>
+                      <span>(929) 688-1138</span>
+                    </div>
+                  </li>
                 </ul>
               </div>
               <Button 
-                onClick={onClose} 
+                onClick={() => window.location.reload()} 
                 className="mt-6"
               >
                 Close
@@ -199,7 +306,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
                       onSelect={setSelectedDate}
                       disabled={(date) => 
                         date < new Date() || // Past dates
-                        isDateUnavailable(date)
+                        isDateBooked(date) // Booked dates
                       }
                       initialFocus
                       className="p-3 pointer-events-auto"
@@ -224,22 +331,122 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
                     <h3 className="font-semibold mb-4 text-lg flex items-center">
                       <Clock className="w-5 h-5 mr-2" /> Select Time
                     </h3>
-                    <div className="border rounded-md p-4 bg-gray-50">
-                      <Select
-                        value={selectedTime}
-                        onValueChange={setSelectedTime}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select a time (9pm-11pm)" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {TIME_SLOTS.map((time) => (
-                            <SelectItem key={time} value={time}>
-                              {time}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                    <div className="border rounded-md p-4 bg-gray-50 space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Start Time *</label>
+                        <Select
+                          value={startTime}
+                          onValueChange={setStartTime}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select start time (9am-11pm)" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {HOURS.map((hour) => (
+                              <SelectItem 
+                                key={hour} 
+                                value={`${hour}:00`}
+                                disabled={isTimeSlotBooked(`${hour}:00`)}
+                              >
+                                {hour}:00
+                              </SelectItem>
+                            ))}
+                            {HOURS.map((hour) => (
+                              <SelectItem 
+                                key={`${hour}:15`} 
+                                value={`${hour}:15`}
+                                disabled={isTimeSlotBooked(`${hour}:15`)}
+                              >
+                                {hour}:15
+                              </SelectItem>
+                            ))}
+                            {HOURS.map((hour) => (
+                              <SelectItem 
+                                key={`${hour}:30`} 
+                                value={`${hour}:30`}
+                                disabled={isTimeSlotBooked(`${hour}:30`)}
+                              >
+                                {hour}:30
+                              </SelectItem>
+                            ))}
+                            {HOURS.map((hour) => (
+                              <SelectItem 
+                                key={`${hour}:45`} 
+                                value={`${hour}:45`}
+                                disabled={isTimeSlotBooked(`${hour}:45`)}
+                              >
+                                {hour}:45
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">End Time *</label>
+                        <Select
+                          value={endTime}
+                          onValueChange={setEndTime}
+                          disabled={!startTime}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select end time" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {HOURS.map((hour) => {
+                              const time = `${hour}:00`;
+                              if (startTime && time <= startTime) return null;
+                              return (
+                                <SelectItem 
+                                  key={time} 
+                                  value={time}
+                                  disabled={isTimeSlotBooked(time)}
+                                >
+                                  {time}
+                                </SelectItem>
+                              );
+                            })}
+                            {HOURS.map((hour) => {
+                              const time = `${hour}:15`;
+                              if (startTime && time <= startTime) return null;
+                              return (
+                                <SelectItem 
+                                  key={time} 
+                                  value={time}
+                                  disabled={isTimeSlotBooked(time)}
+                                >
+                                  {time}
+                                </SelectItem>
+                              );
+                            })}
+                            {HOURS.map((hour) => {
+                              const time = `${hour}:30`;
+                              if (startTime && time <= startTime) return null;
+                              return (
+                                <SelectItem 
+                                  key={time} 
+                                  value={time}
+                                  disabled={isTimeSlotBooked(time)}
+                                >
+                                  {time}
+                                </SelectItem>
+                              );
+                            })}
+                            {HOURS.map((hour) => {
+                              const time = `${hour}:45`;
+                              if (startTime && time <= startTime) return null;
+                              return (
+                                <SelectItem 
+                                  key={time} 
+                                  value={time}
+                                  disabled={isTimeSlotBooked(time)}
+                                >
+                                  {time}
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -264,7 +471,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
                       </div>
                       
                       <div>
-                        <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Location Address *</label>
+                        <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Full Address *</label>
                         <Input
                           id="location"
                           value={location}
@@ -346,7 +553,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, plan }) =>
                     <div className="mt-6">
                       <Button 
                         type="submit" 
-                        disabled={!selectedDate || !selectedTime || totalGuests < 10 || isLoading}
+                        disabled={!selectedDate || !startTime || !endTime || totalGuests < 10 || isLoading}
                         className="w-full bg-hibachi-red hover:bg-hibachi-red/90 text-white"
                       >
                         {isLoading ? 'Processing...' : 'Complete Booking'}
