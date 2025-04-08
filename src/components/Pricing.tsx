@@ -1,8 +1,17 @@
 
-import React from 'react';
-import { Check, Users, Baby } from 'lucide-react';
+import React, { useState } from 'react';
+import { Check, Users, Baby, Calendar } from 'lucide-react';
+import BookingModal from './BookingModal';
 
 const Pricing = () => {
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState('');
+
+  const handleBookNow = (plan: string) => {
+    setSelectedPlan(plan);
+    setIsBookingOpen(true);
+  };
+
   return (
     <section id="pricing" className="py-16">
       <div className="container">
@@ -41,7 +50,12 @@ const Pricing = () => {
                 <span>Special hibachi sauces</span>
               </li>
             </ul>
-            <a href="#contact" className="btn-primary w-full text-center">Book Now</a>
+            <button 
+              onClick={() => handleBookNow('Adult')} 
+              className="btn-primary w-full text-center flex items-center justify-center"
+            >
+              <Calendar className="w-5 h-5 mr-2" /> Book Date
+            </button>
           </div>
 
           <div className="bg-white rounded-lg shadow-md border border-border p-8 transition-all duration-300 hover:shadow-xl">
@@ -71,7 +85,12 @@ const Pricing = () => {
                 <span>Special hibachi tricks for kids</span>
               </li>
             </ul>
-            <a href="#contact" className="btn-secondary w-full text-center">Book Now</a>
+            <button 
+              onClick={() => handleBookNow('Child')} 
+              className="btn-secondary w-full text-center flex items-center justify-center"
+            >
+              <Calendar className="w-5 h-5 mr-2" /> Book Date
+            </button>
           </div>
         </div>
 
@@ -97,6 +116,14 @@ const Pricing = () => {
           </ul>
         </div>
       </div>
+      
+      {isBookingOpen && (
+        <BookingModal 
+          isOpen={isBookingOpen} 
+          onClose={() => setIsBookingOpen(false)} 
+          plan={selectedPlan}
+        />
+      )}
     </section>
   );
 };
