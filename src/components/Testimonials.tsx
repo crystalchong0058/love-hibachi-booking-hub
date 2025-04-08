@@ -1,6 +1,8 @@
 
-import React from 'react';
-import { Star } from 'lucide-react';
+import React, { useState } from 'react';
+import { Star, MessageCircle } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import FeedbackForm from './FeedbackForm';
 
 type Testimonial = {
   name: string;
@@ -43,6 +45,8 @@ const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
 };
 
 const Testimonials = () => {
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+
   const testimonials: Testimonial[] = [
     {
       name: "Jennifer K.",
@@ -96,11 +100,27 @@ const Testimonials = () => {
           Don't just take our word for it. Here's what our happy customers have to say about their 4 U Love Hibachi experience.
         </p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {testimonials.map((testimonial, index) => (
             <TestimonialCard key={index} testimonial={testimonial} />
           ))}
         </div>
+
+        <div className="text-center mb-8">
+          <Button 
+            onClick={() => setShowFeedbackForm(!showFeedbackForm)}
+            className="mx-auto"
+          >
+            <MessageCircle className="mr-2 h-4 w-4" />
+            {showFeedbackForm ? "Hide Feedback Form" : "Share Your Experience"}
+          </Button>
+        </div>
+
+        {showFeedbackForm && (
+          <div className="max-w-md mx-auto mb-12">
+            <FeedbackForm />
+          </div>
+        )}
       </div>
     </section>
   );
