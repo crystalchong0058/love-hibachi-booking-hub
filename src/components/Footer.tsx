@@ -15,7 +15,7 @@ const Footer = () => {
               <Flame className="w-8 h-8 text-hibachi-gold" />
               <div>
                 <h2 className="text-xl font-bold leading-tight">
-                  <span className="text-hibachi-gold">4 U Love</span>
+                  <span className="text-hibachi-gold">4 U Sake</span>
                 </h2>
                 <p className="text-xs font-medium text-gray-400 -mt-1">Hibachi Catering</p>
               </div>
@@ -42,7 +42,7 @@ const Footer = () => {
               <li><Link to="/" className="text-gray-400 hover:text-hibachi-gold transition-colors">Home</Link></li>
               <li><a href="#services" className="text-gray-400 hover:text-hibachi-gold transition-colors">Services</a></li>
               <li><a href="#pricing" className="text-gray-400 hover:text-hibachi-gold transition-colors">Pricing</a></li>
-              <li><a href="#chefs" className="text-gray-400 hover:text-hibachi-gold transition-colors">Our Chefs</a></li>
+
               <li><a href="#testimonials" className="text-gray-400 hover:text-hibachi-gold transition-colors">Testimonials</a></li>
               <li><a href="#contact" className="text-gray-400 hover:text-hibachi-gold transition-colors">Contact Us</a></li>
             </ul>
@@ -58,13 +58,13 @@ const Footer = () => {
               <li className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-hibachi-gold" />
                 <a href="tel:+1234567890" className="text-gray-400 hover:text-hibachi-gold transition-colors">
-                  (123) 456-7890
+                  (929) 688-1138
                 </a>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-hibachi-gold" />
-                <a href="mailto:info@4ulovehibachi.com" className="text-gray-400 hover:text-hibachi-gold transition-colors">
-                  info@4ulovehibachi.com
+                <a href="mailto:4usakecatering@gmail.com" className="text-gray-400 hover:text-hibachi-gold transition-colors">
+                  4usakecatering@gmail.com
                 </a>
               </li>
             </ul>
@@ -72,7 +72,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
-          <p>&copy; {currentYear} 4 U Love Hibachi Catering. All rights reserved.</p>
+          <p>&copy; {currentYear} 4 U Sake Hibachi Catering. All rights reserved.</p>
         </div>
       </div>
     </footer>

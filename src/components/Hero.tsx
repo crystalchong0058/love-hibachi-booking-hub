@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 
 const Hero = () => {
   return (
@@ -14,9 +14,8 @@ const Hero = () => {
           Professional chefs bringing the excitement and flavors of hibachi cooking directly to your celebration.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
-          <a href="#contact" className="btn-primary flex items-center justify-center space-x-2">
-            <span>Book Your Experience</span>
-            <ArrowRight size={18} />
+          <a href="#pricing" className="btn-primary flex items-center justify-center">
+            <Calendar className="w-5 h-5 mr-2" /> Book Now
           </a>
           <a href="#pricing" className="btn-secondary flex items-center justify-center space-x-2">
             <span>View Pricing</span>

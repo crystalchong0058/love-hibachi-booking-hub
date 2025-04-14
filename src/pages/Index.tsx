@@ -7,6 +7,7 @@ import Locations from '../components/Locations';
 import Chefs from '../components/Chefs';
 import ContactForm from '../components/ContactForm';
 import MomentsGallery from '../components/MomentsGallery';
+import Testimonials from '../components/Testimonials';
 import QRCodeSection from '../components/QRCodeSection';
 import Footer from '../components/Footer';
 
@@ -23,6 +24,7 @@ const Index = () => {
         <QRCodeSection />
         <ContactForm />
         <MomentsGallery />
+        <Testimonials />
       </main>
       <Footer />
     </div>

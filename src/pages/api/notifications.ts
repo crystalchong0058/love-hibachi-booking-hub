@@ -17,7 +17,6 @@ type NotificationRequest = {
   phone: string;
   date: string;
   startTime: string;
-  endTime: string;
   region: string;
   location: string;
   plan: string;
@@ -41,11 +40,11 @@ export default async function handler(
     const emailBody = `
       Dear ${bookingData.name},
 
-      Thank you for booking with 4 U Love Hibachi Catering!
+      Thank you for booking with 4 U Sake Hibachi Catering!
 
       Your booking details:
       - Date: ${new Date(bookingData.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-      - Time: ${bookingData.startTime} - ${bookingData.endTime}
+      - Time: ${bookingData.startTime}
       - Location: ${bookingData.region} - ${bookingData.location}
       - Package: ${bookingData.plan} Plan
       - Guests: ${bookingData.adultCount} adults, ${bookingData.childrenCount} children (${bookingData.totalGuests} total)
@@ -56,14 +55,14 @@ export default async function handler(
       We look forward to serving you!
 
       Best regards,
-      4 U Love Hibachi Catering
+      4 U Sake Hibachi Catering
     `;
 
     // Prepare SMS content
     const smsBody = `
       Booking Confirmation:
       Date: ${new Date(bookingData.date).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })}
-      Time: ${bookingData.startTime} - ${bookingData.endTime}
+      Time: ${bookingData.startTime}
       Location: ${bookingData.region} - ${bookingData.location}
       Package: ${bookingData.plan} Plan
       Guests: ${bookingData.totalGuests} (${bookingData.adultCount} adults, ${bookingData.childrenCount} children)
@@ -75,7 +74,7 @@ export default async function handler(
       sgMail.send({
         to: bookingData.email,
         from: 'noreply@4ulovehibachi.com',
-        subject: 'Your 4 U Love Hibachi Booking Confirmation',
+        subject: 'Your 4 U Sake Hibachi Booking Confirmation',
         text: emailBody,
       }),
       sgMail.send({

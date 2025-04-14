@@ -54,10 +54,10 @@ const ChefCard = ({ chef }: { chef: Chef }) => {
           </div>
         </div>
         <a 
-          href="#contact" 
+          href="#pricing" 
           className="btn-primary inline-block"
         >
-          Book Chef Takeshi
+          Book Now
         </a>
       </div>
     </div>
@@ -66,11 +66,11 @@ const ChefCard = ({ chef }: { chef: Chef }) => {
 
 const Chefs = () => {
   const chef: Chef = {
-    name: "Chef Takeshi",
-    image: "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=600&auto=format&fit=crop",
+    name: "Chef Jason",
+    image: "/images/moments/profilepic/profile.jpg",
     location: "New York Region",
     rating: 5,
-    experience: "Master Hibachi Chef with 15+ years of culinary excellence and entertainment",
+    experience: "Master Hibachi Chef with years of culinary excellence and entertainment",
     specialties: ["Steak Mastery", "Seafood Artistry", "Interactive Cooking Performance"]
   };
 

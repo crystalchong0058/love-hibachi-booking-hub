@@ -51,7 +51,7 @@ const LocationCard = ({
           onClick={onClick}
           className="btn-secondary w-full flex items-center justify-center"
         >
-          <span>Book This Region</span>
+          <span>Book Now</span>
           <ArrowRight size={16} className="ml-2" />
         </button>
       </div>
@@ -74,11 +74,7 @@ const Locations = () => {
   return (
     <section id="locations" className="py-16 bg-gray-50">
       <div className="container">
-        <h2 className="section-title">Select Your Location</h2>
-        <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12">
-          Our hibachi chefs are available in multiple regions across the East and West Coast.
-          Choose your location to book your personalized hibachi experience.
-        </p>
+        <h2 className="section-title">Our Service Areas</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <LocationCard 

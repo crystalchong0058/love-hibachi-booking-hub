@@ -14,14 +14,12 @@ const MomentsGallery = () => {
       type: 'image',
       src: '/images/moments/IMG_1.jpg',
       alt: 'Hibachi cooking show',
-      caption: 'Chef performing amazing hibachi tricks',
       size: 'medium'
     },
     {
       type: 'video',
       src: '/videos/moments/31_1743945480.mp4',
       alt: 'Hibachi performance',
-      caption: 'Watch our chef in action',
       orientation: 'portrait',
       size: 'large'
     },
@@ -29,130 +27,61 @@ const MomentsGallery = () => {
       type: 'image',
       src: '/images/moments/IMG_2.jpg',
       alt: 'Happy customers',
-      caption: 'Our satisfied customers enjoying the show',
       size: 'medium'
     },
     {
       type: 'video',
       src: '/videos/moments/37_1743945494.mp4',
       alt: 'Hibachi experience',
-      caption: 'Interactive dining experience',
       orientation: 'portrait'
     },
     {
       type: 'image',
       src: '/images/moments/IMG_3.jpg',
-      alt: 'Delicious food',
-      caption: 'Freshly prepared hibachi dishes'
+      alt: 'Delicious food'
     },
     {
       type: 'video',
       src: '/videos/moments/38_1743945499.mp4',
       alt: 'Special event',
-      caption: 'Making special occasions memorable',
       orientation: 'portrait'
     },
     {
       type: 'image',
       src: '/images/moments/IMG_4.jpg',
-      alt: 'Hibachi performance',
-      caption: 'Watch our chef in action'
+      alt: 'Hibachi performance'
     },
     {
       type: 'image',
       src: '/images/moments/IMG_5.jpg',
-      alt: 'Hibachi experience',
-      caption: 'Interactive dining experience'
+      alt: 'Hibachi experience'
     },
     {
-      type: 'image',
-      src: '/images/moments/IMG_6.jpg',
+      type: 'video',
+      src: '/videos/moments/34_1743945488.mp4',
       alt: 'Group celebration',
-      caption: 'Perfect for group celebrations'
+      orientation: 'portrait'
     },
     {
       type: 'image',
-      src: '/images/moments/IMG_7.jpg',
-      alt: 'Family dinner',
-      caption: 'Family-friendly entertainment'
+      src: '/images/moments/2341743772800_.pic.jpg',
+      alt: 'Family dinner'
     },
     {
       type: 'image',
-      src: '/images/moments/IMG_8.jpg',
-      alt: 'Special occasions',
-      caption: 'Making special occasions memorable'
+      src: '/images/moments/2401743772810_.pic.jpg',
+      alt: 'Special occasions'
     },
     {
-      type: 'image',
-      src: '/images/moments/IMG_9.jpg',
+      type: 'video',
+      src: '/videos/moments/39_1743945502.mp4',
       alt: 'Corporate events',
-      caption: 'Great for corporate events'
+      orientation: 'portrait'
     },
     {
       type: 'image',
-      src: '/images/moments/IMG_10.jpg',
-      alt: 'Birthday parties',
-      caption: 'Birthday celebrations with flair'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/IMG_11.jpg',
-      alt: 'Anniversary dinner',
-      caption: 'Romantic anniversary dinners'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/IMG_12.jpg',
-      alt: 'Team building',
-      caption: 'Team building with entertainment'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/IMG_13.jpg',
-      alt: 'Wedding reception',
-      caption: 'Wedding reception entertainment'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/IMG_14.jpg',
-      alt: 'Graduation party',
-      caption: 'Graduation celebrations'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/IMG_15.jpg',
-      alt: 'Holiday gathering',
-      caption: 'Holiday gatherings with style'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/IMG_16.jpg',
-      alt: 'Private party',
-      caption: 'Private party entertainment'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/IMG_17.jpg',
-      alt: 'Corporate dinner',
-      caption: 'Corporate dinner entertainment'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/IMG_18.jpg',
-      alt: 'Birthday celebration',
-      caption: 'Birthday celebration with hibachi'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/IMG_19.jpg',
-      alt: 'Family gathering',
-      caption: 'Family gathering entertainment'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/IMG_20.jpg',
-      alt: 'Special event',
-      caption: 'Special event entertainment'
+      src: '/images/moments/3341744423666_.pic.jpg',
+      alt: 'Birthday parties'
     }
   ];
 
@@ -217,9 +146,7 @@ const MomentsGallery = () => {
                   </div>
                 )}
               </div>
-              <div className="p-4">
-                <p className="text-sm text-muted-foreground">{moment.caption}</p>
-              </div>
+
             </div>
           ))}
         </div>

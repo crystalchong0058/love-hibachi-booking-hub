@@ -34,7 +34,7 @@ const Services = () => {
     {
       icon: Calendar,
       title: "Flexible Scheduling",
-      description: "Book your 90-minute hibachi experience at a time that works for your event."
+      description: "Book your hibachi experience at a time that works for your event."
     },
     {
       icon: Utensils,

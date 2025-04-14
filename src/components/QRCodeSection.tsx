@@ -31,7 +31,7 @@ const QRCodeSection = () => {
             <div className="bg-white w-64 h-64 flex items-center justify-center rounded">
               <img 
                 src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://4ulovehibachi.com" 
-                alt="4 U Love Hibachi Catering QR Code" 
+                alt="4 U Sake Hibachi Catering QR Code" 
                 className="w-48 h-48"
               />
             </div>
