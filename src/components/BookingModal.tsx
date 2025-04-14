@@ -289,6 +289,10 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan }) => {
         comments: comments || 'No special requests or comments',
         // Food selections
         protein_choices: selectedProteins,
+        protein_details: selectedProteins, // Add this for the customer email template
+        premium_protein_details: `${proteinQuantities.filetMignon > 0 || proteinQuantities.lobsterTail > 0 ? 
+          `${proteinQuantities.filetMignon > 0 ? `Filet Mignon: ${proteinQuantities.filetMignon}` : ''}${proteinQuantities.filetMignon > 0 && proteinQuantities.lobsterTail > 0 ? ', ' : ''}${proteinQuantities.lobsterTail > 0 ? `Lobster Tail: ${proteinQuantities.lobsterTail}` : ''}` 
+          : 'None selected'}`,
         appetizers: selectedAppetizers || 'None selected',
         side_orders: selectedSideOrders || 'None selected',
         
