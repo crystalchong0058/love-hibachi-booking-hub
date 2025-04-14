@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SectionLink from './ui/section-link';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,13 +30,13 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           <Link to="/" className="text-foreground hover:text-hibachi-red font-medium">Home</Link>
-          <Link to="/#services" className="text-foreground hover:text-hibachi-red font-medium">Services</Link>
-          <Link to="/#pricing" className="text-foreground hover:text-hibachi-red font-medium">Pricing</Link>
+          <SectionLink to="/#services" className="text-foreground hover:text-hibachi-red font-medium">Services</SectionLink>
+          <SectionLink to="/#pricing" className="text-foreground hover:text-hibachi-red font-medium">Pricing</SectionLink>
           <Link to="/faq" className="text-foreground hover:text-hibachi-red font-medium">FAQ</Link>
           <Link to="/contact" className="text-foreground hover:text-hibachi-red font-medium">Contact Us</Link>
-          <Link to="/#testimonials" className="text-foreground hover:text-hibachi-red font-medium">Reviews</Link>
+          <SectionLink to="/#testimonials" className="text-foreground hover:text-hibachi-red font-medium">Reviews</SectionLink>
 
-          <Link to="/#pricing" className="btn-primary">Book Now</Link>
+          <SectionLink to="/#pricing" className="btn-primary">Book Now</SectionLink>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -54,12 +55,12 @@ const Header = () => {
         <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-md animate-fade-in">
           <nav className="container py-4 flex flex-col space-y-4">
             <Link to="/" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Home</Link>
-            <Link to="/#services" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Services</Link>
-            <Link to="/#pricing" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Pricing</Link>
+            <SectionLink to="/#services" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Services</SectionLink>
+            <SectionLink to="/#pricing" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Pricing</SectionLink>
             <Link to="/faq" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">FAQ</Link>
             <Link to="/contact" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Contact Us</Link>
-            <Link to="/#testimonials" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Reviews</Link>
-            <Link to="/#pricing" onClick={toggleMenu} className="btn-primary text-center">Book Now</Link>
+            <SectionLink to="/#testimonials" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Reviews</SectionLink>
+            <SectionLink to="/#pricing" onClick={toggleMenu} className="btn-primary text-center">Book Now</SectionLink>
           </nav>
         </div>
       )}
