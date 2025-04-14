@@ -14,7 +14,7 @@ const ContactForm = () => {
         
         <div className="max-w-3xl mx-auto">
           <div className="bg-gray-50 p-8 rounded-lg border border-border">
-            <h3 className="text-2xl font-bold mb-8 text-center">Contact Information</h3>
+            
             
             <div className="space-y-8">
               <div className="flex items-start">
@@ -38,7 +38,7 @@ const ContactForm = () => {
                 <div>
                   <h4 className="font-medium text-lg">Service Areas</h4>
                   <p className="text-gray-600 mb-1">East Coast: NY, NJ, MA, CT, PA, MD, VA, DC, DE, NC, SC, GA</p>
-                  <p className="text-gray-600">West Coast: AZ, CA, NV (Las Vegas)</p>
+                  
                 </div>
               </div>
               

@@ -8,6 +8,8 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    // Add historyApiFallback to handle client-side routing
+    historyApiFallback: true,
   },
   plugins: [
     react(),
@@ -19,4 +21,6 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // Ensure base path is set correctly
+  base: "/",
 }));

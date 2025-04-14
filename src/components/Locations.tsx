@@ -60,14 +60,12 @@ const LocationCard = ({
 };
 
 const Locations = () => {
-  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
 
-  const handleSelectLocation = (region: string) => {
-    setSelectedRegion(region);
-    // Scroll to contact form
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
+  const handleBookNow = () => {
+    // Scroll to pricing section
+    const pricingSection = document.getElementById('pricing');
+    if (pricingSection) {
+      pricingSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -76,19 +74,12 @@ const Locations = () => {
       <div className="container">
         <h2 className="section-title">Our Service Areas</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 max-w-md mx-auto">
           <LocationCard 
             title="East Coast" 
             states={['NY', 'NJ', 'MA', 'CT', 'PA', 'MD', 'VA', 'DC', 'DE', 'NC', 'SC', 'GA']} 
             image="https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?q=80&w=1500&auto=format&fit=crop"
-            onClick={() => handleSelectLocation('East Coast')}
-          />
-          
-          <LocationCard 
-            title="West Coast" 
-            states={['AZ', 'CA', 'NV (Las Vegas)']} 
-            image="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?q=80&w=1500&auto=format&fit=crop"
-            onClick={() => handleSelectLocation('West Coast')}
+            onClick={handleBookNow}
           />
         </div>
       </div>

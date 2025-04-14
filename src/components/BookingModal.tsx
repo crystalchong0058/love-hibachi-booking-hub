@@ -40,7 +40,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan }) => {
   const [plan] = useState('Adult');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [startTime, setStartTime] = useState<string>("");
-  const [region, setRegion] = useState<string>('');
+  const [state, setState] = useState<string>('');
   const [location, setLocation] = useState<string>('');
   const [adultCount, setAdultCount] = useState<string>('2');
   const [childrenCount, setChildrenCount] = useState<string>('0');
@@ -159,7 +159,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan }) => {
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!selectedDate || !startTime || !region || !location || !adultCount || !name || !email || !phone) {
+    if (!selectedDate || !startTime || !state || !location || !adultCount || !name || !email || !phone) {
       toast.error("Please fill all required fields");
       return;
     }
@@ -267,7 +267,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan }) => {
         to_email: email.trim(),
         date: format(selectedDate, 'EEEE, MMMM do, yyyy'),
         time: startTime,
-        location: `${region} - ${location}`,
+        location: `${state} - ${location}`,
         plan: plan,
         adults: adultCount,
         children: childrenCount,
@@ -278,7 +278,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan }) => {
         customer_name: name,
         booking_date: format(selectedDate, 'EEEE, MMMM do, yyyy'),
         booking_time: startTime,
-        booking_location: `${region} - ${location}`,
+        booking_location: `${state} - ${location}`,
         package_type: plan,
         adult_count: adultCount,
         children_count: childrenCount,
@@ -452,7 +452,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan }) => {
                     <MapPin className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
                     <div>
                       <span className="font-medium block">Location</span>
-                      <span>{region} - {location}</span>
+                      <span>{state} - {location}</span>
                     </div>
                   </li>
                   <li className="flex items-start">
@@ -737,17 +737,27 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan }) => {
                   <form onSubmit={handleBooking}>
                     <div className="space-y-4">
                       <div>
-                        <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-1">Region *</label>
+                        <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">State *</label>
                         <select
-                          id="region"
-                          value={region}
-                          onChange={(e) => setRegion(e.target.value)}
+                          id="state"
+                          value={state}
+                          onChange={(e) => setState(e.target.value)}
                           required
                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-hibachi-red"
                         >
-                          <option value="">Select a region</option>
-                          <option value="East Coast">East Coast</option>
-                          <option value="West Coast">West Coast</option>
+                          <option value="">Select a state</option>
+                          <option value="NY">NY</option>
+                          <option value="NJ">NJ</option>
+                          <option value="MA">MA</option>
+                          <option value="CT">CT</option>
+                          <option value="PA">PA</option>
+                          <option value="MD">MD</option>
+                          <option value="VA">VA</option>
+                          <option value="DC">DC</option>
+                          <option value="DE">DE</option>
+                          <option value="NC">NC</option>
+                          <option value="SC">SC</option>
+                          <option value="GA">GA</option>
                         </select>
                       </div>
                       

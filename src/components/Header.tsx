@@ -29,10 +29,13 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           <Link to="/" className="text-foreground hover:text-hibachi-red font-medium">Home</Link>
-          <a href="#services" className="text-foreground hover:text-hibachi-red font-medium">Services</a>
-          <a href="#pricing" className="text-foreground hover:text-hibachi-red font-medium">Pricing</a>
+          <Link to="/#services" className="text-foreground hover:text-hibachi-red font-medium">Services</Link>
+          <Link to="/#pricing" className="text-foreground hover:text-hibachi-red font-medium">Pricing</Link>
+          <Link to="/faq" className="text-foreground hover:text-hibachi-red font-medium">FAQ</Link>
+          <Link to="/contact" className="text-foreground hover:text-hibachi-red font-medium">Contact Us</Link>
+          <Link to="/#testimonials" className="text-foreground hover:text-hibachi-red font-medium">Reviews</Link>
 
-          <a href="#pricing" className="btn-primary">Book Now</a>
+          <Link to="/#pricing" className="btn-primary">Book Now</Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -51,9 +54,12 @@ const Header = () => {
         <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-md animate-fade-in">
           <nav className="container py-4 flex flex-col space-y-4">
             <Link to="/" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Home</Link>
-            <a href="#services" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Services</a>
-            <a href="#pricing" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Pricing</a>
-            <a href="#pricing" onClick={toggleMenu} className="btn-primary text-center">Book Now</a>
+            <Link to="/#services" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Services</Link>
+            <Link to="/#pricing" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Pricing</Link>
+            <Link to="/faq" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">FAQ</Link>
+            <Link to="/contact" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Contact Us</Link>
+            <Link to="/#testimonials" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Reviews</Link>
+            <Link to="/#pricing" onClick={toggleMenu} className="btn-primary text-center">Book Now</Link>
           </nav>
         </div>
       )}
