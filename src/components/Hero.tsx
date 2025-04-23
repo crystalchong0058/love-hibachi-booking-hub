@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -8,6 +7,22 @@ import BookingModal from './BookingModal';
 const Hero = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const backgroundImages = [
+    'public/images/carouselhero/foodwithfire.jpg',
+    'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?q=80&w=1920&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1562565652-a2d8c0e9c2a0?q=80&w=1920&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1562565652-a2d8c0e9c2a0?q=80&w=1920&auto=format&fit=crop',
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % backgroundImages.length);
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleOpenModal = (plan: string) => {
     setSelectedPlan(plan);
@@ -21,7 +36,17 @@ const Hero = () => {
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-r from-gray-900 to-black text-white">
-      <div className="absolute inset-0 opacity-30 bg-[url('https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=1920&auto=format&fit=crop')] bg-cover bg-center"></div>
+      <div className="absolute inset-0 opacity-30 transition-opacity duration-1000">
+        {backgroundImages.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+              index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{ backgroundImage: `url('${image}')` }}
+          />
+        ))}
+      </div>
       <div className="container relative py-20 md:py-28 flex flex-col items-center text-center">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight max-w-4xl">
           Experience <span className="text-hibachi-gold">Authentic Hibachi</span> Catering for Your Special Event
