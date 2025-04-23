@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -7,21 +7,27 @@ import BookingModal from './BookingModal';
 const Hero = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const backgroundImages = [
-    'public/images/carouselhero/foodwithfire.jpg',
-    'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?q=80&w=1920&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1562565652-a2d8c0e9c2a0?q=80&w=1920&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1562565652-a2d8c0e9c2a0?q=80&w=1920&auto=format&fit=crop',
-  ];
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % backgroundImages.length);
-    }, 5000); // Change image every 5 seconds
+    const video = videoRef.current;
+    if (video) {
+      video.addEventListener('canplay', () => {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => setIsVideoLoaded(true))
+            .catch(() => setIsVideoLoaded(false));
+        }
+      });
+    }
 
-    return () => clearInterval(interval);
+    return () => {
+      if (video) {
+        video.removeEventListener('canplay', () => {});
+      }
+    };
   }, []);
 
   const handleOpenModal = (plan: string) => {
@@ -36,23 +42,38 @@ const Hero = () => {
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-r from-gray-900 to-black text-white">
-      <div className="absolute inset-0 opacity-30 transition-opacity duration-1000">
-        {backgroundImages.map((image, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
-              index === currentImageIndex ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{ backgroundImage: `url('${image}')` }}
-          />
-        ))}
+      <div className="absolute inset-0">
+        {/* Fallback background image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: "url('/images/carouselhero/foodwithfire.jpg')",
+            opacity: isVideoLoaded ? 0 : 0.7
+          }}
+        />
+        
+        {/* Video background */}
+        <video
+          ref={videoRef}
+          className="w-full h-full object-cover"
+          style={{ opacity: isVideoLoaded ? 0.7 : 0 }}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          controls={false}
+        >
+          <source src="/videos/intro/fire burning.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
       <div className="container relative py-20 md:py-28 flex flex-col items-center text-center">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight max-w-4xl">
-          Experience <span className="text-hibachi-gold">Authentic Hibachi</span> Catering for Your Special Event
+          Experience <span className="text-hibachi-gold">Authentic Hibachi</span> for Your Special Event
         </h1>
         <p className="text-lg md:text-xl max-w-2xl mb-10 text-gray-200">
-          Professional chefs bringing the excitement and flavors of hibachi cooking directly to your celebration.
+          Professional chefs bringing the excitement and flavors of hibachi cooking directly to your celebration. Serving both East and West Coast locations.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
           <button 
