@@ -16,8 +16,8 @@ const Header = () => {
         <Link to="/" className="flex items-center space-x-2">
           <img 
             src="/images/moments/profilepic/logo.png" 
-            alt="4 U Sake Hibachi" 
-            className="w-10 h-10 rounded-full object-cover"
+            alt="4 U Sake Hibachi Logo" 
+            className="w-20 h-20 object-contain"
           />
           <div>
             <h1 className="text-xl font-bold leading-tight">
