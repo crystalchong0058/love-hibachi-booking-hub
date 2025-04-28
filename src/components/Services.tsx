@@ -28,8 +28,8 @@ const Services = () => {
     },
     {
       icon: MapPin,
-      title: "East Coast Service",
-      description: "Serving NY, NJ, MA, CT, PA, MD, VA, DC, DE, NC, SC, and GA."
+      title: "Providing Service Anywhere in the USA",
+      description: "We are proud to serve your event anywhere in the USA."
     },
     {
       icon: Calendar,

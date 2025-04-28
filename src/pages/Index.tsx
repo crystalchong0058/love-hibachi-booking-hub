@@ -11,6 +11,8 @@ import Testimonials from '../components/Testimonials';
 import QRCodeSection from '../components/QRCodeSection';
 import Footer from '../components/Footer';
 import { useScrollToHash } from '../hooks/useScrollToHash';
+import Introduction from '../components/Introduction';
+import HowToSetup from '../components/HowToSetup';
 
 const Index = () => {
   // Use the custom hook to scroll to the hash element
@@ -21,6 +23,8 @@ const Index = () => {
       <Header />
       <main className="flex-grow">
         <Hero />
+        <Introduction />
+        <HowToSetup />
         <Services />
         <Pricing />
         <Locations />
@@ -28,8 +32,6 @@ const Index = () => {
         <QRCodeSection />
         <MomentsGallery />
         <Testimonials />
-        
-
       </main>
       <Footer />
     </div>
