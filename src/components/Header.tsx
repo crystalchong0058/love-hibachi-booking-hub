@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SectionLink from './ui/section-link';
@@ -20,6 +20,16 @@ const Header = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    if (isModalOpen) {
+      // Reset scroll position when modal opens
+      const modalContent = document.querySelector('.modal-content');
+      if (modalContent) {
+        modalContent.scrollTop = 0;
+      }
+    }
+  }, [isModalOpen]);
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
@@ -78,7 +88,7 @@ const Header = () => {
 
       {/* Booking Modal */}
       <Dialog open={isModalOpen} onOpenChange={handleCloseModal}>
-        <DialogContent className="max-w-4xl">
+        <DialogContent className="max-w-4xl modal-content">
           <BookingModal setIsModalOpen={setIsModalOpen} />
         </DialogContent>
       </Dialog>

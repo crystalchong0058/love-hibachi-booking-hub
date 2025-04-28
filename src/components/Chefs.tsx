@@ -68,7 +68,7 @@ const Chefs = () => {
   const chef: Chef = {
     name: "Chef Jason",
     image: "/images/moments/profilepic/profile.jpg",
-    location: "New York Region",
+    location: "East Coast Region",
     rating: 5,
     experience: "Master Hibachi Chef with years of culinary excellence and entertainment",
     specialties: ["Steak Mastery", "Seafood Artistry", "Interactive Cooking Performance"]
