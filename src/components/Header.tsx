@@ -16,12 +16,12 @@ const Header = () => {
         <Link to="/" className="flex items-center space-x-2">
           <img 
             src="/images/moments/profilepic/logo.png" 
-            alt="4 U Hibachi" 
+            alt="4 U Sake Hibachi" 
             className="w-10 h-10 rounded-full object-cover"
           />
           <div>
             <h1 className="text-xl font-bold leading-tight">
-              <span className="text-hibachi-red">4 U Hibachi</span>
+              <span className="text-hibachi-red">4 U Sake Hibachi</span>
             </h1>
             <p className="text-xs font-medium text-gray-600 -mt-1">Professional Hibachi Service</p>
           </div>

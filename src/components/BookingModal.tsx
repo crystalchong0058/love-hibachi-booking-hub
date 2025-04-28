@@ -33,9 +33,10 @@ const MINUTES = ['00', '15', '30', '45'];
 
 interface BookingModalProps {
   plan?: string;
+  setIsModalOpen: (isOpen: boolean) => void;
 }
 
-const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan }) => {
+const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsModalOpen }) => {
   // Always use 'Adult' as the default plan since we removed the selection
   const [plan] = useState('Adult');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -498,7 +499,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan }) => {
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 relative">
           <button 
-            onClick={() => window.location.reload()} 
+            onClick={() => setIsModalOpen(false)} 
             className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
             aria-label="Close"
           >
@@ -718,14 +719,19 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan }) => {
               <div className="bg-gray-50 p-4 rounded-md border border-gray-200 mb-6 text-sm">
                 <h3 className="font-semibold mb-2 text-hibachi-red">What We Provide vs. What You Provide</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <p className="font-medium mb-1">We'll Bring:</p>
-                    <ul className="list-disc pl-5 space-y-1 text-gray-600">
-                      <li>Professional chef</li>
-                      <li>Cooking gear and setup</li>
-                      <li>All food ingredients</li>
-                      <li>Hibachi grill</li>
-                    </ul>
+                  <div className="flex items-start gap-4">
+                    <div>
+                      <p className="font-medium mb-1">We'll Bring:</p>
+                      <ul className="list-disc pl-5 space-y-1 text-gray-600">
+                        <li>Professional chef</li>
+                        <li>Cooking gear and setup</li>
+                        <li>All food ingredients</li>
+                        <li>Hibachi grill</li>
+                      </ul>
+                    </div>
+                    <div className="bg-yellow-100 p-3 rounded-md shadow-md border border-yellow-200 h-fit">
+                      <p className="text-yellow-800 font-medium italic">"Eat Fresh, Stay Healthy"</p>
+                    </div>
                   </div>
                   <div>
                     <p className="font-medium mb-1">You'll Provide:</p>

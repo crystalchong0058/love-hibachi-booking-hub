@@ -69,10 +69,16 @@ const Hero = () => {
         </video>
       </div>
       <div className="container relative py-20 md:py-28 flex flex-col items-center text-center">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight max-w-4xl">
-          Experience <span className="text-hibachi-gold">Authentic Hibachi</span> for Your Special Event
+        <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
+          Private Hibachi Catering
         </h1>
-        <p className="text-lg md:text-xl max-w-2xl mb-10 text-gray-200">
+        <div className="relative mb-6 overflow-hidden">
+          <p className="text-2xl md:text-3xl font-bold text-hibachi-gold animate-slide-in">
+            Eat Fresh, Stay Healthy
+          </p>
+          <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-hibachi-red via-hibachi-gold to-hibachi-red"></div>
+        </div>
+        <p className="text-xl text-white mb-8 max-w-2xl animate-fade-in">
           Professional chefs bringing the excitement and flavors of hibachi cooking directly to your celebration. Serving both East and West Coast locations.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
