@@ -2,12 +2,23 @@ import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SectionLink from './ui/section-link';
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import BookingModal from './BookingModal';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -36,7 +47,7 @@ const Header = () => {
           <Link to="/contact" className="text-foreground hover:text-hibachi-red font-medium">Contact Us</Link>
           <SectionLink to="/#testimonials" className="text-foreground hover:text-hibachi-red font-medium">Reviews</SectionLink>
 
-          <SectionLink to="/#pricing" className="btn-primary">Book Now</SectionLink>
+          <button onClick={handleOpenModal} className="btn-primary">Book Now</button>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -60,10 +71,17 @@ const Header = () => {
             <Link to="/faq" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">FAQ</Link>
             <Link to="/contact" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Contact Us</Link>
             <SectionLink to="/#testimonials" onClick={toggleMenu} className="text-foreground hover:text-hibachi-red font-medium py-2">Reviews</SectionLink>
-            <SectionLink to="/#pricing" onClick={toggleMenu} className="btn-primary text-center">Book Now</SectionLink>
+            <button onClick={() => { handleOpenModal(); toggleMenu(); }} className="btn-primary text-center">Book Now</button>
           </nav>
         </div>
       )}
+
+      {/* Booking Modal */}
+      <Dialog open={isModalOpen} onOpenChange={handleCloseModal}>
+        <DialogContent className="max-w-4xl">
+          <BookingModal setIsModalOpen={setIsModalOpen} />
+        </DialogContent>
+      </Dialog>
     </header>
   );
 };

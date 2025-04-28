@@ -32,13 +32,14 @@ const HOURS = Array.from({ length: 15 }, (_, i) => i + 9); // 9 AM to 11 PM
 const MINUTES = ['00', '15', '30', '45'];
 
 interface BookingModalProps {
-  plan: string;
+  plan?: string;
   setIsModalOpen: (isOpen: boolean) => void;
-  setSelectedPlan: (plan: string | null) => void;
 }
 
-const BookingModal: React.FC<BookingModalProps> = ({ plan, setIsModalOpen, setSelectedPlan }) => {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsModalOpen }) => {
+  // Always use 'Adult' as the default plan since we removed the selection
+  const [plan] = useState('Adult');
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [startTime, setStartTime] = useState<string>("");
   const [state, setState] = useState<string>('');
   const [location, setLocation] = useState<string>('');
@@ -51,9 +52,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan, setIsModalOpen, setSe
   const [foodOrderDetails, setFoodOrderDetails] = useState<string>('');
   const [isBookingComplete, setIsBookingComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    // ... existing code ...
-  });
   
   // Protein choices with quantities
   const [proteinQuantities, setProteinQuantities] = useState<{[key: string]: number}>({
@@ -102,7 +100,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan, setIsModalOpen, setSe
     
     // Premium protein costs
     additionalCost += proteinQuantities.filetMignon * 5; // $5 per Filet Mignon
-    additionalCost += proteinQuantities.lobsterTail * 10; // $10 per Lobster Tail
+    additionalCost += proteinQuantities.lobsterTail * 15; // $15 per Lobster Tail
     
     // Appetizers
     if (appetizers.gyoza) additionalCost += 10;
@@ -229,7 +227,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan, setIsModalOpen, setSe
             case 'vegetable': proteinName = 'Vegetable'; break;
             case 'tofu': proteinName = 'Tofu'; break;
             case 'filetMignon': proteinName = 'Filet Mignon (+$5 per person)'; break;
-            case 'lobsterTail': proteinName = 'Lobster Tail (+$10 per person)'; break;
+            case 'lobsterTail': proteinName = 'Lobster Tail (+$15 per person)'; break;
             default: proteinName = '';
           }
           return `${quantity} ${proteinName}`;
@@ -343,7 +341,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan, setIsModalOpen, setSe
         protein_details: `Total proteins: ${Object.values(proteinQuantities).reduce((sum, count) => sum + count, 0)} (${totalGuests} guests × 2 proteins each)\n${selectedProteins}`,
         
         // Add premium protein details and costs
-        premium_protein_details: `${proteinQuantities.filetMignon > 0 ? `Filet Mignon: ${proteinQuantities.filetMignon} × $5 = $${proteinQuantities.filetMignon * 5}\n` : ''}${proteinQuantities.lobsterTail > 0 ? `Lobster Tail: ${proteinQuantities.lobsterTail} × $10 = $${proteinQuantities.lobsterTail * 10}` : ''}`
+        premium_protein_details: `${proteinQuantities.filetMignon > 0 ? `Filet Mignon: ${proteinQuantities.filetMignon} × $5 = $${proteinQuantities.filetMignon * 5}\n` : ''}${proteinQuantities.lobsterTail > 0 ? `Lobster Tail: ${proteinQuantities.lobsterTail} × $15 = $${proteinQuantities.lobsterTail * 15}` : ''}`
       };
 
       console.log('Attempting to send business email with params:', businessParams);
@@ -501,18 +499,10 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan, setIsModalOpen, setSe
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 relative">
           <div className="flex items-center justify-between mb-6">
-            <img 
-              src="/images/moments/profilepic/logo.png" 
-              alt="4 U Sake Hibachi Logo" 
-              className="h-24 w-auto"
-            />
+
             <button 
-              onClick={() => {
-                setIsModalOpen(false);
-                setSelectedPlan(null);
-              }} 
+              onClick={() => setIsModalOpen(false)} 
               className="text-gray-500 hover:text-gray-700"
-              aria-label="Close"
             >
               <X className="w-6 h-6" />
             </button>
@@ -617,7 +607,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan, setIsModalOpen, setSe
                               <div>Filet Mignon: +${proteinQuantities.filetMignon * 5}</div>
                             )}
                             {proteinQuantities.lobsterTail > 0 && (
-                              <div>Lobster Tail: +${proteinQuantities.lobsterTail * 10}</div>
+                              <div>Lobster Tail: +${proteinQuantities.lobsterTail * 15}</div>
                             )}
                           </div>
                         )}
@@ -915,6 +905,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan, setIsModalOpen, setSe
                             <p>Additional items: ${additionalCosts}</p>
                           )}
                         </div>
+
                       </div>
                       
                       <div className="pt-4 border-t">
@@ -1197,7 +1188,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan, setIsModalOpen, setSe
                                     </div>
                                     
                                     <div className="flex items-center justify-between border rounded-md p-2">
-                                      <span className="text-sm">Lobster Tail<br/><span className="text-xs text-gray-500">(+$10 per person)</span></span>
+                                      <span className="text-sm">Lobster Tail<br/><span className="text-xs text-gray-500">(+$15 per person)</span></span>
                                       <div className="flex items-center">
                                         <button 
                                           type="button"
