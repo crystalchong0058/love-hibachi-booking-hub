@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Calendar } from 'lucide-react';
+import { Calendar, Phone, MapPin, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import BookingModal from './BookingModal';
@@ -85,6 +85,21 @@ const Hero = () => {
           <Link to="/#pricing" className="btn-secondary flex items-center justify-center space-x-2">
             <span>View Pricing</span>
           </Link>
+        </div>
+        {/* Contact Info Bar */}
+        <div className="flex flex-wrap justify-center gap-6 mb-8">
+          <div className="flex items-center gap-2">
+            <Phone className="w-5 h-5 text-hibachi-red" />
+            <span>(929) 688-1138</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <MapPin className="w-5 h-5 text-hibachi-red" />
+            <span>Serving East Coast (NY, NJ, CT, FL) & West Coast (CA, NV, AZ)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Clock className="w-5 h-5 text-hibachi-red" />
+            <span>9:00 AM - 10:00 PM, 7 days a week</span>
+          </div>
         </div>
       </div>
       

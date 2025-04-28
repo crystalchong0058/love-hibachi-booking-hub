@@ -414,6 +414,38 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan }) => {
 
   // No longer need to check if a date is unavailable
 
+  const states = [
+    {
+      coast: 'East Coast',
+      states: [
+        { value: 'NY', label: 'New York' },
+        { value: 'NJ', label: 'New Jersey' },
+        { value: 'CT', label: 'Connecticut' },
+        { value: 'FL', label: 'Florida' },
+        { value: 'MA', label: 'Massachusetts' },
+        { value: 'PA', label: 'Pennsylvania' },
+        { value: 'MD', label: 'Maryland' },
+        { value: 'DC', label: 'Washington DC' },
+        { value: 'VA', label: 'Virginia' },
+        { value: 'NC', label: 'North Carolina' },
+        { value: 'SC', label: 'South Carolina' },
+        { value: 'GA', label: 'Georgia' }
+      ]
+    },
+    {
+      coast: 'West Coast',
+      states: [
+        { value: 'CA', label: 'California' },
+        { value: 'NV', label: 'Nevada' },
+        { value: 'AZ', label: 'Arizona' },
+        { value: 'OR', label: 'Oregon' },
+        { value: 'WA', label: 'Washington' },
+        { value: 'UT', label: 'Utah' },
+        { value: 'CO', label: 'Colorado' }
+      ]
+    }
+  ];
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -741,32 +773,30 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan }) => {
                   <form onSubmit={handleBooking}>
                     <div className="space-y-4">
                       <div>
-                        <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">State *</label>
-                        <select
-                          id="state"
-                          value={state}
-                          onChange={(e) => setState(e.target.value)}
-                          required
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-hibachi-red"
-                        >
-                          <option value="">Select a state</option>
-                          <option value="NY">NY</option>
-                          <option value="NJ">NJ</option>
-                          <option value="MA">MA</option>
-                          <option value="CT">CT</option>
-                          <option value="PA">PA</option>
-                          <option value="MD">MD</option>
-                          <option value="VA">VA</option>
-                          <option value="DC">DC</option>
-                          <option value="DE">DE</option>
-                          <option value="NC">NC</option>
-                          <option value="SC">SC</option>
-                          <option value="GA">GA</option>
-                        </select>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">State *</label>
+                        <Select value={state} onValueChange={setState}>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select your state" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {states.map((coast) => (
+                              <div key={coast.coast}>
+                                <div className="px-2 py-1.5 text-sm font-semibold text-gray-500">
+                                  {coast.coast}
+                                </div>
+                                {coast.states.map((state) => (
+                                  <SelectItem key={state.value} value={state.value}>
+                                    {state.label}
+                                  </SelectItem>
+                                ))}
+                              </div>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                       
                       <div>
-                        <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Full Address *</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Full Address *</label>
                         <Input
                           id="location"
                           value={location}
