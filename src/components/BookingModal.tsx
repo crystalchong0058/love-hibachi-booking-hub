@@ -729,8 +729,17 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                         <li>Hibachi grill</li>
                       </ul>
                     </div>
-                    <div className="bg-yellow-100 p-3 rounded-md shadow-md border border-yellow-200 h-fit">
-                      <p className="text-yellow-800 font-medium italic">"Eat Fresh, Stay Healthy"</p>
+                    <div className="flex flex-col items-end">
+                      <div className="flex items-start gap-4">
+                        <div className="flex flex-col">
+                          <div className="bg-yellow-100 p-2 w-32 h-32 rounded-md shadow-md border border-yellow-200 flex items-center justify-center">
+                            <p className="text-yellow-800 font-medium italic text-sm text-center">"More Sake, More Happy. More Happy, More Sexy. More Sexy, More Baby!"</p>
+                          </div>
+                          <div className="mt-2 text-xs text-red-500">
+                            <p>We provide premium sake<br/>at no additional cost<br/>to enhance your dining<br/>experience!</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div>
