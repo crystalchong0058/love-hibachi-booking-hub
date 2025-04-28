@@ -418,30 +418,77 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan }) => {
     {
       coast: 'East Coast',
       states: [
+        { value: 'ME', label: 'Maine' },
+        { value: 'NH', label: 'New Hampshire' },
+        { value: 'VT', label: 'Vermont' },
+        { value: 'MA', label: 'Massachusetts' },
+        { value: 'RI', label: 'Rhode Island' },
+        { value: 'CT', label: 'Connecticut' },
         { value: 'NY', label: 'New York' },
         { value: 'NJ', label: 'New Jersey' },
-        { value: 'CT', label: 'Connecticut' },
-        { value: 'FL', label: 'Florida' },
-        { value: 'MA', label: 'Massachusetts' },
         { value: 'PA', label: 'Pennsylvania' },
+        { value: 'DE', label: 'Delaware' },
         { value: 'MD', label: 'Maryland' },
         { value: 'DC', label: 'Washington DC' },
         { value: 'VA', label: 'Virginia' },
+        { value: 'WV', label: 'West Virginia' },
         { value: 'NC', label: 'North Carolina' },
         { value: 'SC', label: 'South Carolina' },
-        { value: 'GA', label: 'Georgia' }
+        { value: 'GA', label: 'Georgia' },
+        { value: 'FL', label: 'Florida' }
       ]
     },
     {
       coast: 'West Coast',
       states: [
-        { value: 'CA', label: 'California' },
-        { value: 'NV', label: 'Nevada' },
-        { value: 'AZ', label: 'Arizona' },
-        { value: 'OR', label: 'Oregon' },
         { value: 'WA', label: 'Washington' },
+        { value: 'OR', label: 'Oregon' },
+        { value: 'CA', label: 'California' },
+        { value: 'AK', label: 'Alaska' },
+        { value: 'HI', label: 'Hawaii' }
+      ]
+    },
+    {
+      coast: 'Midwest',
+      states: [
+        { value: 'OH', label: 'Ohio' },
+        { value: 'MI', label: 'Michigan' },
+        { value: 'IN', label: 'Indiana' },
+        { value: 'IL', label: 'Illinois' },
+        { value: 'WI', label: 'Wisconsin' },
+        { value: 'MN', label: 'Minnesota' },
+        { value: 'IA', label: 'Iowa' },
+        { value: 'MO', label: 'Missouri' },
+        { value: 'ND', label: 'North Dakota' },
+        { value: 'SD', label: 'South Dakota' },
+        { value: 'NE', label: 'Nebraska' },
+        { value: 'KS', label: 'Kansas' }
+      ]
+    },
+    {
+      coast: 'South',
+      states: [
+        { value: 'KY', label: 'Kentucky' },
+        { value: 'TN', label: 'Tennessee' },
+        { value: 'AL', label: 'Alabama' },
+        { value: 'MS', label: 'Mississippi' },
+        { value: 'AR', label: 'Arkansas' },
+        { value: 'LA', label: 'Louisiana' },
+        { value: 'OK', label: 'Oklahoma' },
+        { value: 'TX', label: 'Texas' }
+      ]
+    },
+    {
+      coast: 'Mountain',
+      states: [
+        { value: 'MT', label: 'Montana' },
+        { value: 'ID', label: 'Idaho' },
+        { value: 'WY', label: 'Wyoming' },
+        { value: 'CO', label: 'Colorado' },
+        { value: 'NM', label: 'New Mexico' },
+        { value: 'AZ', label: 'Arizona' },
         { value: 'UT', label: 'Utah' },
-        { value: 'CO', label: 'Colorado' }
+        { value: 'NV', label: 'Nevada' }
       ]
     }
   ];
