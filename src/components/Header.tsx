@@ -12,18 +12,18 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
-      <div className="container py-4 flex justify-between items-center">
-        <Link to="/" className="flex items-center space-x-2">
+      <div className="container py-4 flex justify-between items-center pl-4">
+        <Link to="/" className="flex items-center space-x-3">
           <img 
             src="/images/moments/profilepic/logo.png" 
             alt="4 U Sake Hibachi Logo" 
-            className="w-20 h-20 object-contain"
+            className="w-24 h-24 object-contain"
           />
           <div>
-            <h1 className="text-xl font-bold leading-tight">
+            <h1 className="text-2xl font-bold leading-tight">
               <span className="text-hibachi-red">4 U Sake Hibachi</span>
             </h1>
-            <p className="text-xs font-medium text-gray-600 -mt-1">Professional Hibachi Service</p>
+            <p className="text-sm font-medium text-gray-600 -mt-1">Professional Hibachi Service</p>
           </div>
         </Link>
 

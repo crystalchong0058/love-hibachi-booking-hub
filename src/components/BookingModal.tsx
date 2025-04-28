@@ -32,14 +32,13 @@ const HOURS = Array.from({ length: 15 }, (_, i) => i + 9); // 9 AM to 11 PM
 const MINUTES = ['00', '15', '30', '45'];
 
 interface BookingModalProps {
-  plan?: string;
+  plan: string;
   setIsModalOpen: (isOpen: boolean) => void;
+  setSelectedPlan: (plan: string | null) => void;
 }
 
-const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsModalOpen }) => {
-  // Always use 'Adult' as the default plan since we removed the selection
-  const [plan] = useState('Adult');
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+const BookingModal: React.FC<BookingModalProps> = ({ plan, setIsModalOpen, setSelectedPlan }) => {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [startTime, setStartTime] = useState<string>("");
   const [state, setState] = useState<string>('');
   const [location, setLocation] = useState<string>('');
@@ -52,6 +51,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
   const [foodOrderDetails, setFoodOrderDetails] = useState<string>('');
   const [isBookingComplete, setIsBookingComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    // ... existing code ...
+  });
   
   // Protein choices with quantities
   const [proteinQuantities, setProteinQuantities] = useState<{[key: string]: number}>({
@@ -498,13 +500,23 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 relative">
-          <button 
-            onClick={() => setIsModalOpen(false)} 
-            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-            aria-label="Close"
-          >
-            <X className="w-6 h-6" />
-          </button>
+          <div className="flex items-center justify-between mb-6">
+            <img 
+              src="/images/moments/profilepic/logo.png" 
+              alt="4 U Sake Hibachi Logo" 
+              className="h-24 w-auto"
+            />
+            <button 
+              onClick={() => {
+                setIsModalOpen(false);
+                setSelectedPlan(null);
+              }} 
+              className="text-gray-500 hover:text-gray-700"
+              aria-label="Close"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
           
           {isBookingComplete ? (
             <div className="text-center py-8">
@@ -712,7 +724,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
             </div>
           ) : (
             <>
-              <h2 className="text-2xl font-bold mb-4">Booking Details</h2>
+              <h2 className="text-3xl font-bold mb-4 text-left">Booking Details</h2>
               <p className="text-gray-600 mb-2">
                 Select your preferred date and provide your details to complete your booking.
               </p>
@@ -770,20 +782,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                       className="p-3 pointer-events-auto"
                     />
                     <div className="mt-4 space-y-2">
-                      <div className="flex items-center space-x-4 text-sm">
-                        <div className="flex items-center">
-                          <div className="w-3 h-3 bg-gray-300 rounded-full mr-2"></div>
-                          <span>Unavailable</span>
-                        </div>
-                        <div className="flex items-center">
-                          <div className="w-3 h-3 bg-hibachi-red rounded-full mr-2"></div>
-                          <span>Booked</span>
-                        </div>
-                        <div className="flex items-center">
-                          <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                          <span>Available</span>
-                        </div>
-                      </div>
+      
+
+
+
+
+       
                       <p className="text-xs text-gray-500">Note: Each booking reserves a 2-hour time slot.</p>
                     </div>
                   </div>

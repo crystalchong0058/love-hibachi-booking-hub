@@ -82,14 +82,7 @@ const Pricing = () => {
           </div>
         </div>
         
-        <div className="mt-8 text-center">
-          <button 
-            onClick={() => handleBookNow('')} 
-            className="btn-primary inline-flex items-center justify-center px-8 py-3"
-          >
-            <Calendar className="w-5 h-5 mr-2" /> Book Now
-          </button>
-        </div>
+
 
         <div className="mt-12 bg-gray-50 p-6 rounded-lg border border-border max-w-4xl mx-auto">
           <h3 className="text-xl font-bold mb-4 text-center">Important Pricing Information</h3>

@@ -118,7 +118,11 @@ const Hero = () => {
       {selectedPlan && (
         <Dialog open={isModalOpen} onOpenChange={handleCloseModal}>
           <DialogContent className="max-w-4xl">
-            <BookingModal plan={selectedPlan} />
+            <BookingModal 
+              plan={selectedPlan} 
+              setIsModalOpen={setIsModalOpen} 
+              setSelectedPlan={setSelectedPlan}
+            />
           </DialogContent>
         </Dialog>
       )}
