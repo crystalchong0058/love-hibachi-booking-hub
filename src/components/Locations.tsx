@@ -13,10 +13,10 @@ interface LocationCardProps {
 const LocationCard: React.FC<LocationCardProps> = ({ title, states, videoId, onClick }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      <div className="relative h-48">
+      <div className="relative h-48 w-full overflow-hidden">
         <iframe
-          className="w-full h-full object-cover"
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1`}
+          className="absolute top-0 left-0 w-[200%] h-[140%] -translate-x-[25%] -translate-y-[20%]"
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&background=1`}
           title={title}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
