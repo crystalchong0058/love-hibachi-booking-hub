@@ -184,13 +184,13 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
       return;
     }
     
-    // Check if the booking meets the $500 minimum requirement
+    // Check if the booking meets the $600 minimum requirement
     const adultTotal = Number(adultCount) * 60;
     const childTotal = Number(childrenCount) * 30;
     const totalAmount = adultTotal + childTotal + additionalCosts;
     
-    if (totalAmount < 500) {
-      toast.error("Booking must meet the $500 minimum requirement");
+    if (totalAmount < 600) {
+      toast.error("Booking must meet the $600 minimum requirement");
       return;
     }
 
@@ -896,7 +896,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                         <div className="mt-2 flex items-center">
                           <span className="mr-2">Total Price:</span>
                           <span className="text-xl font-bold">${Number(adultCount) * 60 + Number(childrenCount) * 30 + additionalCosts}</span>
-                          <span className="ml-2 text-xs">($500 minimum for all parties)</span>
+                          <span className="ml-2 text-xs">($600 minimum for all parties)</span>
                         </div>
                         <div className="mt-2 text-xs text-gray-600 border-t border-yellow-200 pt-2">
                           <p>Adults: ${Number(adultCount) * 60} (${60}/person)</p>
