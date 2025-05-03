@@ -36,7 +36,7 @@ const ContactForm = () => {
                 <MapPin className="w-6 h-6 text-hibachi-red mt-1 mr-4" />
                 <div>
                   <h4 className="font-medium text-lg">Service Areas</h4>
-                  <p className="text-gray-600 mb-1">East Coast: NY, NJ, MA, CT, PA, MD, VA, DC, DE, NC, SC, GA</p>
+                  <p className="text-gray-600 mb-1">East Coast: NY, NJ, MA, CT, PA, MD, VA, DC, DE, NC, SC, GA, FL</p>
                   <p className="text-gray-600">West Coast: CA, OR, WA, NV, AZ</p>
                 </div>
               </div>

@@ -67,22 +67,30 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
   });
   
   // Appetizers
-  const [appetizers, setAppetizers] = useState<{[key: string]: boolean}>({
-    gyoza: false,
-    edamame: false
+  const [appetizers, setAppetizers] = useState<{[key: string]: number}>({
+    gyoza: 0,
+    edamame: 0
   });
   
   // Side orders
-  const [sideOrders, setSideOrders] = useState<{[key: string]: boolean}>({
-    chickenSide: false,
-    steakSide: false,
-    shrimpSide: false,
-    scallopsSide: false,
-    salmonSide: false,
-    vegetableSide: false,
-    noodles: false,
-    filetMignonSide: false,
-    lobsterTailSide: false
+  const [sideOrders, setSideOrders] = useState<{[key: string]: number}>({
+    chickenSide: 0,
+    steakSide: 0,
+    shrimpSide: 0,
+    scallopsSide: 0,
+    salmonSide: 0,
+    vegetableSide: 0,
+    noodles: 0,
+    filetMignonSide: 0,
+    lobsterTailSide: 0
+  });
+
+  // Additional food options
+  const [additionalFood, setAdditionalFood] = useState<{[key: string]: number}>({
+    additionalNoodles: 0,
+    whiteRice: 0,
+    friedRice: 0,
+    sushi: 0
   });
   
   // Get booked time slots from localStorage
@@ -103,19 +111,24 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     additionalCost += proteinQuantities.lobsterTail * 15; // $15 per Lobster Tail
     
     // Appetizers
-    if (appetizers.gyoza) additionalCost += 10;
-    if (appetizers.edamame) additionalCost += 5;
+    additionalCost += appetizers.gyoza * 10;
+    additionalCost += appetizers.edamame * 5;
     
     // Side orders
-    if (sideOrders.chickenSide) additionalCost += 10;
-    if (sideOrders.steakSide) additionalCost += 10;
-    if (sideOrders.shrimpSide) additionalCost += 10;
-    if (sideOrders.scallopsSide) additionalCost += 10;
-    if (sideOrders.salmonSide) additionalCost += 10;
-    if (sideOrders.vegetableSide) additionalCost += 10;
-    if (sideOrders.noodles) additionalCost += 4;
-    if (sideOrders.filetMignonSide) additionalCost += 15;
-    if (sideOrders.lobsterTailSide) additionalCost += 15;
+    additionalCost += sideOrders.chickenSide * 10;
+    additionalCost += sideOrders.steakSide * 10;
+    additionalCost += sideOrders.shrimpSide * 10;
+    additionalCost += sideOrders.scallopsSide * 10;
+    additionalCost += sideOrders.salmonSide * 10;
+    additionalCost += sideOrders.vegetableSide * 10;
+    additionalCost += sideOrders.noodles * 4;
+    additionalCost += sideOrders.filetMignonSide * 15;
+    additionalCost += sideOrders.lobsterTailSide * 15;
+
+    // Additional food options
+    additionalCost += additionalFood.additionalNoodles * 5;
+    additionalCost += additionalFood.whiteRice * 5;
+    additionalCost += additionalFood.friedRice * 5;
     
     return additionalCost;
   };
@@ -179,11 +192,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
       return;
     }
     
-    if (totalGuests < 10) {
-      toast.error("Total guest count must be at least 10");
-      return;
-    }
-    
     // Check if the booking meets the $600 minimum requirement
     const adultTotal = Number(adultCount) * 60;
     const childTotal = Number(childrenCount) * 30;
@@ -235,8 +243,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
       
       // Prepare selected appetizers
       const selectedAppetizers = Object.entries(appetizers)
-        .filter(([_, selected]) => selected)
-        .map(([appetizer, _]) => {
+        .filter(([_, quantity]) => quantity > 0)
+        .map(([appetizer, quantity]) => {
           switch(appetizer) {
             case 'gyoza': return 'Gyoza $10 (6pcs)';
             case 'edamame': return 'Edamame $5';
@@ -246,8 +254,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
       
       // Prepare selected side orders
       const selectedSideOrders = Object.entries(sideOrders)
-        .filter(([_, selected]) => selected)
-        .map(([side, _]) => {
+        .filter(([_, quantity]) => quantity > 0)
+        .map(([side, quantity]) => {
           switch(side) {
             case 'chickenSide': return 'Chicken (+$10)';
             case 'steakSide': return 'Steak (+$10)';
@@ -499,334 +507,330 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 relative">
           <div className="flex items-center justify-between mb-6">
-
+            <div className="flex items-center">
+              <img src="/logo.png" alt="Love Hibachi Logo" className="h-12 w-auto" />
+              <h2 className="text-2xl font-bold ml-4">Book Your Private Hibachi Experience</h2>
+            </div>
             <button 
-              onClick={() => setIsModalOpen(false)} 
+              onClick={() => setIsModalOpen(false)}
               className="text-gray-500 hover:text-gray-700"
             >
-              <X className="w-6 h-6" />
+              <X className="h-6 w-6" />
             </button>
           </div>
-          
-          {isBookingComplete ? (
-            <div className="text-center py-8">
-              <div className="flex justify-center mb-4">
-                <CheckCircle className="w-16 h-16 text-green-500" />
-              </div>
-              <h3 className="text-2xl font-bold mb-2">Booking Confirmed!</h3>
-              <p className="text-gray-600 mb-6">
-                Thank you for booking with 4 U Sake Hibachi Catering. We've sent a confirmation to your email.
-              </p>
-              <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 max-w-md mx-auto text-left">
-                <h4 className="font-bold mb-4 text-lg">Booking Details</h4>
-                <ul className="space-y-3">
-                  <li className="flex items-start">
-                    <CalendarIcon className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
-                    <div>
-                      <span className="font-medium block">Date</span>
-                      <span>{selectedDate ? format(selectedDate, 'EEEE, MMMM do, yyyy') : 'N/A'}</span>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <Clock className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
-                    <div>
-                      <span className="font-medium block">Time</span>
-                      <span>{startTime}</span>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <MapPin className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
-                    <div>
-                      <span className="font-medium block">Location</span>
-                      <span>{state} - {location}</span>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <Users className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
-                    <div>
-                      <span className="font-medium block">Package</span>
-                      <span>Adult Plan - {adultCount} adults, {childrenCount} children ({totalGuests} total)</span>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                      </svg>
-                    </div>
-                    <div>
-                      <span className="font-medium block">Total Price</span>
-                      <span className="text-lg font-semibold">${Number(adultCount) * 60 + Number(childrenCount) * 30 + additionalCosts}</span>
-                      <div className="text-xs text-gray-500 mt-1">
-                        Adults: ${Number(adultCount) * 60} (${60}/person) <br/>
-                        Children: ${Number(childrenCount) * 30} (${30}/person)
-                        {additionalCosts > 0 && (
-                          <><br/>Additional items: ${additionalCosts}</>
-                        )}
+
+          <form onSubmit={handleBooking} className="space-y-6">
+            {isBookingComplete ? (
+              <div className="text-center py-8">
+                <div className="flex justify-center mb-4">
+                  <CheckCircle className="w-16 h-16 text-green-500" />
+                </div>
+                <h3 className="text-2xl font-bold mb-2">Booking Confirmed!</h3>
+                <p className="text-gray-600 mb-6">
+                  Thank you for booking with 4 U Sake Hibachi Catering. We've sent a confirmation to your email.
+                </p>
+                <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 max-w-md mx-auto text-left">
+                  <h4 className="font-bold mb-4 text-lg">Booking Details</h4>
+                  <ul className="space-y-3">
+                    <li className="flex items-start">
+                      <CalendarIcon className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
+                      <div>
+                        <span className="font-medium block">Date</span>
+                        <span>{selectedDate ? format(selectedDate, 'EEEE, MMMM do, yyyy') : 'N/A'}</span>
                       </div>
-                    </div>
-                  </li>
-                  
-                  <li className="flex items-start">
-                    <div className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M15 11h.01M11 15h.01M16 16h.01M10 11h.01M13 13h.01"/>
-                        <path d="M4 7h3a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1Z"/>
-                        <path d="M17 5v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1Z"/>
-                        <path d="M4 17v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1Z"/>
-                        <path d="M17 17v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1Z"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <span className="font-medium block">Protein Choices</span>
-                      <span className="text-sm">
-                        {Object.entries(proteinQuantities)
-                          .filter(([_, quantity]) => quantity > 0)
-                          .map(([protein, quantity]) => {
-                            let proteinName;
-                            switch(protein) {
-                              case 'chicken': proteinName = 'Chicken'; break;
-                              case 'steak': proteinName = 'Steak'; break;
-                              case 'shrimp': proteinName = 'Shrimp'; break;
-                              case 'scallops': proteinName = 'Scallops'; break;
-                              case 'salmon': proteinName = 'Salmon'; break;
-                              case 'vegetable': proteinName = 'Vegetable'; break;
-                              case 'tofu': proteinName = 'Tofu'; break;
-                              case 'filetMignon': proteinName = 'Filet Mignon'; break;
-                              case 'lobsterTail': proteinName = 'Lobster Tail'; break;
-                              default: proteinName = '';
-                            }
-                            return `${quantity} ${proteinName}`;
-                          }).join(', ')}
-                      </span>
-                      <div className="text-xs text-gray-500 mt-1">
-                        Total: {Object.values(proteinQuantities).reduce((sum, count) => sum + count, 0)} proteins
-                        {(proteinQuantities.filetMignon > 0 || proteinQuantities.lobsterTail > 0) && (
-                          <div className="mt-1">
-                            {proteinQuantities.filetMignon > 0 && (
-                              <div>Filet Mignon: +${proteinQuantities.filetMignon * 5}</div>
-                            )}
-                            {proteinQuantities.lobsterTail > 0 && (
-                              <div>Lobster Tail: +${proteinQuantities.lobsterTail * 15}</div>
-                            )}
-                          </div>
-                        )}
+                    </li>
+                    <li className="flex items-start">
+                      <Clock className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
+                      <div>
+                        <span className="font-medium block">Time</span>
+                        <span>{startTime}</span>
                       </div>
-                    </div>
-                  </li>
-                  
-                  {Object.values(appetizers).some(v => v) && (
+                    </li>
+                    <li className="flex items-start">
+                      <MapPin className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
+                      <div>
+                        <span className="font-medium block">Location</span>
+                        <span>{state} - {location}</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <Users className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
+                      <div>
+                        <span className="font-medium block">Package</span>
+                        <span>Adult Plan - {adultCount} adults, {childrenCount} children ({totalGuests} total)</span>
+                      </div>
+                    </li>
                     <li className="flex items-start">
                       <div className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0 flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/>
-                          <path d="M7 2v20"/>
-                          <path d="M21 15V2"/>
-                          <path d="M18 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/>
-                          <path d="M18 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/>
+                          <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                         </svg>
                       </div>
                       <div>
-                        <span className="font-medium block">Appetizers</span>
+                        <span className="font-medium block">Total Price</span>
+                        <span className="text-lg font-semibold">${Number(adultCount) * 60 + Number(childrenCount) * 30 + additionalCosts}</span>
+                        <div className="text-xs text-gray-500 mt-1">
+                          Adults: ${Number(adultCount) * 60} (${60}/person) <br/>
+                          Children: ${Number(childrenCount) * 30} (${30}/person)
+                          {additionalCosts > 0 && (
+                            <><br/>Additional items: ${additionalCosts}</>
+                          )}
+                        </div>
+                      </div>
+                    </li>
+                    
+                    <li className="flex items-start">
+                      <div className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M15 11h.01M11 15h.01M16 16h.01M10 11h.01M13 13h.01"/>
+                          <path d="M4 7h3a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1Z"/>
+                          <path d="M17 5v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1Z"/>
+                          <path d="M4 17v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1Z"/>
+                          <path d="M17 17v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1Z"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <span className="font-medium block">Protein Choices</span>
                         <span className="text-sm">
-                          {Object.entries(appetizers)
-                            .filter(([_, selected]) => selected)
-                            .map(([appetizer, _]) => {
-                              switch(appetizer) {
-                                case 'gyoza': return 'Gyoza $10 (6pcs)';
-                                case 'edamame': return 'Edamame $5';
-                                default: return '';
+                          {Object.entries(proteinQuantities)
+                            .filter(([_, quantity]) => quantity > 0)
+                            .map(([protein, quantity]) => {
+                              let proteinName;
+                              switch(protein) {
+                                case 'chicken': proteinName = 'Chicken'; break;
+                                case 'steak': proteinName = 'Steak'; break;
+                                case 'shrimp': proteinName = 'Shrimp'; break;
+                                case 'scallops': proteinName = 'Scallops'; break;
+                                case 'salmon': proteinName = 'Salmon'; break;
+                                case 'vegetable': proteinName = 'Vegetable'; break;
+                                case 'tofu': proteinName = 'Tofu'; break;
+                                case 'filetMignon': proteinName = 'Filet Mignon'; break;
+                                case 'lobsterTail': proteinName = 'Lobster Tail'; break;
+                                default: proteinName = '';
                               }
+                              return `${quantity} ${proteinName}`;
                             }).join(', ')}
                         </span>
+                        <div className="text-xs text-gray-500 mt-1">
+                          Total: {Object.values(proteinQuantities).reduce((sum, count) => sum + count, 0)} proteins
+                          {(proteinQuantities.filetMignon > 0 || proteinQuantities.lobsterTail > 0) && (
+                            <div className="mt-1">
+                              {proteinQuantities.filetMignon > 0 && (
+                                <div>Filet Mignon: +${proteinQuantities.filetMignon * 5}</div>
+                              )}
+                              {proteinQuantities.lobsterTail > 0 && (
+                                <div>Lobster Tail: +${proteinQuantities.lobsterTail * 15}</div>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </li>
-                  )}
-                  
-                  {Object.values(sideOrders).some(v => v) && (
+                    
+                    {Object.values(appetizers).some(v => v > 0) && (
+                      <li className="flex items-start">
+                        <div className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0 flex items-center justify-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/>
+                            <path d="M7 2v20"/>
+                            <path d="M21 15V2"/>
+                            <path d="M18 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/>
+                            <path d="M18 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/>
+                          </svg>
+                        </div>
+                        <div>
+                          <span className="font-medium block">Appetizers</span>
+                          <span className="text-sm">
+                            {Object.entries(appetizers)
+                              .filter(([_, quantity]) => quantity > 0)
+                              .map(([appetizer, quantity]) => {
+                                switch(appetizer) {
+                                  case 'gyoza': return 'Gyoza $10 (6pcs)';
+                                  case 'edamame': return 'Edamame $5';
+                                  default: return '';
+                                }
+                              }).join(', ')}
+                          </span>
+                        </div>
+                      </li>
+                    )}
+                    
+                    {Object.values(sideOrders).some(v => v > 0) && (
+                      <li className="flex items-start">
+                        <div className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0 flex items-center justify-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/>
+                            <path d="M11 8h5a2 2 0 0 1 2 2v2"/>
+                            <path d="M19 15v6"/>
+                            <path d="M15 18h8"/>
+                          </svg>
+                        </div>
+                        <div>
+                          <span className="font-medium block">Side Orders</span>
+                          <span className="text-sm">
+                            {Object.entries(sideOrders)
+                              .filter(([_, quantity]) => quantity > 0)
+                              .map(([side, quantity]) => {
+                                switch(side) {
+                                  case 'chickenSide': return 'Chicken (+$10)';
+                                  case 'steakSide': return 'Steak (+$10)';
+                                  case 'shrimpSide': return 'Shrimp (+$10)';
+                                  case 'scallopsSide': return 'Scallops (+$10)';
+                                  case 'salmonSide': return 'Salmon (+$10)';
+                                  case 'vegetableSide': return 'Vegetable (+Tofu) (+$10)';
+                                  case 'noodles': return 'Noodles (+$4)';
+                                  case 'filetMignonSide': return 'Filet Mignon (+$15)';
+                                  case 'lobsterTailSide': return 'Lobster Tail (+$15)';
+                                  default: return '';
+                                }
+                              }).join(', ')}
+                          </span>
+                        </div>
+                      </li>
+                    )}
                     <li className="flex items-start">
-                      <div className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/>
-                          <path d="M11 8h5a2 2 0 0 1 2 2v2"/>
-                          <path d="M19 15v6"/>
-                          <path d="M15 18h8"/>
-                        </svg>
-                      </div>
+                      <Mail className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
                       <div>
-                        <span className="font-medium block">Side Orders</span>
-                        <span className="text-sm">
-                          {Object.entries(sideOrders)
-                            .filter(([_, selected]) => selected)
-                            .map(([side, _]) => {
-                              switch(side) {
-                                case 'chickenSide': return 'Chicken (+$10)';
-                                case 'steakSide': return 'Steak (+$10)';
-                                case 'shrimpSide': return 'Shrimp (+$10)';
-                                case 'scallopsSide': return 'Scallops (+$10)';
-                                case 'salmonSide': return 'Salmon (+$10)';
-                                case 'vegetableSide': return 'Vegetable (+Tofu) (+$10)';
-                                case 'noodles': return 'Noodles (+$4)';
-                                case 'filetMignonSide': return 'Filet Mignon (+$15)';
-                                case 'lobsterTailSide': return 'Lobster Tail (+$15)';
-                                default: return '';
-                              }
-                            }).join(', ')}
-                        </span>
+                        <span className="font-medium block">Contact</span>
+                        <span>{email}</span>
                       </div>
                     </li>
-                  )}
-                  <li className="flex items-start">
-                    <Mail className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
-                    <div>
-                      <span className="font-medium block">Contact</span>
-                      <span>{email}</span>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <Phone className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
-                    <div>
-                      <span className="font-medium block">Business Contact</span>
-                      <span>(929) 688-1138</span>
-                    </div>
-                  </li>
-                  {comments && (
                     <li className="flex items-start">
-                      <div className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                      </div>
+                      <Phone className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
                       <div>
-                        <span className="font-medium block">Special Requests/Comments</span>
-                        <span className="text-sm">{comments}</span>
+                        <span className="font-medium block">Business Contact</span>
+                        <span>(929) 688-1138</span>
                       </div>
                     </li>
-                  )}
-                </ul>
+                    {comments && (
+                      <li className="flex items-start">
+                        <div className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0 flex items-center justify-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                          </svg>
+                        </div>
+                        <div>
+                          <span className="font-medium block">Special Requests/Comments</span>
+                          <span className="text-sm">{comments}</span>
+                        </div>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+                <Button 
+                  onClick={() => window.location.reload()} 
+                  className="mt-6"
+                >
+                  Close
+                </Button>
               </div>
-              <Button 
-                onClick={() => window.location.reload()} 
-                className="mt-6"
-              >
-                Close
-              </Button>
-            </div>
-          ) : (
-            <>
-              <h2 className="text-3xl font-bold mb-4 text-left">Booking Details</h2>
-              <p className="text-gray-600 mb-2">
-                Select your preferred date and provide your details to complete your booking.
-              </p>
-              <div className="bg-gray-50 p-4 rounded-md border border-gray-200 mb-6 text-sm">
-                <h3 className="font-semibold mb-2 text-hibachi-red">What We Provide vs. What You Provide</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-start gap-4">
-                    <div>
-                      <p className="font-medium mb-1">We'll Bring:</p>
-                      <ul className="list-disc pl-5 space-y-1 text-gray-600">
-                        <li>Professional chef</li>
-                        <li>Cooking gear and setup</li>
-                        <li>All food ingredients</li>
-                        <li>Hibachi grill</li>
-                      </ul>
-                    </div>
-                    <div className="flex flex-col items-end">
-                      <div className="flex items-start gap-4">
-                        <div className="flex flex-col">
-                          <div className="bg-yellow-100 p-2 w-32 h-32 rounded-md shadow-md border border-yellow-200 flex items-center justify-center">
-                            <p className="text-yellow-800 font-medium italic text-sm text-center">"More Sake, More Happy. More Happy, More Sexy. More Sexy, More Baby!"</p>
-                          </div>
-                          <div className="mt-2 text-xs text-red-500">
-                            <p>We provide premium sake<br/>at no additional cost<br/>to enhance your dining<br/>experience!</p>
+            ) : (
+              <>
+                <h2 className="text-3xl font-bold mb-4 text-left">Booking Details</h2>
+                <p className="text-gray-600 mb-2">
+                  Select your preferred date and provide your details to complete your booking.
+                </p>
+                <div className="bg-gray-50 p-4 rounded-md border border-gray-200 mb-6 text-sm">
+                  <h3 className="font-semibold mb-2 text-hibachi-red">What We Provide vs. What You Provide</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex items-start gap-4">
+                      <div>
+                        <p className="font-medium mb-1">We'll Bring:</p>
+                        <ul className="list-disc pl-5 space-y-1 text-gray-600">
+                          <li>Professional chef</li>
+                          <li>Cooking gear and setup</li>
+                          <li>All food ingredients</li>
+                          <li>Hibachi grill</li>
+                        </ul>
+                      </div>
+                      <div className="flex flex-col items-end">
+                        <div className="flex items-start gap-4">
+                          <div className="flex flex-col">
+                            <div className="bg-yellow-100 p-2 w-32 h-32 rounded-md shadow-md border border-yellow-200 flex items-center justify-center">
+                              <p className="text-yellow-800 font-medium italic text-sm text-center">"More Sake, More Happy. More Happy, More Sexy. More Sexy, More Baby!"</p>
+                            </div>
+                            <div className="mt-2 text-xs text-red-500">
+                              <p>We provide premium sake<br/>at no additional cost<br/>to enhance your dining<br/>experience!</p>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div>
-                    <p className="font-medium mb-1">You'll Provide:</p>
-                    <ul className="list-disc pl-5 space-y-1 text-gray-600">
-                      <li>Tables and chairs</li>
-                      <li>Eating utensils, plates, and bowls</li>
-                      <li>Drinks for your guests</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="font-semibold mb-4 text-lg flex items-center">
-                    <CalendarIcon className="w-5 h-5 mr-2" /> Select Available Date
-                  </h3>
-                  <div className="border rounded-md p-4 bg-gray-50">
-                    <Calendar
-                      mode="single"
-                      selected={selectedDate}
-                      onSelect={setSelectedDate}
-                      disabled={(date) => 
-                        date < new Date() // Only disable past dates
-                      }
-                      initialFocus
-                      className="p-3 pointer-events-auto"
-                    />
-                    <div className="mt-4 space-y-2">
-      
-
-
-
-
-       
-                      <p className="text-xs text-gray-500">Note: Each booking reserves a 2-hour time slot.</p>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-6">
-                    <h3 className="font-semibold mb-4 text-lg flex items-center">
-                      <Clock className="w-5 h-5 mr-2" /> Select Time
-                    </h3>
-                    <div className="border rounded-md p-4 bg-gray-50 space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Start Time *</label>
-                        <Select
-                          value={startTime}
-                          onValueChange={(value) => {
-                            setStartTime(value);
-                          }}
-                        >
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select start time (9am-11pm)" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {HOURS.flatMap((hour) => 
-                              MINUTES.map((minute) => {
-                                const timeSlot = `${hour}:${minute}`;
-                                const isBooked = isTimeSlotBooked(timeSlot);
-                                
-                                return (
-                                  <SelectItem 
-                                    key={timeSlot} 
-                                    value={timeSlot}
-                                    disabled={isBooked}
-                                    className={isBooked ? "opacity-50 bg-gray-100" : ""}
-                                  >
-                                    {hour}:{minute === '0' ? '00' : minute}
-                                  </SelectItem>
-                                );
-                              })
-                            )}
-                          </SelectContent>
-                        </Select>
-                      </div>
-
+                    <div>
+                      <p className="font-medium mb-1">You'll Provide:</p>
+                      <ul className="list-disc pl-5 space-y-1 text-gray-600">
+                        <li>Tables and chairs</li>
+                        <li>Eating utensils, plates, and bowls</li>
+                        <li>Drinks for your guests</li>
+                      </ul>
                     </div>
                   </div>
                 </div>
                 
-                <div>
-                  <h3 className="font-semibold mb-4 text-lg">Complete Your Booking</h3>
-                  <form onSubmit={handleBooking}>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div>
+                    <h3 className="font-semibold mb-4 text-lg flex items-center">
+                      <CalendarIcon className="w-5 h-5 mr-2" /> Select Available Date
+                    </h3>
+                    <div className="border rounded-md p-4 bg-gray-50">
+                      <Calendar
+                        mode="single"
+                        selected={selectedDate}
+                        onSelect={setSelectedDate}
+                        disabled={(date) => 
+                          date < new Date() // Only disable past dates
+                        }
+                        initialFocus
+                        className="p-3 pointer-events-auto"
+                      />
+                      <div className="mt-4 space-y-2">
+                        <p className="text-xs text-gray-500">Note: Each booking reserves a 2-hour time slot.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-6">
+                      <h3 className="font-semibold mb-4 text-lg flex items-center">
+                        <Clock className="w-5 h-5 mr-2" /> Select Time
+                      </h3>
+                      <div className="border rounded-md p-4 bg-gray-50 space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Start Time *</label>
+                          <Select
+                            value={startTime}
+                            onValueChange={(value) => {
+                              setStartTime(value);
+                            }}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select start time (9am-11pm)" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {HOURS.flatMap((hour) => 
+                                MINUTES.map((minute) => {
+                                  const timeSlot = `${hour}:${minute}`;
+                                  const isBooked = isTimeSlotBooked(timeSlot);
+                                  
+                                  return (
+                                    <SelectItem 
+                                      key={timeSlot} 
+                                      value={timeSlot}
+                                      disabled={isBooked}
+                                      className={isBooked ? "opacity-50 bg-gray-100" : ""}
+                                    >
+                                      {hour}:{minute === '0' ? '00' : minute}
+                                    </SelectItem>
+                                  );
+                                })
+                              )}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h3 className="font-semibold mb-4 text-lg">Complete Your Booking</h3>
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">State *</label>
@@ -863,8 +867,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                         <p className="text-xs text-gray-500 mt-1">We can cook inside or outside, including in parks or by the sea</p>
                       </div>
                       
-
-                      
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label htmlFor="adultCount" className="block text-sm font-medium text-gray-700 mb-1">Number of Adults *</label>
@@ -892,7 +894,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                       </div>
                       
                       <div className="bg-yellow-50 p-4 rounded-md border border-yellow-200 text-sm text-yellow-800">
-                        <p>Total guests: <strong>{totalGuests}</strong> (Minimum 10 guests required)</p>
+                        <p>Total guests: <strong>{totalGuests}</strong></p>
                         <div className="mt-2 flex items-center">
                           <span className="mr-2">Total Price:</span>
                           <span className="text-xl font-bold">${Number(adultCount) * 60 + Number(childrenCount) * 30 + additionalCosts}</span>
@@ -905,7 +907,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                             <p>Additional items: ${additionalCosts}</p>
                           )}
                         </div>
-
                       </div>
                       
                       <div className="pt-4 border-t">
@@ -1217,22 +1218,96 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                                   </div>
                                 </div>
                                 
-                                {/* Total protein count */}
-                                <div className="mt-2 p-3 bg-gray-50 rounded-md border border-gray-200">
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-sm font-medium">Total Protein Count:</span>
-                                    <span className={`text-sm font-bold ${Object.values(proteinQuantities).reduce((sum, count) => sum + count, 0) > totalGuests * 2 ? 'text-red-500' : ''}`}>
-                                      {Object.values(proteinQuantities).reduce((sum, count) => sum + count, 0)} / {totalGuests * 2}
-                                    </span>
-                                  </div>
-                                  <div className="text-xs text-gray-500 mt-1">
-                                    Required: Exactly 2 proteins per person ({totalGuests * 2} total)
-                                  </div>
-                                  {Object.values(proteinQuantities).reduce((sum, count) => sum + count, 0) > totalGuests * 2 && (
-                                    <div className="text-xs text-red-500 mt-1">
-                                      You've selected too many proteins. Please reduce your selection.
+                                {/* Additional food options */}
+                                <div className="mt-2">
+                                  <div className="text-sm font-medium text-gray-700 mb-2">Additional Food Options:</div>
+                                  <div className="grid grid-cols-2 gap-3">
+                                    <div className="flex items-center justify-between border rounded-md p-2">
+                                      <span className="text-sm">Additional Noodles<br/><span className="text-xs text-gray-500">(+$5 per person)</span></span>
+                                      <div className="flex items-center">
+                                        <button 
+                                          type="button"
+                                          className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-l-md"
+                                          onClick={() => setAdditionalFood(prev => ({
+                                            ...prev, 
+                                            additionalNoodles: Math.max(0, prev.additionalNoodles - 1)
+                                          }))}
+                                        >-</button>
+                                        <span className="w-8 text-center">{additionalFood.additionalNoodles}</span>
+                                        <button 
+                                          type="button"
+                                          className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-r-md"
+                                          onClick={() => setAdditionalFood(prev => ({
+                                            ...prev, 
+                                            additionalNoodles: prev.additionalNoodles + 1
+                                          }))}
+                                        >+</button>
+                                      </div>
                                     </div>
-                                  )}
+                                    
+                                    <div className="flex items-center justify-between border rounded-md p-2">
+                                      <span className="text-sm">White Rice<br/><span className="text-xs text-gray-500">(+$5 per person)</span></span>
+                                      <div className="flex items-center">
+                                        <button 
+                                          type="button"
+                                          className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-l-md"
+                                          onClick={() => setAdditionalFood(prev => ({
+                                            ...prev, 
+                                            whiteRice: Math.max(0, prev.whiteRice - 1)
+                                          }))}
+                                        >-</button>
+                                        <span className="w-8 text-center">{additionalFood.whiteRice}</span>
+                                        <button 
+                                          type="button"
+                                          className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-r-md"
+                                          onClick={() => setAdditionalFood(prev => ({
+                                            ...prev, 
+                                            whiteRice: prev.whiteRice + 1
+                                          }))}
+                                        >+</button>
+                                      </div>
+                                    </div>
+
+                                    <div className="flex items-center justify-between border rounded-md p-2">
+                                      <span className="text-sm">Fried Rice<br/><span className="text-xs text-gray-500">(+$5 per person)</span></span>
+                                      <div className="flex items-center">
+                                        <button 
+                                          type="button"
+                                          className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-l-md"
+                                          onClick={() => setAdditionalFood(prev => ({
+                                            ...prev, 
+                                            friedRice: Math.max(0, prev.friedRice - 1)
+                                          }))}
+                                        >-</button>
+                                        <span className="w-8 text-center">{additionalFood.friedRice}</span>
+                                        <button 
+                                          type="button"
+                                          className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-r-md"
+                                          onClick={() => setAdditionalFood(prev => ({
+                                            ...prev, 
+                                            friedRice: prev.friedRice + 1
+                                          }))}
+                                        >+</button>
+                                      </div>
+                                    </div>
+
+                                    <div className="flex items-center justify-between border rounded-md p-2 opacity-50">
+                                      <span className="text-sm">Sushi<br/><span className="text-xs text-gray-500">(Stay Tuned!)</span></span>
+                                      <div className="flex items-center">
+                                        <button 
+                                          type="button"
+                                          className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-l-md"
+                                          disabled
+                                        >-</button>
+                                        <span className="w-8 text-center">0</span>
+                                        <button 
+                                          type="button"
+                                          className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-r-md"
+                                          disabled
+                                        >+</button>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -1240,151 +1315,387 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                           
                           <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-2">Appetizers</label>
-                            <div className="grid grid-cols-2 gap-2">
-                              <label className="flex items-center space-x-2 text-sm">
-                                <input 
-                                  type="checkbox" 
-                                  checked={appetizers.gyoza}
-                                  onChange={(e) => setAppetizers({...appetizers, gyoza: e.target.checked})}
-                                  className="rounded text-hibachi-red focus:ring-hibachi-red"
-                                />
-                                <span>Gyoza $10 (6pcs)</span>
-                              </label>
-                              <label className="flex items-center space-x-2 text-sm">
-                                <input 
-                                  type="checkbox" 
-                                  checked={appetizers.edamame}
-                                  onChange={(e) => setAppetizers({...appetizers, edamame: e.target.checked})}
-                                  className="rounded text-hibachi-red focus:ring-hibachi-red"
-                                />
-                                <span>Edamame $5</span>
-                              </label>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="flex items-center justify-between border rounded-md p-2">
+                                <span className="text-sm">Gyoza<br/><span className="text-xs text-gray-500">($10 per order)</span></span>
+                                <div className="flex items-center">
+                                  <button 
+                                    type="button"
+                                    className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-l-md"
+                                    onClick={() => setAppetizers(prev => ({
+                                      ...prev, 
+                                      gyoza: Math.max(0, prev.gyoza - 1)
+                                    }))}
+                                  >-</button>
+                                  <span className="w-8 text-center">{appetizers.gyoza}</span>
+                                  <button 
+                                    type="button"
+                                    className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-r-md"
+                                    onClick={() => setAppetizers(prev => ({
+                                      ...prev, 
+                                      gyoza: prev.gyoza + 1
+                                    }))}
+                                  >+</button>
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-between border rounded-md p-2">
+                                <span className="text-sm">Edamame<br/><span className="text-xs text-gray-500">($5 per order)</span></span>
+                                <div className="flex items-center">
+                                  <button 
+                                    type="button"
+                                    className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-l-md"
+                                    onClick={() => setAppetizers(prev => ({
+                                      ...prev, 
+                                      edamame: Math.max(0, prev.edamame - 1)
+                                    }))}
+                                  >-</button>
+                                  <span className="w-8 text-center">{appetizers.edamame}</span>
+                                  <button 
+                                    type="button"
+                                    className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-r-md"
+                                    onClick={() => setAppetizers(prev => ({
+                                      ...prev, 
+                                      edamame: prev.edamame + 1
+                                    }))}
+                                  >+</button>
+                                </div>
+                              </div>
                             </div>
                           </div>
                           
                           <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-2">Side Orders</label>
-                            <div className="grid grid-cols-2 gap-2">
-                              <label className="flex items-center space-x-2 text-sm">
-                                <input 
-                                  type="checkbox" 
-                                  checked={sideOrders.chickenSide}
-                                  onChange={(e) => setSideOrders({...sideOrders, chickenSide: e.target.checked})}
-                                  className="rounded text-hibachi-red focus:ring-hibachi-red"
-                                />
-                                <span>Chicken (+$10)</span>
-                              </label>
-                              <label className="flex items-center space-x-2 text-sm">
-                                <input 
-                                  type="checkbox" 
-                                  checked={sideOrders.steakSide}
-                                  onChange={(e) => setSideOrders({...sideOrders, steakSide: e.target.checked})}
-                                  className="rounded text-hibachi-red focus:ring-hibachi-red"
-                                />
-                                <span>Steak (+$10)</span>
-                              </label>
-                              <label className="flex items-center space-x-2 text-sm">
-                                <input 
-                                  type="checkbox" 
-                                  checked={sideOrders.shrimpSide}
-                                  onChange={(e) => setSideOrders({...sideOrders, shrimpSide: e.target.checked})}
-                                  className="rounded text-hibachi-red focus:ring-hibachi-red"
-                                />
-                                <span>Shrimp (+$10)</span>
-                              </label>
-                              <label className="flex items-center space-x-2 text-sm">
-                                <input 
-                                  type="checkbox" 
-                                  checked={sideOrders.scallopsSide}
-                                  onChange={(e) => setSideOrders({...sideOrders, scallopsSide: e.target.checked})}
-                                  className="rounded text-hibachi-red focus:ring-hibachi-red"
-                                />
-                                <span>Scallops (+$10)</span>
-                              </label>
-                              <label className="flex items-center space-x-2 text-sm">
-                                <input 
-                                  type="checkbox" 
-                                  checked={sideOrders.salmonSide}
-                                  onChange={(e) => setSideOrders({...sideOrders, salmonSide: e.target.checked})}
-                                  className="rounded text-hibachi-red focus:ring-hibachi-red"
-                                />
-                                <span>Salmon (+$10)</span>
-                              </label>
-                              <label className="flex items-center space-x-2 text-sm">
-                                <input 
-                                  type="checkbox" 
-                                  checked={sideOrders.vegetableSide}
-                                  onChange={(e) => setSideOrders({...sideOrders, vegetableSide: e.target.checked})}
-                                  className="rounded text-hibachi-red focus:ring-hibachi-red"
-                                />
-                                <span>Vegetable (+Tofu) (+$10)</span>
-                              </label>
-                              <label className="flex items-center space-x-2 text-sm">
-                                <input 
-                                  type="checkbox" 
-                                  checked={sideOrders.noodles}
-                                  onChange={(e) => setSideOrders({...sideOrders, noodles: e.target.checked})}
-                                  className="rounded text-hibachi-red focus:ring-hibachi-red"
-                                />
-                                <span>Noodles (+$4)</span>
-                              </label>
-                              <label className="flex items-center space-x-2 text-sm">
-                                <input 
-                                  type="checkbox" 
-                                  checked={sideOrders.filetMignonSide}
-                                  onChange={(e) => setSideOrders({...sideOrders, filetMignonSide: e.target.checked})}
-                                  className="rounded text-hibachi-red focus:ring-hibachi-red"
-                                />
-                                <span>Filet Mignon (+$15)</span>
-                              </label>
-                              <label className="flex items-center space-x-2 text-sm">
-                                <input 
-                                  type="checkbox" 
-                                  checked={sideOrders.lobsterTailSide}
-                                  onChange={(e) => setSideOrders({...sideOrders, lobsterTailSide: e.target.checked})}
-                                  className="rounded text-hibachi-red focus:ring-hibachi-red"
-                                />
-                                <span>Lobster Tail (+$15)</span>
-                              </label>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="flex items-center justify-between border rounded-md p-2">
+                                <span className="text-sm">Chicken<br/><span className="text-xs text-gray-500">($10 per order)</span></span>
+                                <div className="flex items-center">
+                                  <button 
+                                    type="button"
+                                    className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-l-md"
+                                    onClick={() => setSideOrders(prev => ({
+                                      ...prev, 
+                                      chickenSide: Math.max(0, prev.chickenSide - 1)
+                                    }))}
+                                  >-</button>
+                                  <span className="w-8 text-center">{sideOrders.chickenSide}</span>
+                                  <button 
+                                    type="button"
+                                    className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-r-md"
+                                    onClick={() => setSideOrders(prev => ({
+                                      ...prev, 
+                                      chickenSide: prev.chickenSide + 1
+                                    }))}
+                                  >+</button>
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-between border rounded-md p-2">
+                                <span className="text-sm">Steak<br/><span className="text-xs text-gray-500">($10 per order)</span></span>
+                                <div className="flex items-center">
+                                  <button 
+                                    type="button"
+                                    className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-l-md"
+                                    onClick={() => setSideOrders(prev => ({
+                                      ...prev, 
+                                      steakSide: Math.max(0, prev.steakSide - 1)
+                                    }))}
+                                  >-</button>
+                                  <span className="w-8 text-center">{sideOrders.steakSide}</span>
+                                  <button 
+                                    type="button"
+                                    className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-r-md"
+                                    onClick={() => setSideOrders(prev => ({
+                                      ...prev, 
+                                      steakSide: prev.steakSide + 1
+                                    }))}
+                                  >+</button>
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-between border rounded-md p-2">
+                                <span className="text-sm">Shrimp<br/><span className="text-xs text-gray-500">($10 per order)</span></span>
+                                <div className="flex items-center">
+                                  <button 
+                                    type="button"
+                                    className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-l-md"
+                                    onClick={() => setSideOrders(prev => ({
+                                      ...prev, 
+                                      shrimpSide: Math.max(0, prev.shrimpSide - 1)
+                                    }))}
+                                  >-</button>
+                                  <span className="w-8 text-center">{sideOrders.shrimpSide}</span>
+                                  <button 
+                                    type="button"
+                                    className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-r-md"
+                                    onClick={() => setSideOrders(prev => ({
+                                      ...prev, 
+                                      shrimpSide: prev.shrimpSide + 1
+                                    }))}
+                                  >+</button>
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-between border rounded-md p-2">
+                                <span className="text-sm">Scallops<br/><span className="text-xs text-gray-500">($10 per order)</span></span>
+                                <div className="flex items-center">
+                                  <button 
+                                    type="button"
+                                    className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-l-md"
+                                    onClick={() => setSideOrders(prev => ({
+                                      ...prev, 
+                                      scallopsSide: Math.max(0, prev.scallopsSide - 1)
+                                    }))}
+                                  >-</button>
+                                  <span className="w-8 text-center">{sideOrders.scallopsSide}</span>
+                                  <button 
+                                    type="button"
+                                    className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-r-md"
+                                    onClick={() => setSideOrders(prev => ({
+                                      ...prev, 
+                                      scallopsSide: prev.scallopsSide + 1
+                                    }))}
+                                  >+</button>
+                                </div>
+                              </div>
                             </div>
                           </div>
                           
-                          {additionalCosts > 0 && (
-                            <div className="bg-yellow-50 p-3 rounded-md border border-yellow-200 text-sm text-yellow-800 mb-4">
-                              <p className="font-medium">Additional Cost: ${additionalCosts}</p>
-                              <p className="text-xs text-gray-600 mt-1">These selections will be added to your total price</p>
-                            </div>
-                          )}
-                        </div>
-                        
-                        <div className="mt-4">
-                          <label htmlFor="comments" className="block text-sm font-medium text-gray-700 mb-1">Special Requests or Comments</label>
-                          <textarea
-                            id="comments"
-                            value={comments}
-                            onChange={(e) => setComments(e.target.value)}
-                            placeholder="Special requests, food allergies, or any other comments"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-hibachi-red min-h-[100px] text-sm"
-                          />
-                          <p className="text-xs text-gray-500 mt-1">Let us know about any food allergies or dietary restrictions</p>
+                          <div className="mt-4">
+                            <label htmlFor="comments" className="block text-sm font-medium text-gray-700 mb-1">Special Requests or Comments</label>
+                            <textarea
+                              id="comments"
+                              value={comments}
+                              onChange={(e) => setComments(e.target.value)}
+                              placeholder="Special requests, food allergies, or any other comments"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-hibachi-red min-h-[100px] text-sm"
+                            />
+                            <p className="text-xs text-gray-500 mt-1">Let us know about any food allergies or dietary restrictions</p>
+                          </div>
                         </div>
                       </div>
+                      
+                      <div className="mt-6">
+                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
+                          <h4 className="font-semibold mb-3 text-lg">Booking Summary</h4>
+                          <div className="space-y-4">
+                            {/* Booking Details */}
+                            <div className="space-y-2">
+                              <h5 className="font-medium text-gray-700">Event Details</h5>
+                              <div className="flex justify-between">
+                                <span>Date</span>
+                                <span>{selectedDate ? format(selectedDate, 'EEEE, MMMM do, yyyy') : 'Not selected'}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Time</span>
+                                <span>{startTime || 'Not selected'}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Location</span>
+                                <span className="text-right">{state && location ? `${state} - ${location}` : 'Not selected'}</span>
+                              </div>
+                            </div>
+
+                            {/* Contact Information */}
+                            <div className="space-y-2">
+                              <h5 className="font-medium text-gray-700">Contact Information</h5>
+                              <div className="flex justify-between">
+                                <span>Name</span>
+                                <span>{name || 'Not provided'}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Email</span>
+                                <span>{email || 'Not provided'}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Phone</span>
+                                <span>{phone || 'Not provided'}</span>
+                              </div>
+                            </div>
+
+                            {/* Order Details */}
+                            <div className="space-y-2">
+                              <h5 className="font-medium text-gray-700">Order Details</h5>
+                              <div className="flex justify-between">
+                                <span>Base Package ({totalGuests} guests)</span>
+                                <span>${Number(adultCount) * 60 + Number(childrenCount) * 30}</span>
+                              </div>
+
+                              {/* Proteins */}
+                              {Object.entries(proteinQuantities).map(([protein, quantity]) => {
+                                if (quantity > 0) {
+                                  let price = 0;
+                                  let name = '';
+                                  switch(protein) {
+                                    case 'chicken':
+                                      name = 'Chicken';
+                                      break;
+                                    case 'steak':
+                                      name = 'Steak';
+                                      break;
+                                    case 'shrimp':
+                                      name = 'Shrimp';
+                                      break;
+                                    case 'scallops':
+                                      name = 'Scallops';
+                                      break;
+                                    case 'salmon':
+                                      name = 'Salmon';
+                                      break;
+                                    case 'vegetable':
+                                      name = 'Vegetable';
+                                      break;
+                                    case 'tofu':
+                                      name = 'Tofu';
+                                      break;
+                                    case 'filetMignon':
+                                      price = 5;
+                                      name = 'Filet Mignon';
+                                      break;
+                                    case 'lobsterTail':
+                                      price = 15;
+                                      name = 'Lobster Tail';
+                                      break;
+                                    default:
+                                      return null;
+                                  }
+                                  return (
+                                    <div key={protein} className="flex justify-between">
+                                      <span>{quantity}x {name}</span>
+                                      {price > 0 ? <span>+${quantity * price}</span> : <span>Included</span>}
+                                    </div>
+                                  );
+                                }
+                                return null;
+                              })}
+
+                              {/* Appetizers */}
+                              {Object.entries(appetizers).map(([appetizer, quantity]) => {
+                                if (quantity > 0) {
+                                  let price = 0;
+                                  let name = '';
+                                  switch(appetizer) {
+                                    case 'gyoza':
+                                      price = 10;
+                                      name = 'Gyoza';
+                                      break;
+                                    case 'edamame':
+                                      price = 5;
+                                      name = 'Edamame';
+                                      break;
+                                  }
+                                  return (
+                                    <div key={appetizer} className="flex justify-between">
+                                      <span>{quantity}x {name}</span>
+                                      <span>+${quantity * price}</span>
+                                    </div>
+                                  );
+                                }
+                                return null;
+                              })}
+
+                              {/* Side Orders */}
+                              {Object.entries(sideOrders).map(([side, quantity]) => {
+                                if (quantity > 0) {
+                                  let price = 0;
+                                  let name = '';
+                                  switch(side) {
+                                    case 'chickenSide':
+                                      price = 10;
+                                      name = 'Chicken Side';
+                                      break;
+                                    case 'steakSide':
+                                      price = 10;
+                                      name = 'Steak Side';
+                                      break;
+                                    case 'shrimpSide':
+                                      price = 10;
+                                      name = 'Shrimp Side';
+                                      break;
+                                    case 'scallopsSide':
+                                      price = 10;
+                                      name = 'Scallops Side';
+                                      break;
+                                    case 'salmonSide':
+                                      price = 10;
+                                      name = 'Salmon Side';
+                                      break;
+                                    case 'vegetableSide':
+                                      price = 10;
+                                      name = 'Vegetable Side';
+                                      break;
+                                    case 'noodles':
+                                      price = 4;
+                                      name = 'Noodles';
+                                      break;
+                                    case 'filetMignonSide':
+                                      price = 15;
+                                      name = 'Filet Mignon Side';
+                                      break;
+                                    case 'lobsterTailSide':
+                                      price = 15;
+                                      name = 'Lobster Tail Side';
+                                      break;
+                                  }
+                                  return (
+                                    <div key={side} className="flex justify-between">
+                                      <span>{quantity}x {name}</span>
+                                      <span>+${quantity * price}</span>
+                                    </div>
+                                  );
+                                }
+                                return null;
+                              })}
+
+                              {/* Additional Food */}
+                              {Object.entries(additionalFood).map(([food, quantity]) => {
+                                if (quantity > 0) {
+                                  let price = 0;
+                                  let name = '';
+                                  switch(food) {
+                                    case 'additionalNoodles':
+                                      price = 5;
+                                      name = 'Additional Noodles';
+                                      break;
+                                    case 'whiteRice':
+                                      price = 5;
+                                      name = 'White Rice';
+                                      break;
+                                    case 'friedRice':
+                                      price = 5;
+                                      name = 'Fried Rice';
+                                      break;
+                                  }
+                                  return (
+                                    <div key={food} className="flex justify-between">
+                                      <span>{quantity}x {name}</span>
+                                      <span>+${quantity * price}</span>
+                                    </div>
+                                  );
+                                }
+                                return null;
+                              })}
+
+                              <div className="border-t border-gray-200 pt-2 mt-2">
+                                <div className="flex justify-between font-semibold">
+                                  <span>Total Amount</span>
+                                  <span>${Number(adultCount) * 60 + Number(childrenCount) * 30 + additionalCosts}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <Button 
+                          type="submit" 
+                          disabled={!selectedDate || !startTime || (Number(adultCount) * 60 + Number(childrenCount) * 30 + additionalCosts) < 600 || isLoading}
+                          className="w-full bg-hibachi-red hover:bg-hibachi-red/90 text-white"
+                        >
+                          {isLoading ? 'Processing...' : 'Complete Booking'}
+                        </Button>
+                      </div>
                     </div>
-                    
-                    <div className="mt-6">
-                      <Button 
-                        type="submit" 
-                        disabled={!selectedDate || !startTime || totalGuests < 10 || (Number(adultCount) * 60 + Number(childrenCount) * 30 + additionalCosts) < 500 || isLoading}
-                        className="w-full bg-hibachi-red hover:bg-hibachi-red/90 text-white"
-                      >
-                        {isLoading ? 'Processing...' : 'Complete Booking'}
-                      </Button>
-                    </div>
-                  </form>
+                  </div>
                 </div>
-              </div>
-            </>
-          )}
+              </>
+            )}
+          </form>
         </div>
       </div>
     </div>
