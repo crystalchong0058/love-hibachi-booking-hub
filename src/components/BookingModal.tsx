@@ -90,7 +90,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     additionalNoodles: 0,
     whiteRice: 0,
     friedRice: 0,
-    sushi: 0
+    sushi: 0,
+    sashimi: 0
   });
   
   // Get booked time slots from localStorage
@@ -129,6 +130,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     additionalCost += additionalFood.additionalNoodles * 5;
     additionalCost += additionalFood.whiteRice * 5;
     additionalCost += additionalFood.friedRice * 5;
+    additionalCost += additionalFood.sushi * 15;
+    additionalCost += additionalFood.sashimi * 20;
     
     return additionalCost;
   };
@@ -1223,7 +1226,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                                   <div className="text-sm font-medium text-gray-700 mb-2">Additional Food Options:</div>
                                   <div className="grid grid-cols-2 gap-3">
                                     <div className="flex items-center justify-between border rounded-md p-2">
-                                      <span className="text-sm">Additional Noodles<br/><span className="text-xs text-gray-500">(+$5 per person)</span></span>
+                                      <span className="text-sm">Extra Noodles<br/><span className="text-xs text-gray-500">(+$5 per person)</span></span>
                                       <div className="flex items-center">
                                         <button 
                                           type="button"
@@ -1246,7 +1249,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                                     </div>
                                     
                                     <div className="flex items-center justify-between border rounded-md p-2">
-                                      <span className="text-sm">White Rice<br/><span className="text-xs text-gray-500">(+$5 per person)</span></span>
+                                      <span className="text-sm">Extra White Rice<br/><span className="text-xs text-gray-500">(+$5)</span></span>
                                       <div className="flex items-center">
                                         <button 
                                           type="button"
@@ -1269,7 +1272,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                                     </div>
 
                                     <div className="flex items-center justify-between border rounded-md p-2">
-                                      <span className="text-sm">Fried Rice<br/><span className="text-xs text-gray-500">(+$5 per person)</span></span>
+                                      <span className="text-sm">Extra Fried Rice<br/><span className="text-xs text-gray-500">(+$5)</span></span>
                                       <div className="flex items-center">
                                         <button 
                                           type="button"
@@ -1291,19 +1294,48 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                                       </div>
                                     </div>
 
-                                    <div className="flex items-center justify-between border rounded-md p-2 opacity-50">
-                                      <span className="text-sm">Sushi<br/><span className="text-xs text-gray-500">(Stay Tuned!)</span></span>
+                                    <div className="flex items-center justify-between border rounded-md p-2">
+                                      <span className="text-sm">Sushi<br/><span className="text-xs text-gray-500">(+$15 per person)</span></span>
                                       <div className="flex items-center">
                                         <button 
                                           type="button"
                                           className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-l-md"
-                                          disabled
+                                          onClick={() => setAdditionalFood(prev => ({
+                                            ...prev, 
+                                            sushi: Math.max(0, prev.sushi - 1)
+                                          }))}
                                         >-</button>
-                                        <span className="w-8 text-center">0</span>
+                                        <span className="w-8 text-center">{additionalFood.sushi}</span>
                                         <button 
                                           type="button"
                                           className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-r-md"
-                                          disabled
+                                          onClick={() => setAdditionalFood(prev => ({
+                                            ...prev, 
+                                            sushi: prev.sushi + 1
+                                          }))}
+                                        >+</button>
+                                      </div>
+                                    </div>
+
+                                    <div className="flex items-center justify-between border rounded-md p-2">
+                                      <span className="text-sm">Sashimi<br/><span className="text-xs text-gray-500">(+$20 per person)</span></span>
+                                      <div className="flex items-center">
+                                        <button 
+                                          type="button"
+                                          className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-l-md"
+                                          onClick={() => setAdditionalFood(prev => ({
+                                            ...prev, 
+                                            sashimi: Math.max(0, prev.sashimi - 1)
+                                          }))}
+                                        >-</button>
+                                        <span className="w-8 text-center">{additionalFood.sashimi}</span>
+                                        <button 
+                                          type="button"
+                                          className="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-r-md"
+                                          onClick={() => setAdditionalFood(prev => ({
+                                            ...prev, 
+                                            sashimi: prev.sashimi + 1
+                                          }))}
                                         >+</button>
                                       </div>
                                     </div>
@@ -1660,6 +1692,14 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                                     case 'friedRice':
                                       price = 5;
                                       name = 'Fried Rice';
+                                      break;
+                                    case 'sushi':
+                                      price = 15;
+                                      name = 'Sushi';
+                                      break;
+                                    case 'sashimi':
+                                      price = 20;
+                                      name = 'Sashimi';
                                       break;
                                   }
                                   return (

@@ -41,7 +41,7 @@ const FAQ = () => {
             question="What areas do you serve?"
             answer={
               <p>
-                We proudly serve the entire East Coast, including but not limited to Washington DC, Maryland, Virginia, Delaware, Pennsylvania, New Jersey, and New York.
+                We proudly serve all states on the East Coast and West Coast.
               </p>
             }
           />
@@ -94,7 +94,7 @@ const FAQ = () => {
             question="What is the minimum and maximum group size?"
             answer={
               <p>
-                Our standard services accommodate groups from 10+ people per chef. Our minimum is 10 guests.
+                There is no minimum or maximum group size. The minimum price of our hibachi catering is $600.
                 Please contact us for custom arrangements for very large events.
               </p>
             }
