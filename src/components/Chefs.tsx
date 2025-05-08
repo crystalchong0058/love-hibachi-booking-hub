@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Star, MapPin } from 'lucide-react';
 
@@ -15,10 +14,18 @@ const ChefCard = ({ chef }: { chef: Chef }) => {
   return (
     <div className="chef-card grid md:grid-cols-2 gap-6 items-center">
       <div className="aspect-square relative overflow-hidden rounded-lg">
-        <img 
-          src={chef.image} 
-          alt={chef.name} 
+        <video 
+          src="/images/moments/profilepic/profile.mp4" 
+          autoPlay
+          loop
+          muted
+          playsInline
           className="w-full h-full object-cover"
+          onError={(e) => {
+            console.error('Error loading video:', e);
+            const videoElement = e.target as HTMLVideoElement;
+            videoElement.style.display = 'none';
+          }}
         />
         <div className="absolute top-4 right-4 bg-hibachi-red text-white text-xs font-medium py-1 px-2 rounded">
           Master Chef
@@ -67,10 +74,10 @@ const ChefCard = ({ chef }: { chef: Chef }) => {
 const Chefs = () => {
   const chef: Chef = {
     name: "Chef Jason",
-    image: "/images/moments/profilepic/profile.jpg",
+    image: "/images/moments/profilepic/profile.mp4",
     location: "East Coast Region",
     rating: 5,
-    experience: "Master Hibachi Chef with years of culinary excellence and entertainment",
+    experience: "Master Hibachi Chef with years of culinary excellence and dedication to customer satisfaction makes her a favorite among our clients.",
     specialties: ["Steak Mastery", "Seafood Artistry", "Interactive Cooking Performance"]
   };
 
