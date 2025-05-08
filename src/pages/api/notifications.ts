@@ -49,8 +49,8 @@ export default async function handler(
       - Package: ${bookingData.plan} Plan
       - Guests: ${bookingData.adultCount} adults, ${bookingData.childrenCount} children (${bookingData.totalGuests} total)
       - Customer Contact: ${bookingData.email} (${bookingData.phone})
+      If you need to make any changes to your booking, please contact us at (929) 688-1138 or (718)666-7955.
 
-      If you need to make any changes to your booking, please contact us at (929) 688-1138.
 
       We look forward to serving you!
 

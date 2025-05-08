@@ -96,7 +96,7 @@ const Hero = () => {
         <div className="flex flex-wrap justify-center gap-6 mb-8">
           <div className="flex items-center gap-2">
             <Phone className="w-5 h-5 text-hibachi-red" />
-            <span>(929) 688-1138</span>
+            <span>Jason: (929) 688-1138 | Alex: (718)666-7955</span>
           </div>
           <div className="flex items-center gap-2">
             <MapPin className="w-5 h-5 text-hibachi-red" />

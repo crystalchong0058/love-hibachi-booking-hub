@@ -19,6 +19,27 @@ const HowToSetup = () => {
       title: 'Welcome the Chef',
       description: 'Our professional chef arrives with all necessary equipment and ingredients.',
       image: '/images/howtosetup/3.png'
+    },
+    {
+      title: 'Payment & Cancellation Policy',
+      description: (
+        <div className="space-y-2">
+          <p className="font-medium">Accepted Payment Methods:</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>Cash</li>
+            <li>Zelle</li>
+            <li>Venmo</li>
+            <li>PayPal</li>
+          </ul>
+          <p className="mt-2">A 20% deposit is required to secure your booking.</p>
+          <p className="font-medium mt-4">Cancellation Policy:</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>72+ hours before event: Full deposit refund</li>
+            <li>Less than 72 hours: Deposit is non-refundable</li>
+          </ul>
+        </div>
+      ),
+      image: '/images/howtosetup/4.png'
     }
   ];
 

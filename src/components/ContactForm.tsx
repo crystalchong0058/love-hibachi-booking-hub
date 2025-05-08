@@ -20,7 +20,7 @@ const ContactForm = () => {
                 <Phone className="w-6 h-6 text-hibachi-red mt-1 mr-4" />
                 <div>
                   <h4 className="font-medium text-lg">Phone</h4>
-                  <p className="text-gray-600">(929) 688-1138</p>
+                  <p className="text-gray-600">Jason: (929) 688-1138 | Alex: (718)666-7955</p>
                 </div>
               </div>
               

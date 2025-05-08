@@ -126,7 +126,25 @@ const FAQ = () => {
             question="Where can I make changes to my order? "
             answer={
               <p>
-                Please call or text us at (929) 688-1138 to modify your booking. We will do our best to accommodate your request.
+                Please call or text us at (929) 688-1138 or (718)666-7955 to modify your booking. We will do our best to accommodate your request.
+              </p>
+            }
+          />
+          
+          <FAQItem
+            question="What payment methods do you accept?"
+            answer={
+              <p>
+                We accept the following payment methods:
+                <ul className="list-disc pl-5 mt-2 space-y-1">
+                  <li>Cash</li>
+                  <li>Zelle</li>
+                  <li>Venmo</li>
+                  <li>PayPal</li>
+                </ul>
+                <p className="mt-2">
+                  A 20% deposit is required to secure your booking. The remaining balance is due on the day of the event.
+                </p>
               </p>
             }
           />
@@ -135,7 +153,14 @@ const FAQ = () => {
             question="What is your cancellation policy?"
             answer={
               <p>
-                Please call or text us at (929) 688-1138 to cancel your booking. We will do our best to accommodate your request.
+                Our cancellation policy is as follows:
+                <ul className="list-disc pl-5 mt-2 space-y-1">
+                  <li>Cancellations made 72 hours or more before the event: Full deposit refund</li>
+                  <li>Cancellations made less than 72 hours before the event: Deposit is non-refundable</li>
+                </ul>
+                <p className="mt-2">
+                  To cancel or modify your booking, please contact us at (929) 688-1138(Jason) or (718)666-7955(Alex).
+                </p>
               </p>
             }
           />

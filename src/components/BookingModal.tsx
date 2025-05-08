@@ -509,17 +509,25 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 relative">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center">
-              <img src="/logo.png" alt="Love Hibachi Logo" className="h-12 w-auto" />
-              <h2 className="text-2xl font-bold ml-4">Book Your Private Hibachi Experience</h2>
-            </div>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold">Book Your Hibachi Experience</h2>
             <button 
               onClick={() => setIsModalOpen(false)}
               className="text-gray-500 hover:text-gray-700"
             >
-              <X className="h-6 w-6" />
+              <X size={24} />
             </button>
+          </div>
+
+          {/* Payment and Cancellation Policy */}
+          <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-semibold text-lg mb-2">Payment & Cancellation Policy</h3>
+            <div className="space-y-2 text-sm text-gray-600">
+              <p><span className="font-medium">Accepted Payment Methods:</span> Cash, Zelle, Venmo, PayPal</p>
+              <p><span className="font-medium">Deposit Required:</span> 20% of total amount</p>
+              <p><span className="font-medium">Cancellation Policy:</span> Must cancel 72 hours before event for deposit refund</p>
+              <p className="text-hibachi-red"><span className="font-medium">Note:</span> Deposit is non-refundable for cancellations less than 72 hours before the event</p>
+            </div>
           </div>
 
           <form onSubmit={handleBooking} className="space-y-6">
@@ -702,7 +710,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                       <Phone className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
                       <div>
                         <span className="font-medium block">Business Contact</span>
-                        <span>(929) 688-1138</span>
+                        <span>Jason: (929) 688-1138 | Alex: (718)666-7955</span>
                       </div>
                     </li>
                     {comments && (
