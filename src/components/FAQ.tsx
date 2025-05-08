@@ -150,18 +150,28 @@ const FAQ = () => {
           />
           
           <FAQItem
-            question="What is your cancellation policy?"
+            question="What is your cancellation and rescheduling policy?"
             answer={
-              <p>
-                Our cancellation policy is as follows:
-                <ul className="list-disc pl-5 mt-2 space-y-1">
-                  <li>Cancellations made 72 hours or more before the event: Full deposit refund</li>
-                  <li>Cancellations made less than 72 hours before the event: Deposit is non-refundable</li>
-                </ul>
-                <p className="mt-2">
-                  To cancel or modify your booking, please contact us at (929) 688-1138(Jason) or (718)666-7955(Alex).
-                </p>
-              </p>
+              <div className="space-y-4">
+                <div>
+                  <p className="font-medium">Non-Refundable Deposit:</p>
+                  <p>Deposits are non-refundable if cancellation or rescheduling notice is given less than 72 hours before the scheduled event.</p>
+                </div>
+                <div>
+                  <p className="font-medium">Rescheduling:</p>
+                  <p>You may reschedule your event if notice is given at least 72 hours in advance. If you reschedule with less than 72 hours' notice, your deposit will not be refunded, but you may still choose a new date.</p>
+                </div>
+              </div>
+            }
+          />
+          
+          <FAQItem
+            question="What is your weather contingency policy for outdoor events?"
+            answer={
+              <div className="space-y-4">
+                <p>For outdoor events, you must have a tent or cover ready and set up at least two days before the event in case of rain. If there is no rain, the tent is not required.</p>
+                <p>This is a precaution to avoid last-minute cancellations due to weather, which would result in a major loss for us. If our team arrives and the weather is bad but you have a tent set up, we can still proceed with the setup without issue.</p>
+              </div>
             }
           />
           
