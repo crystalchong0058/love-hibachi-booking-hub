@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const MomentsGallery = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [imageErrors, setImageErrors] = useState<{ [key: string]: boolean }>({});
 
   const handleImageError = (src: string) => {
@@ -122,18 +123,12 @@ const MomentsGallery = () => {
     }
   ];
 
-  const scrollLeft = () => {
-    const container = document.getElementById('moments-container');
-    if (container) {
-      container.scrollBy({ left: -900, behavior: 'smooth' });
-    }
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % moments.length);
   };
 
-  const scrollRight = () => {
-    const container = document.getElementById('moments-container');
-    if (container) {
-      container.scrollBy({ left: 900, behavior: 'smooth' });
-    }
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + moments.length) % moments.length);
   };
 
   return (
@@ -146,46 +141,79 @@ const MomentsGallery = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {moments.map((moment, index) => (
-            <div
-              key={index}
-              className={`bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow ${
-                moment.type === 'video' && moment.orientation === 'portrait' ? 'row-span-2' : ''
-              }`}
+        <div className="relative max-w-4xl mx-auto">
+          <div className="overflow-hidden">
+            <div 
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
-              <div className="relative">
-                {moment.type === 'image' ? (
-                  <img
-                    src={moment.src}
-                    alt={moment.alt}
-                    className="w-full h-full object-cover"
-                    onError={() => handleImageError(moment.src)}
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="aspect-[9/16]">
-                    <video
-                      src={moment.src}
-                      className="w-full h-full object-contain bg-black"
-                      controls
-                      playsInline
-                      onError={() => handleImageError(moment.src)}
-                    >
-                      <source src={moment.src} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
+              {moments.map((moment, index) => (
+                <div key={index} className="w-full flex-shrink-0">
+                  <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div className="aspect-video relative">
+                      {moment.type === 'image' ? (
+                        <img
+                          src={moment.src}
+                          alt={moment.alt}
+                          className="absolute top-0 left-0 w-full h-full object-cover"
+                          onError={() => handleImageError(moment.src)}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <video
+                          src={moment.src}
+                          className="absolute top-0 left-0 w-full h-full object-cover"
+                          controls
+                          playsInline
+                          onError={() => handleImageError(moment.src)}
+                        >
+                          <source src={moment.src} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                      )}
+                      {imageErrors[moment.src] && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                          <p className="text-sm text-gray-500">Media not available</p>
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-4">
+                      <p className="text-gray-600 text-center">{moment.alt}</p>
+                    </div>
                   </div>
-                )}
-                {imageErrors[moment.src] && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                    <p className="text-sm text-gray-500">Media not available</p>
-                  </div>
-                )}
-              </div>
-
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          <button
+            onClick={prevSlide}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="w-6 h-6 text-hibachi-red" />
+          </button>
+
+          <button
+            onClick={nextSlide}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50"
+            aria-label="Next slide"
+          >
+            <ChevronRight className="w-6 h-6 text-hibachi-red" />
+          </button>
+
+          <div className="flex justify-center mt-4 space-x-2">
+            {moments.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-2 h-2 rounded-full ${
+                  currentSlide === index ? 'bg-hibachi-red' : 'bg-gray-300'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
