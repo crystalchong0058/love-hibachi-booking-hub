@@ -103,13 +103,70 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
   
   // No longer limiting protein choices
   
+  // Add sales tax rates for each state
+  const stateTaxRates: { [key: string]: number } = {
+    'NY': 0.08875, // New York
+    'NJ': 0.06625, // New Jersey
+    'CT': 0.0635,  // Connecticut
+    'MA': 0.0625,  // Massachusetts
+    'RI': 0.07,    // Rhode Island
+    'NH': 0,       // New Hampshire (no sales tax)
+    'ME': 0.055,   // Maine
+    'VT': 0.06,    // Vermont
+    'PA': 0.06,    // Pennsylvania
+    'DE': 0,       // Delaware (no sales tax)
+    'MD': 0.06,    // Maryland
+    'DC': 0.06,    // Washington DC
+    'VA': 0.053,   // Virginia
+    'WV': 0.06,    // West Virginia
+    'NC': 0.0475,  // North Carolina
+    'SC': 0.06,    // South Carolina
+    'GA': 0.04,    // Georgia
+    'FL': 0.06,    // Florida
+    'WA': 0.065,   // Washington
+    'OR': 0,       // Oregon (no sales tax)
+    'CA': 0.0725,  // California
+    'AK': 0,       // Alaska (no sales tax)
+    'HI': 0.04,    // Hawaii
+    'OH': 0.0575,  // Ohio
+    'MI': 0.06,    // Michigan
+    'IN': 0.07,    // Indiana
+    'IL': 0.0625,  // Illinois
+    'WI': 0.05,    // Wisconsin
+    'MN': 0.06875, // Minnesota
+    'IA': 0.06,    // Iowa
+    'MO': 0.04225, // Missouri
+    'ND': 0.05,    // North Dakota
+    'SD': 0.045,   // South Dakota
+    'NE': 0.055,   // Nebraska
+    'KS': 0.065,   // Kansas
+    'KY': 0.06,    // Kentucky
+    'TN': 0.07,    // Tennessee
+    'AL': 0.04,    // Alabama
+    'MS': 0.07,    // Mississippi
+    'AR': 0.065,   // Arkansas
+    'LA': 0.0445,  // Louisiana
+    'OK': 0.045,   // Oklahoma
+    'TX': 0.0625,  // Texas
+    'MT': 0,       // Montana (no sales tax)
+    'ID': 0.06,    // Idaho
+    'WY': 0.04,    // Wyoming
+    'CO': 0.029,   // Colorado
+    'NM': 0.05125, // New Mexico
+    'AZ': 0.056,   // Arizona
+    'UT': 0.061,   // Utah
+    'NV': 0.0685   // Nevada
+  };
+
+  const TRAVEL_FEE = 50;
+  
   // Calculate additional costs from selections
   const calculateAdditionalCosts = () => {
     let additionalCost = 0;
     
     // Premium protein costs
-    additionalCost += proteinQuantities.filetMignon * 5; // $5 per Filet Mignon
-    additionalCost += proteinQuantities.lobsterTail * 15; // $15 per Lobster Tail
+    additionalCost += proteinQuantities.filetMignon * 5;
+    additionalCost += proteinQuantities.lobsterTail * 15;
     
     // Appetizers
     additionalCost += appetizers.gyoza * 10;
@@ -132,6 +189,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     additionalCost += additionalFood.friedRice * 5;
     additionalCost += additionalFood.sushi * 15;
     additionalCost += additionalFood.sashimi * 20;
+    
+    // Add travel fee
+    additionalCost += TRAVEL_FEE;
     
     return additionalCost;
   };
@@ -173,6 +233,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     localStorage.setItem('bookedTimeSlots', JSON.stringify(bookedTimeSlots));
   }, [bookedTimeSlots]);
 
+  // Add function to calculate tax
+  const calculateTax = (subtotal: number) => {
+    const taxRate = stateTaxRates[state] || 0;
+    return subtotal * taxRate;
+  };
+
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -198,7 +264,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     // Check if the booking meets the $600 minimum requirement
     const adultTotal = Number(adultCount) * 60;
     const childTotal = Number(childrenCount) * 30;
-    const totalAmount = adultTotal + childTotal + additionalCosts;
+    const subtotal = adultTotal + childTotal + additionalCosts;
+    const tax = calculateTax(subtotal);
+    const totalAmount = subtotal + tax;
     
     if (totalAmount < 600) {
       toast.error("Booking must meet the $600 minimum requirement");
@@ -1556,174 +1624,23 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                                 <span>Base Package ({totalGuests} guests)</span>
                                 <span>${Number(adultCount) * 60 + Number(childrenCount) * 30}</span>
                               </div>
+                              
+                              {/* Add travel fee line */}
+                              <div className="flex justify-between">
+                                <span>Travel Fee</span>
+                                <span>+${TRAVEL_FEE}</span>
+                              </div>
 
-                              {/* Proteins */}
-                              {Object.entries(proteinQuantities).map(([protein, quantity]) => {
-                                if (quantity > 0) {
-                                  let price = 0;
-                                  let name = '';
-                                  switch(protein) {
-                                    case 'chicken':
-                                      name = 'Chicken';
-                                      break;
-                                    case 'steak':
-                                      name = 'Steak';
-                                      break;
-                                    case 'shrimp':
-                                      name = 'Shrimp';
-                                      break;
-                                    case 'scallops':
-                                      name = 'Scallops';
-                                      break;
-                                    case 'salmon':
-                                      name = 'Salmon';
-                                      break;
-                                    case 'vegetable':
-                                      name = 'Vegetable';
-                                      break;
-                                    case 'tofu':
-                                      name = 'Tofu';
-                                      break;
-                                    case 'filetMignon':
-                                      price = 5;
-                                      name = 'Filet Mignon';
-                                      break;
-                                    case 'lobsterTail':
-                                      price = 15;
-                                      name = 'Lobster Tail';
-                                      break;
-                                    default:
-                                      return null;
-                                  }
-                                  return (
-                                    <div key={protein} className="flex justify-between">
-                                      <span>{quantity}x {name}</span>
-                                      {price > 0 ? <span>+${quantity * price}</span> : <span>Included</span>}
-                                    </div>
-                                  );
-                                }
-                                return null;
-                              })}
-
-                              {/* Appetizers */}
-                              {Object.entries(appetizers).map(([appetizer, quantity]) => {
-                                if (quantity > 0) {
-                                  let price = 0;
-                                  let name = '';
-                                  switch(appetizer) {
-                                    case 'gyoza':
-                                      price = 10;
-                                      name = 'Gyoza';
-                                      break;
-                                    case 'edamame':
-                                      price = 5;
-                                      name = 'Edamame';
-                                      break;
-                                  }
-                                  return (
-                                    <div key={appetizer} className="flex justify-between">
-                                      <span>{quantity}x {name}</span>
-                                      <span>+${quantity * price}</span>
-                                    </div>
-                                  );
-                                }
-                                return null;
-                              })}
-
-                              {/* Side Orders */}
-                              {Object.entries(sideOrders).map(([side, quantity]) => {
-                                if (quantity > 0) {
-                                  let price = 0;
-                                  let name = '';
-                                  switch(side) {
-                                    case 'chickenSide':
-                                      price = 10;
-                                      name = 'Chicken Side';
-                                      break;
-                                    case 'steakSide':
-                                      price = 10;
-                                      name = 'Steak Side';
-                                      break;
-                                    case 'shrimpSide':
-                                      price = 10;
-                                      name = 'Shrimp Side';
-                                      break;
-                                    case 'scallopsSide':
-                                      price = 10;
-                                      name = 'Scallops Side';
-                                      break;
-                                    case 'salmonSide':
-                                      price = 10;
-                                      name = 'Salmon Side';
-                                      break;
-                                    case 'vegetableSide':
-                                      price = 10;
-                                      name = 'Vegetable Side';
-                                      break;
-                                    case 'noodles':
-                                      price = 4;
-                                      name = 'Noodles';
-                                      break;
-                                    case 'filetMignonSide':
-                                      price = 15;
-                                      name = 'Filet Mignon Side';
-                                      break;
-                                    case 'lobsterTailSide':
-                                      price = 15;
-                                      name = 'Lobster Tail Side';
-                                      break;
-                                  }
-                                  return (
-                                    <div key={side} className="flex justify-between">
-                                      <span>{quantity}x {name}</span>
-                                      <span>+${quantity * price}</span>
-                                    </div>
-                                  );
-                                }
-                                return null;
-                              })}
-
-                              {/* Additional Food */}
-                              {Object.entries(additionalFood).map(([food, quantity]) => {
-                                if (quantity > 0) {
-                                  let price = 0;
-                                  let name = '';
-                                  switch(food) {
-                                    case 'additionalNoodles':
-                                      price = 5;
-                                      name = 'Additional Noodles';
-                                      break;
-                                    case 'whiteRice':
-                                      price = 5;
-                                      name = 'White Rice';
-                                      break;
-                                    case 'friedRice':
-                                      price = 5;
-                                      name = 'Fried Rice';
-                                      break;
-                                    case 'sushi':
-                                      price = 15;
-                                      name = 'Sushi';
-                                      break;
-                                    case 'sashimi':
-                                      price = 20;
-                                      name = 'Sashimi';
-                                      break;
-                                  }
-                                  return (
-                                    <div key={food} className="flex justify-between">
-                                      <span>{quantity}x {name}</span>
-                                      <span>+${quantity * price}</span>
-                                    </div>
-                                  );
-                                }
-                                return null;
-                              })}
+                              {/* Add tax line */}
+                              <div className="flex justify-between">
+                                <span>Sales Tax ({state ? (stateTaxRates[state] * 100).toFixed(2) : '0'}%)</span>
+                                <span>+${calculateTax(Number(adultCount) * 60 + Number(childrenCount) * 30).toFixed(2)}</span>
+                              </div>
 
                               <div className="border-t border-gray-200 pt-2 mt-2">
                                 <div className="flex justify-between font-semibold">
                                   <span>Total Amount</span>
-                                  <span>${Number(adultCount) * 60 + Number(childrenCount) * 30 + additionalCosts}</span>
+                                  <span>${(Number(adultCount) * 60 + Number(childrenCount) * 30 + TRAVEL_FEE + calculateTax(Number(adultCount) * 60 + Number(childrenCount) * 30)).toFixed(2)}</span>
                                 </div>
                               </div>
                             </div>

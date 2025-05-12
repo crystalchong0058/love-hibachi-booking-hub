@@ -165,7 +165,7 @@ const MomentsGallery = () => {
                           className="absolute top-0 left-0 w-full h-full object-cover"
                           autoPlay
                           loop
-                          muted={false}
+                          muted={true}
                           playsInline
                           controls
                           onError={() => handleImageError(moment.src)}
