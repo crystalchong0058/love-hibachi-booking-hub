@@ -163,8 +163,11 @@ const MomentsGallery = () => {
                         <video
                           src={moment.src}
                           className="absolute top-0 left-0 w-full h-full object-cover"
-                          controls
+                          autoPlay
+                          loop
+                          muted={false}
                           playsInline
+                          controls
                           onError={() => handleImageError(moment.src)}
                         >
                           <source src={moment.src} type="video/mp4" />

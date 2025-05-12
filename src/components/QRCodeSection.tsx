@@ -1,10 +1,9 @@
-
 import React, { useState, useRef } from 'react';
 import { Share2, Copy, Download, Check } from 'lucide-react';
 
 const QRCodeSection = () => {
   const [shareStatus, setShareStatus] = useState<string>('');
-  const qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://4ulovehibachicatering.com";
+  const qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://4usakehibachicatering.com";
   const qrCodeRef = useRef<HTMLImageElement>(null);
   
   // Function to handle sharing
@@ -15,7 +14,7 @@ const QRCodeSection = () => {
         await navigator.share({
           title: '4 U Sake Hibachi Catering QR Code',
           text: 'Scan this QR code to access our menu and make bookings!',
-          url: 'https://4ulovehibachicatering.com',
+          url: 'https://4usakehibachicatering.com',
         });
         setShareStatus('Shared successfully!');
         setTimeout(() => setShareStatus(''), 2000);
@@ -29,7 +28,7 @@ const QRCodeSection = () => {
       try {
         // Create a temporary element to copy the URL
         const tempInput = document.createElement('input');
-        tempInput.value = 'https://4ulovehibachicatering.com';
+        tempInput.value = 'https://4usakehibachicatering.com';
         document.body.appendChild(tempInput);
         tempInput.select();
         document.execCommand('copy');
@@ -60,7 +59,7 @@ const QRCodeSection = () => {
 
   // Function to copy URL
   const copyUrl = () => {
-    navigator.clipboard.writeText('https://4ulovehibachicatering.com')
+    navigator.clipboard.writeText('https://4usakehibachicatering.com')
       .then(() => {
         setShareStatus('URL copied!');
         setTimeout(() => setShareStatus(''), 2000);

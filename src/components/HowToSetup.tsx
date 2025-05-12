@@ -12,7 +12,7 @@ const HowToSetup = () => {
     },
     {
       title: 'Set Up Tables',
-      description: 'Arrange tables and chairs for your guests. We recommend a U-shaped or rectangular setup.',
+      description: 'Arrange tables and chairs for your guests. We recommend a U-shaped or rectangular setup. If your event is outdoors, you must have a tent or cover ready and set up at before the event in case of rain. ',
       image: '/images/howtosetup/2.png'
     },
     {
