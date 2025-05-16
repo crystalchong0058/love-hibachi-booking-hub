@@ -1,5 +1,5 @@
-import React from 'react';
-import { Star, MapPin } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Star, MapPin, Play } from 'lucide-react';
 
 type Chef = {
   name: string;
@@ -11,11 +11,23 @@ type Chef = {
 };
 
 const ChefCard = ({ chef }: { chef: Chef }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handlePlay = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <div className="chef-card grid md:grid-cols-2 gap-6 items-center">
       <div className="aspect-square relative overflow-hidden rounded-lg">
         <video 
-          src="/images/moments/profilepic/profile.mp4" 
+          ref={videoRef}
+          src={chef.image}
           autoPlay
           loop
           muted
@@ -27,6 +39,14 @@ const ChefCard = ({ chef }: { chef: Chef }) => {
             videoElement.style.display = 'none';
           }}
         />
+        {!isPlaying && (
+          <button
+            onClick={handlePlay}
+            className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 hover:bg-opacity-50 transition-all duration-300"
+          >
+            <Play className="w-16 h-16 text-white" />
+          </button>
+        )}
         <div className="absolute top-4 right-4 bg-hibachi-red text-white text-xs font-medium py-1 px-2 rounded">
           Master Chef
         </div>
