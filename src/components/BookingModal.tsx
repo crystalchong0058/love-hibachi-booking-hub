@@ -159,6 +159,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
   };
 
   const TRAVEL_FEE = 50;
+  const PROPANE_TANK_FEE = 15;
   
   // Calculate additional costs from selections
   const calculateAdditionalCosts = () => {
@@ -190,8 +191,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     additionalCost += additionalFood.sushi * 15;
     additionalCost += additionalFood.sashimi * 20;
     
-    // Add travel fee
-    additionalCost += TRAVEL_FEE;
+    // Add travel fee and propane tank fee
+    additionalCost += TRAVEL_FEE + PROPANE_TANK_FEE;
     
     return additionalCost;
   };
@@ -1631,6 +1632,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                                 <span>+${TRAVEL_FEE}</span>
                               </div>
 
+                              {/* Add propane tank fee line */}
+                              <div className="flex justify-between">
+                                <span>Propane Tank Fee</span>
+                                <span>+${PROPANE_TANK_FEE}</span>
+                              </div>
+
                               {/* Add tax line */}
                               <div className="flex justify-between">
                                 <span>Sales Tax ({state ? (stateTaxRates[state] * 100).toFixed(2) : '0'}%)</span>
@@ -1640,7 +1647,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                               <div className="border-t border-gray-200 pt-2 mt-2">
                                 <div className="flex justify-between font-semibold">
                                   <span>Total Amount</span>
-                                  <span>${(Number(adultCount) * 50 + Number(childrenCount) * 25 + TRAVEL_FEE + calculateTax(Number(adultCount) * 50 + Number(childrenCount) * 25)).toFixed(2)}</span>
+                                  <span>${(Number(adultCount) * 50 + Number(childrenCount) * 25 + TRAVEL_FEE + PROPANE_TANK_FEE + calculateTax(Number(adultCount) * 50 + Number(childrenCount) * 25)).toFixed(2)}</span>
                                 </div>
                               </div>
                             </div>
