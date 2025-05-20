@@ -262,8 +262,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     }
     
     // Check if the booking meets the $600 minimum requirement
-    const adultTotal = Number(adultCount) * 60;
-    const childTotal = Number(childrenCount) * 30;
+    const adultTotal = Number(adultCount) * 50;
+    const childTotal = Number(childrenCount) * 25;
     const subtotal = adultTotal + childTotal + additionalCosts;
     const tax = calculateTax(subtotal);
     const totalAmount = subtotal + tax;
@@ -288,8 +288,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
       const orderId = "HIB-" + randomDigits.toString();
 
       // Calculate pricing details
-      const adultTotal = Number(adultCount) * 60;
-      const childTotal = Number(childrenCount) * 30;
+      const adultTotal = Number(adultCount) * 50;
+      const childTotal = Number(childrenCount) * 25;
       const totalAmount = adultTotal + childTotal + additionalCosts;
       
       // Prepare selected protein choices with quantities
@@ -377,8 +377,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
         side_orders: selectedSideOrders || 'None selected',
         
         // Pricing details
-        adult_price: "$60/person",
-        child_price: "$30/person",
+        adult_price: "$50/person",
+        child_price: "$25/person",
         adult_subtotal: `$${adultTotal}`,
         child_subtotal: `$${childTotal}`,
         additional_costs: `$${additionalCosts}`,
@@ -647,10 +647,10 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                       </div>
                       <div>
                         <span className="font-medium block">Total Price</span>
-                        <span className="text-lg font-semibold">${Number(adultCount) * 60 + Number(childrenCount) * 30 + additionalCosts}</span>
+                        <span className="text-lg font-semibold">${Number(adultCount) * 50 + Number(childrenCount) * 25 + additionalCosts}</span>
                         <div className="text-xs text-gray-500 mt-1">
-                          Adults: ${Number(adultCount) * 60} (${60}/person) <br/>
-                          Children: ${Number(childrenCount) * 30} (${30}/person)
+                          Adults: ${Number(adultCount) * 50} (${50}/person) <br/>
+                          Children: ${Number(childrenCount) * 25} (${25}/person)
                           {additionalCosts > 0 && (
                             <><br/>Additional items: ${additionalCosts}</>
                           )}
@@ -976,12 +976,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                         <p>Total guests: <strong>{totalGuests}</strong></p>
                         <div className="mt-2 flex items-center">
                           <span className="mr-2">Total Price:</span>
-                          <span className="text-xl font-bold">${Number(adultCount) * 60 + Number(childrenCount) * 30 + additionalCosts}</span>
+                          <span className="text-xl font-bold">${Number(adultCount) * 50 + Number(childrenCount) * 25 }</span>
                           <span className="ml-2 text-xs">($600 minimum for all parties)</span>
                         </div>
                         <div className="mt-2 text-xs text-gray-600 border-t border-yellow-200 pt-2">
-                          <p>Adults: ${Number(adultCount) * 60} (${60}/person)</p>
-                          <p>Children: ${Number(childrenCount) * 30} (${30}/person)</p>
+                          <p>Adults: ${Number(adultCount) * 50} (${50}/person)</p>
+                          <p>Children: ${Number(childrenCount) * 25} (${25}/person)</p>
                           {additionalCosts > 0 && (
                             <p>Additional items: ${additionalCosts}</p>
                           )}
@@ -1622,7 +1622,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                               <h5 className="font-medium text-gray-700">Order Details</h5>
                               <div className="flex justify-between">
                                 <span>Base Package ({totalGuests} guests)</span>
-                                <span>${Number(adultCount) * 60 + Number(childrenCount) * 30}</span>
+                                <span>${Number(adultCount) * 50 + Number(childrenCount) * 25}</span>
                               </div>
                               
                               {/* Add travel fee line */}
@@ -1634,13 +1634,13 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                               {/* Add tax line */}
                               <div className="flex justify-between">
                                 <span>Sales Tax ({state ? (stateTaxRates[state] * 100).toFixed(2) : '0'}%)</span>
-                                <span>+${calculateTax(Number(adultCount) * 60 + Number(childrenCount) * 30).toFixed(2)}</span>
+                                <span>+${calculateTax(Number(adultCount) * 50 + Number(childrenCount) * 25).toFixed(2)}</span>
                               </div>
 
                               <div className="border-t border-gray-200 pt-2 mt-2">
                                 <div className="flex justify-between font-semibold">
                                   <span>Total Amount</span>
-                                  <span>${(Number(adultCount) * 60 + Number(childrenCount) * 30 + TRAVEL_FEE + calculateTax(Number(adultCount) * 60 + Number(childrenCount) * 30)).toFixed(2)}</span>
+                                  <span>${(Number(adultCount) * 50 + Number(childrenCount) * 25 + TRAVEL_FEE + calculateTax(Number(adultCount) * 50 + Number(childrenCount) * 25)).toFixed(2)}</span>
                                 </div>
                               </div>
                             </div>
@@ -1649,7 +1649,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
 
                         <Button 
                           type="submit" 
-                          disabled={!selectedDate || !startTime || (Number(adultCount) * 60 + Number(childrenCount) * 30 + additionalCosts) < 600 || isLoading}
+                          disabled={!selectedDate || !startTime || (Number(adultCount) * 50 + Number(childrenCount) * 25 + additionalCosts) < 600 || isLoading}
                           className="w-full bg-hibachi-red hover:bg-hibachi-red/90 text-white"
                         >
                           {isLoading ? 'Processing...' : 'Complete Booking'}

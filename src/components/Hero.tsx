@@ -81,6 +81,19 @@ const Hero = () => {
         <p className="text-xl text-white mb-8 max-w-2xl animate-fade-in">
           Professional chefs bringing the excitement and flavors of hibachi cooking directly to your celebration. Serving both East and West Coast locations.
         </p>
+        <div className="bg-black/30 backdrop-blur-sm rounded-lg p-4 mb-6">
+          <div className="text-2xl font-bold text-hibachi-gold mb-2">Pricing</div>
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 text-lg">
+            <div className="flex items-center gap-2">
+              <span className="text-white">Adults:</span>
+              <span className="text-hibachi-gold font-bold">$50/person</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-white">Children:</span>
+              <span className="text-hibachi-gold font-bold">$25/person</span>
+            </div>
+          </div>
+        </div>
         <div className="flex flex-col sm:flex-row gap-4">
           <button 
             onClick={() => handleOpenModal('Premium')} 
