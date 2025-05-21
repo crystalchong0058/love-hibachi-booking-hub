@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -17,6 +18,18 @@ import HowToSetup from '../components/HowToSetup';
 const Index = () => {
   // Use the custom hook to scroll to the hash element
   useScrollToHash();
+  
+  // Add Dancing Script font for the Hero section
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap';
+    document.head.appendChild(link);
+    
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
   
   return (
     <div className="min-h-screen flex flex-col">
