@@ -89,7 +89,7 @@ const Pricing = () => {
           <ul className="space-y-3">
             <li className="flex items-start">
               <Check className="w-5 h-5 text-hibachi-red mt-0.5 mr-2 flex-shrink-0" />
-              <span><strong>$600 minimum</strong> for all parties</span>
+              <span><strong>$500 minimum</strong> for all parties</span>
             </li>
             <li className="flex items-start">
               <Check className="w-5 h-5 text-hibachi-red mt-0.5 mr-2 flex-shrink-0" />

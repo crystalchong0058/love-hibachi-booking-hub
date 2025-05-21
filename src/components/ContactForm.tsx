@@ -53,7 +53,7 @@ const ContactForm = () => {
                 <Users className="w-6 h-6 text-hibachi-red mt-1 mr-4" />
                 <div>
                   <h4 className="font-medium text-lg">Group Size</h4>
-                  <p className="text-gray-600">Our services are available with a $600 minimum charge.</p>
+                  <p className="text-gray-600">Our services are available with a $500 minimum charge.</p>
                 </div>
               </div>
             </div>
