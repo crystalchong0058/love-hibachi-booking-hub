@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { Check, Users, Baby, Calendar, ChefHat, Utensils, MapPin, X } from 'lucide-react';
 import BookingModal from './BookingModal';
-import { Dialog, DialogContent } from '@radix-ui/react-dialog';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 interface PricingCardProps {
   title: string;
@@ -20,7 +21,16 @@ const PricingCard = ({ title, price, features, buttonLabel }: PricingCardProps) 
         <h3 className="text-2xl font-bold">{title}</h3>
       </div>
       <div className="mb-6">
-        <p className="text-4xl font-bold">{price}</p>
+        <p className="text-4xl font-bold">
+          {price.includes("<span") ? (
+            <React.Fragment>
+              ${price.split("<span")[0]}
+              <span className="text-base font-normal text-gray-600">/person</span>
+            </React.Fragment>
+          ) : (
+            price
+          )}
+        </p>
       </div>
       <ul className="space-y-3 mb-8">
         {features.map((feature, index) => (
@@ -66,7 +76,7 @@ const Pricing = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <PricingCard
             title="Adults"
-            price="$50<span className="text-base font-normal text-gray-600">/person</span>"
+            price="50"
             features={[
               "Full hibachi experience with professional chef",
               "Live cooking and entertainment",
@@ -78,7 +88,7 @@ const Pricing = () => {
 
           <PricingCard
             title="Children"
-            price="$25<span className="text-base font-normal text-gray-600">/child</span>"
+            price="25"
             features={[
               "Kid-friendly hibachi experience",
               "Smaller portion sizes",
@@ -89,8 +99,6 @@ const Pricing = () => {
           />
         </div>
         
-
-
         <div className="mt-12 bg-gray-50 p-6 rounded-lg border border-border max-w-4xl mx-auto">
           <h3 className="text-xl font-bold mb-4 text-center">Important Pricing Information</h3>
           <ul className="space-y-3">
@@ -113,6 +121,7 @@ const Pricing = () => {
           </ul>
         </div>
 
+        {/* How It Works section */}
         <div className="mt-12 bg-white p-6 rounded-lg border border-border max-w-4xl mx-auto">
           <h3 className="text-xl font-bold mb-4 text-center">How It Works</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -146,6 +155,7 @@ const Pricing = () => {
           </p>
         </div>
 
+        {/* Menu Options section */}
         <div className="mt-12 bg-white p-6 rounded-lg border border-border max-w-4xl mx-auto">
           <h3 className="text-xl font-bold mb-6 text-center">Menu Options</h3>
           
@@ -198,7 +208,7 @@ const Pricing = () => {
             >
               <X className="w-6 h-6" />
             </button>
-            <BookingModal plan={selectedPlan} />
+            <BookingModal plan={selectedPlan} setIsModalOpen={setIsBookingOpen} />
           </div>
         </div>
       )}
