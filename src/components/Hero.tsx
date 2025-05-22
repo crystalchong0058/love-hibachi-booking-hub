@@ -150,8 +150,7 @@ const Hero = () => {
           <DialogContent className="max-w-4xl">
             <BookingModal 
               plan={selectedPlan} 
-              setIsModalOpen={setIsModalOpen} 
-              setSelectedPlan={setSelectedPlan}
+              setIsModalOpen={setIsModalOpen}
             />
           </DialogContent>
         </Dialog>
