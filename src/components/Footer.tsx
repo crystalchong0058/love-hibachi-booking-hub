@@ -1,74 +1,86 @@
+
 import React from 'react';
+import { Flame, Mail, Phone, MapPin, Instagram, Facebook, Twitter } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Linkedin, Mail, Phone } from 'lucide-react';
 import SubscriptionForm from './SubscriptionForm';
+import SectionLink from './ui/section-link';
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-gray-900 text-white pt-16 pb-8">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-gray-900 text-white pt-12 pb-6">
+      <div className="container">
+        {/* Subscription Form */}
+        <div className="mb-10">
+          <SubscriptionForm />
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
-            <h4 className="text-lg font-bold mb-4">About Us</h4>
-            <p className="text-gray-400">We are passionate about bringing the authentic hibachi experience to your private events. Serving delicious food with a side of entertainment!</p>
+            <div className="flex items-center space-x-2 mb-4">
+              <Flame className="w-8 h-8 text-hibachi-gold" />
+              <div>
+                <h2 className="text-xl font-bold leading-tight">
+                  <span className="text-hibachi-gold">4 U Sake</span>
+                </h2>
+                <p className="text-xs font-medium text-gray-400 -mt-1">Hibachi Catering</p>
+              </div>
+            </div>
+            <p className="text-gray-400 mb-4">
+              Experience the art of hibachi catering with our professional chefs who bring the excitement and flavors directly to your event.
+            </p>
+            <div className="flex space-x-4">
+              <a href="#" className="text-gray-400 hover:text-hibachi-gold transition-colors">
+                <Facebook size={20} />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-hibachi-gold transition-colors">
+                <Instagram size={20} />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-hibachi-gold transition-colors">
+                <Twitter size={20} />
+              </a>
+            </div>
           </div>
+          
           <div>
-            <h4 className="text-lg font-bold mb-4">Quick Links</h4>
-            <ul className="text-gray-400">
-              <li>
-                <Link to="/" className="hover:text-white">Home</Link>
+            <h3 className="text-lg font-bold mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              <li><Link to="/" className="text-gray-400 hover:text-hibachi-gold transition-colors">Home</Link></li>
+              <li><SectionLink to="/#services" className="text-gray-400 hover:text-hibachi-gold transition-colors">Services</SectionLink></li>
+              <li><SectionLink to="/#pricing" className="text-gray-400 hover:text-hibachi-gold transition-colors">Pricing</SectionLink></li>
+              <li><Link to="/faq" className="text-gray-400 hover:text-hibachi-gold transition-colors">FAQ</Link></li>
+              <li><Link to="/contact" className="text-gray-400 hover:text-hibachi-gold transition-colors">Contact Us</Link></li>
+              <li><SectionLink to="/#testimonials" className="text-gray-400 hover:text-hibachi-gold transition-colors">Testimonials</SectionLink></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-bold mb-4">Contact Information</h3>
+            <ul className="space-y-3">
+              <li className="flex items-start space-x-3">
+                <MapPin className="w-5 h-5 text-hibachi-gold mt-0.5" />
+                <span className="text-gray-400">Serving Every State in United States</span>
               </li>
-              <li>
-                <Link to="/#services" className="hover:text-white">Services</Link>
+              <li className="flex items-center space-x-3">
+                <Phone className="w-5 h-5 text-hibachi-gold" />
+                <a href="tel:+19296881138" className="text-gray-400 hover:text-hibachi-gold transition-colors">
+                  Jason: (929) 688-1138 | Alex: (718)666-7955
+                </a>
               </li>
-              <li>
-                <Link to="/#pricing" className="hover:text-white">Pricing</Link>
-              </li>
-              <li>
-                <Link to="/#locations" className="hover:text-white">Locations</Link>
+              <li className="flex items-center space-x-3">
+                <Mail className="w-5 h-5 text-hibachi-gold" />
+                <a href="mailto:4usakecatering@gmail.com" className="text-gray-400 hover:text-hibachi-gold transition-colors">
+                  4usakehibachicatering@gmail.com
+                </a>
               </li>
             </ul>
           </div>
-          <div>
-            <h4 className="text-lg font-bold mb-4">Contact Us</h4>
-            <div className="text-gray-400">
-              <p className="flex items-center mb-2">
-                <Mail className="mr-2 h-5 w-5" />
-                <a href="mailto:info@example.com" className="hover:text-white">info@example.com</a>
-              </p>
-              <p className="flex items-center">
-                <Phone className="mr-2 h-5 w-5" />
-                (123) 456-7890
-              </p>
-            </div>
-          </div>
-          <div>
-            <h4 className="text-lg font-bold mb-4">Follow Us</h4>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white">
-                <Instagram className="h-6 w-6" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white">
-                <Facebook className="h-6 w-6" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white">
-                <Linkedin className="h-6 w-6" />
-              </a>
-            </div>
-          </div>
         </div>
-      </div>
-      
-      <div className="container mx-auto mb-8">
-        <div className="bg-hibachi-red/10 rounded-lg p-8 text-center">
-          <h3 className="text-2xl font-bold mb-4">Subscribe to Our Newsletter</h3>
-          <p className="mb-6 max-w-xl mx-auto">Get the latest updates, special offers and event information directly to your inbox.</p>
-          <SubscriptionForm />
+        
+        <div className="border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
+          <p>&copy; {currentYear} 4 U Sake Hibachi Catering. All rights reserved.</p>
         </div>
-      </div>
-      
-      <div className="text-center text-gray-400">
-        &copy; {new Date().getFullYear()} Hibachi Company. All rights reserved.
       </div>
     </footer>
   );

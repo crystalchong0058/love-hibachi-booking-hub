@@ -1,50 +1,7 @@
+
 import React, { useState } from 'react';
 import { Check, Users, Baby, Calendar, ChefHat, Utensils, MapPin, X } from 'lucide-react';
 import BookingModal from './BookingModal';
-import { Dialog, DialogContent } from '@radix-ui/react-dialog';
-
-interface PricingCardProps {
-  title: string;
-  price: string;
-  features: string[];
-  buttonLabel: string;
-}
-
-const PricingCard = ({ title, price, features, buttonLabel }: PricingCardProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  return (
-    <div className="flex flex-col h-full bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform transition-all hover:scale-105">
-      <div className="flex items-center mb-4">
-        <Users className="w-8 h-8 text-hibachi-red mr-2" />
-        <h3 className="text-2xl font-bold">{title}</h3>
-      </div>
-      <div className="mb-6">
-        <p className="text-4xl font-bold">{price}</p>
-      </div>
-      <ul className="space-y-3 mb-8">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-start">
-            <Check className="w-5 h-5 text-hibachi-gold mt-0.5 mr-2 flex-shrink-0" />
-            <span>{feature}</span>
-          </li>
-        ))}
-      </ul>
-      <button 
-        onClick={() => setIsModalOpen(true)} 
-        className="bg-hibachi-red text-white py-2 px-4 rounded-lg w-full"
-      >
-        {buttonLabel}
-      </button>
-      
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-4xl">
-          <BookingModal plan={title} setIsModalOpen={setIsModalOpen} />
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-};
 
 const Pricing = () => {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -64,29 +21,65 @@ const Pricing = () => {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <PricingCard
-            title="Adults"
-            price="$50<span className="text-base font-normal text-gray-600">/person</span>"
-            features={[
-              "Full hibachi experience with professional chef",
-              "Live cooking and entertainment",
-              "Protein, vegetable, and rice options",
-              "Special hibachi sauces"
-            ]}
-            buttonLabel="Book Now"
-          />
+          <div className="bg-white rounded-lg shadow-md border border-border p-8 relative overflow-hidden transition-all duration-300 hover:shadow-xl">
+            <div className="absolute top-0 right-0 bg-hibachi-red text-white py-1 px-4 text-sm font-medium">
+              Most Popular
+            </div>
+            <div className="flex items-center mb-4">
+              <Users className="w-8 h-8 text-hibachi-red mr-2" />
+              <h3 className="text-2xl font-bold">Adults</h3>
+            </div>
+            <div className="mb-6">
+              <p className="text-4xl font-bold">$50<span className="text-base font-normal text-gray-600">/person</span></p>
+            </div>
+            <ul className="space-y-3 mb-8">
+              <li className="flex items-start">
+                <Check className="w-5 h-5 text-hibachi-gold mt-0.5 mr-2 flex-shrink-0" />
+                <span>Full hibachi experience with professional chef</span>
+              </li>
+              <li className="flex items-start">
+                <Check className="w-5 h-5 text-hibachi-gold mt-0.5 mr-2 flex-shrink-0" />
+                <span>Live cooking and entertainment</span>
+              </li>
+              <li className="flex items-start">
+                <Check className="w-5 h-5 text-hibachi-gold mt-0.5 mr-2 flex-shrink-0" />
+                <span>Protein, vegetable, and rice options</span>
+              </li>
+              <li className="flex items-start">
+                <Check className="w-5 h-5 text-hibachi-gold mt-0.5 mr-2 flex-shrink-0" />
+                <span>Special hibachi sauces</span>
+              </li>
+            </ul>
+          </div>
 
-          <PricingCard
-            title="Children"
-            price="$25<span className="text-base font-normal text-gray-600">/child</span>"
-            features={[
-              "Kid-friendly hibachi experience",
-              "Smaller portion sizes",
-              "Child-safe entertainment",
-              "Special hibachi tricks for kids"
-            ]}
-            buttonLabel="Book Now"
-          />
+          <div className="bg-white rounded-lg shadow-md border border-border p-8 transition-all duration-300 hover:shadow-xl">
+            <div className="flex items-center mb-4">
+              <Baby className="w-8 h-8 text-hibachi-orange mr-2" />
+              <h3 className="text-2xl font-bold">Children</h3>
+              <span className="text-sm bg-gray-100 text-gray-700 rounded-full px-2 ml-2 flex-shrink-0">Under 13</span>
+            </div>
+            <div className="mb-6">
+              <p className="text-4xl font-bold">$25<span className="text-base font-normal text-gray-600">/child</span></p>
+            </div>
+            <ul className="space-y-3 mb-8">
+              <li className="flex items-start">
+                <Check className="w-5 h-5 text-hibachi-gold mt-0.5 mr-2 flex-shrink-0" />
+                <span>Kid-friendly hibachi experience</span>
+              </li>
+              <li className="flex items-start">
+                <Check className="w-5 h-5 text-hibachi-gold mt-0.5 mr-2 flex-shrink-0" />
+                <span>Smaller portion sizes</span>
+              </li>
+              <li className="flex items-start">
+                <Check className="w-5 h-5 text-hibachi-gold mt-0.5 mr-2 flex-shrink-0" />
+                <span>Child-safe entertainment</span>
+              </li>
+              <li className="flex items-start">
+                <Check className="w-5 h-5 text-hibachi-gold mt-0.5 mr-2 flex-shrink-0" />
+                <span>Special hibachi tricks for kids</span>
+              </li>
+            </ul>
+          </div>
         </div>
         
 
