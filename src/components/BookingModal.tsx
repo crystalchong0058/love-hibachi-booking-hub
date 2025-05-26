@@ -379,7 +379,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
         
         // Pricing details
         adult_price: "$50/person",
-        child_price: "$25/person",
+        child_price: "$30/person",
         adult_subtotal: `$${adultTotal}`,
         child_subtotal: `$${childTotal}`,
         additional_costs: `$${additionalCosts}`,
