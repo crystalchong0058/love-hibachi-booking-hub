@@ -16,7 +16,7 @@ const PRICING_PLANS: PricingPlan[] = [
     name: "Basic",
     description: "Perfect for small gatherings",
     adultPrice: 50,
-    childPrice: 25,
+    childPrice: 30,
     features: [
       "Up to 2 hours of entertainment",
       "Basic menu options",
@@ -28,7 +28,7 @@ const PRICING_PLANS: PricingPlan[] = [
     name: "Premium",
     description: "Ideal for medium-sized events",
     adultPrice: 50,
-    childPrice: 25,
+    childPrice: 30,
     features: [
       "Up to 3 hours of entertainment",
       "Expanded menu options",
@@ -41,7 +41,7 @@ const PRICING_PLANS: PricingPlan[] = [
     name: "Deluxe",
     description: "The ultimate hibachi experience",
     adultPrice: 50,
-    childPrice: 25,
+    childPrice: 30,
     features: [
       "Up to 4 hours of entertainment",
       "Full menu access",
