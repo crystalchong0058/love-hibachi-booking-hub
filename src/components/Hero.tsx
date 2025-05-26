@@ -104,7 +104,7 @@ const Hero = () => {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-white">Children:</span>
-              <span className="text-hibachi-gold font-bold">$25/person</span>
+              <span className="text-hibachi-gold font-bold">$30/person</span>
             </div>
           </div>
           <div className="mt-2 text-white">
