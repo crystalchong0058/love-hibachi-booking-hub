@@ -1656,7 +1656,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
 
                         <Button 
                           type="submit" 
-                          disabled={!selectedDate || !startTime || (Number(adultCount) * 50 + Number(childrenCount) * 30 + additionalCosts) < 600 || isLoading}
+                          disabled={!selectedDate || !startTime || (Number(adultCount) * 50 + Number(childrenCount) * 30 + additionalCosts) < 500 || isLoading}
                           className="w-full bg-hibachi-red hover:bg-hibachi-red/90 text-white"
                         >
                           {isLoading ? 'Processing...' : 'Complete Booking'}
