@@ -59,7 +59,7 @@ const Pricing = () => {
               <span className="text-sm bg-gray-100 text-gray-700 rounded-full px-2 ml-2 flex-shrink-0">Under 13</span>
             </div>
             <div className="mb-6">
-              <p className="text-4xl font-bold">$25<span className="text-base font-normal text-gray-600">/child</span></p>
+              <p className="text-4xl font-bold">$30<span className="text-base font-normal text-gray-600">/child</span></p>
             </div>
             <ul className="space-y-3 mb-8">
               <li className="flex items-start">
@@ -89,7 +89,7 @@ const Pricing = () => {
           <ul className="space-y-3">
             <li className="flex items-start">
               <Check className="w-5 h-5 text-hibachi-red mt-0.5 mr-2 flex-shrink-0" />
-              <span><strong>$600 minimum</strong> for all parties</span>
+              <span><strong>$500 minimum</strong> for all parties</span>
             </li>
             <li className="flex items-start">
               <Check className="w-5 h-5 text-hibachi-red mt-0.5 mr-2 flex-shrink-0" />

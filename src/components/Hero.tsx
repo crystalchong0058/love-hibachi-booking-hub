@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Calendar, Phone, MapPin, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -78,6 +79,19 @@ const Hero = () => {
           </p>
           <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-hibachi-red via-hibachi-gold to-hibachi-red"></div>
         </div>
+        
+        {/* New flashy text */}
+        <p className="text-xl md:text-2xl italic font-medium mb-8 animate-fade-in" 
+           style={{ 
+             fontFamily: "'Dancing Script', cursive", 
+             background: "linear-gradient(to right, #F97316, #D946EF, #0EA5E9)", 
+             WebkitBackgroundClip: "text", 
+             WebkitTextFillColor: "transparent", 
+             textShadow: "0px 0px 4px rgba(255,255,255,0.3)" 
+           }}>
+          More Sake, More Happy, More Happy, More Sexy!
+        </p>
+        
         <p className="text-xl text-white mb-8 max-w-2xl animate-fade-in">
           Professional chefs bringing the excitement and flavors of hibachi cooking directly to your celebration. Serving both East and West Coast locations.
         </p>
@@ -90,12 +104,14 @@ const Hero = () => {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-white">Children:</span>
-              <span className="text-hibachi-gold font-bold">$25/person</span>
+              <span className="text-hibachi-gold font-bold">$30/person</span>
             </div>
           </div>
+
           <div className="mt-3 text-hibachi-gold">
             <p className="text-lg">✨ Free Premium Sake & Fresh Salad Included ✨</p>
             <p className="text-lg mt-2">Minimum Order: $500</p>
+
           </div>
         </div>
         <div className="flex flex-col sm:flex-row gap-4">

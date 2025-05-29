@@ -94,7 +94,7 @@ const FAQ = () => {
             question="What is the minimum and maximum group size?"
             answer={
               <p>
-                There is no minimum or maximum group size. The minimum price of our hibachi catering is $600.
+                There is no minimum or maximum group size. The minimum price of our hibachi catering is $500.
                 Please contact us for custom arrangements for very large events.
               </p>
             }
