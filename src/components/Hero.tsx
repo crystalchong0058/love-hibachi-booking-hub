@@ -93,6 +93,10 @@ const Hero = () => {
               <span className="text-hibachi-gold font-bold">$25/person</span>
             </div>
           </div>
+          <div className="mt-3 text-hibachi-gold">
+            <p className="text-lg">✨ Free Premium Sake & Fresh Salad Included ✨</p>
+            <p className="text-lg mt-2">Minimum Order: $500</p>
+          </div>
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
           <button 
@@ -134,7 +138,6 @@ const Hero = () => {
             <BookingModal 
               plan={selectedPlan} 
               setIsModalOpen={setIsModalOpen} 
-              setSelectedPlan={setSelectedPlan}
             />
           </DialogContent>
         </Dialog>
