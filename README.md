@@ -13,9 +13,6 @@ This is the official website for 4 U Sake Hibachi Catering, featuring booking fu
 - Subscription system for discounts and coupons
 - Admin page for managing bookings
 
-## Project info
-
-**URL**: https://lovable.dev/projects/5ebae29f-0a96-45ce-8d26-e29d7d1a684f
 
 ## Deployment Instructions
 
@@ -115,12 +112,6 @@ This project is built with:
 ## How can I edit this code?
 
 There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/5ebae29f-0a96-45ce-8d26-e29d7d1a684f) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
 
 **Use your preferred IDE**
 
