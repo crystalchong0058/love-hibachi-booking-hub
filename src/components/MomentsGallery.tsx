@@ -11,6 +11,68 @@ const MomentsGallery = () => {
   };
 
   const moments = [
+    // Latest Videos
+    {
+      type: 'video',
+      src: '/videos/moments/755_1748294117.mp4',
+      alt: 'Hibachi cooking show',
+      orientation: 'portrait',
+      size: 'large'
+    },
+    {
+      type: 'video',
+      src: '/videos/moments/806_1749493142.mp4',
+      alt: 'Hibachi performance',
+      orientation: 'portrait',
+      size: 'large'
+    },
+    {
+      type: 'video',
+      src: '/videos/moments/784_1748814869.mp4',
+      alt: 'Special event',
+      orientation: 'portrait'
+    },
+    {
+      type: 'video',
+      src: '/videos/moments/785_1748814909.mp4',
+      alt: 'Hibachi experience',
+      orientation: 'portrait'
+    },
+    {
+      type: 'video',
+      src: '/videos/moments/786_1748814934.mp4',
+      alt: 'Group celebration',
+      orientation: 'portrait'
+    },
+    {
+      type: 'video',
+      src: '/videos/moments/787_1748814974.mp4',
+      alt: 'Family dinner',
+      orientation: 'portrait'
+    },
+    {
+      type: 'video',
+      src: '/videos/moments/788_1748814998.mp4',
+      alt: 'Special occasions',
+      orientation: 'portrait'
+    },
+    {
+      type: 'video',
+      src: '/videos/moments/801_1749206859.mp4',
+      alt: 'Corporate events',
+      orientation: 'portrait'
+    },
+    // Latest Images
+    {
+      type: 'image',
+      src: '/images/moments/8051749493136_.pic.jpg',
+      alt: 'Culinary art'
+    },
+    {
+      type: 'image',
+      src: '/images/moments/8041749493135_.pic.jpg',
+      alt: 'Happy guests'
+    },
     // New Videos
     {
       type: 'video',
@@ -79,32 +141,6 @@ const MomentsGallery = () => {
       src: '/videos/moments/545_1747061826.mp4',
       alt: 'Hibachi show',
       orientation: 'portrait'
-    },
-    // New Images
-    {
-      type: 'image',
-      src: '/images/moments/5391747060015_.pic.jpg',
-      alt: 'Culinary art'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/5401747060079_.pic.jpg',
-      alt: 'Happy guests'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/5421747060170_.pic.jpg',
-      alt: 'Hibachi experience'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/5431747060172_.pic.jpg',
-      alt: 'Delicious cuisine'
-    },
-    {
-      type: 'image',
-      src: '/images/moments/5441747060174_.pic.jpg',
-      alt: 'Special celebrations'
     },
     // Old Videos
     {
