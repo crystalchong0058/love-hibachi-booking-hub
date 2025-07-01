@@ -45,6 +45,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
   const [location, setLocation] = useState<string>('');
   const [adultCount, setAdultCount] = useState<string>('2');
   const [childrenCount, setChildrenCount] = useState<string>('0');
+  const [basicAdultCount, setBasicAdultCount] = useState<string>('0');
+  const [deluxeAdultCount, setDeluxeAdultCount] = useState<string>('0');
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
@@ -99,7 +101,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
   const [bookedTimeSlots, setBookedTimeSlots] = useState<{[key: string]: string[]}>(initialBookedTimeSlots);
 
   // Calculate total guests
-  const totalGuests = Number(adultCount) + Number(childrenCount);
+  const totalGuests = Number(basicAdultCount) + Number(deluxeAdultCount) + Number(childrenCount);
   
   // No longer limiting protein choices
   
@@ -240,17 +242,32 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     return subtotal * taxRate;
   };
 
+  // Calculate total price
+  const calculateTotalPrice = () => {
+    const basicAdultTotal = Number(basicAdultCount) * 50;
+    const deluxeAdultTotal = Number(deluxeAdultCount) * 65;
+    const childTotal = Number(childrenCount) * 30;
+    const subtotal = basicAdultTotal + deluxeAdultTotal + childTotal + additionalCosts;
+    const tax = calculateTax(subtotal);
+    return subtotal + tax;
+  };
+
+  // Calculate required protein count
+  const calculateRequiredProteinCount = () => {
+    return (Number(basicAdultCount) * 2) + (Number(deluxeAdultCount) * 3);
+  };
+
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!selectedDate || !startTime || !state || !location || !adultCount || !name || !email || !phone) {
+    if (!selectedDate || !startTime || !state || !location || (!basicAdultCount && !deluxeAdultCount) || !name || !email || !phone) {
       toast.error("Please fill all required fields");
       return;
     }
     
-    // Check if the exact protein count is met (2 per person)
+    // Check if the exact protein count is met based on plan
     const totalProteinCount = Object.values(proteinQuantities).reduce((sum, count) => sum + count, 0);
-    const requiredProteinCount = totalGuests * 2;
+    const requiredProteinCount = calculateRequiredProteinCount();
     
     if (totalProteinCount === 0) {
       toast.error("Please select at least one protein");
@@ -258,16 +275,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     }
     
     if (totalProteinCount !== requiredProteinCount) {
-      toast.error(`You must select exactly ${requiredProteinCount} proteins (2 per person). You've selected ${totalProteinCount}.`);
+      toast.error(`You must select exactly ${requiredProteinCount} proteins (${Number(basicAdultCount) * 2} for basic plan, ${Number(deluxeAdultCount) * 3} for deluxe plan). You've selected ${totalProteinCount}.`);
       return;
     }
     
     // Check if the booking meets the $500 minimum requirement
-    const adultTotal = Number(adultCount) * 50;
-    const childTotal = Number(childrenCount) * 30;
-    const subtotal = adultTotal + childTotal + additionalCosts;
-    const tax = calculateTax(subtotal);
-    const totalAmount = subtotal + tax;
+    const totalAmount = calculateTotalPrice();
     
     if (totalAmount < 500) {
       toast.error("Booking must meet the $500 minimum requirement");
@@ -350,8 +363,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
         time: startTime,
         location: `${state} - ${location}`,
         plan: plan,
-        adults: adultCount,
-        children: childrenCount,
+        basic_adult_count: basicAdultCount,
+        deluxe_adult_count: deluxeAdultCount,
+        children_count: childrenCount,
         total_guests: totalGuests,
         contact_email: email.trim(),
         contact_phone: phone,
@@ -361,16 +375,18 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
         booking_time: startTime,
         booking_location: `${state} - ${location}`,
         package_type: plan,
-        adult_count: adultCount,
-        children_count: childrenCount,
-        total_guest_count: totalGuests,
+        basic_adult_price: "$50/person",
+        deluxe_adult_price: "$65/person",
+        basic_adult_subtotal: `$${Number(basicAdultCount) * 50}`,
+        deluxe_adult_subtotal: `$${Number(deluxeAdultCount) * 65}`,
+        child_subtotal: `$${Number(childrenCount) * 30}`,
         email: email.trim(),
         phone_number: phone,
         order_id: orderId,
         comments: comments || 'No special requests or comments',
         // Food selections
         protein_choices: selectedProteins,
-        protein_details: selectedProteins, // Add this for the customer email template
+        protein_details: selectedProteins,
         premium_protein_details: `${proteinQuantities.filetMignon > 0 || proteinQuantities.lobsterTail > 0 ? 
           `${proteinQuantities.filetMignon > 0 ? `Filet Mignon: ${proteinQuantities.filetMignon}` : ''}${proteinQuantities.filetMignon > 0 && proteinQuantities.lobsterTail > 0 ? ', ' : ''}${proteinQuantities.lobsterTail > 0 ? `Lobster Tail: ${proteinQuantities.lobsterTail}` : ''}` 
           : 'None selected'}`,
@@ -378,13 +394,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
         side_orders: selectedSideOrders || 'None selected',
         
         // Pricing details
-        adult_price: "$50/person",
-        child_price: "$30/person",
-        adult_subtotal: `$${adultTotal}`,
-        child_subtotal: `$${childTotal}`,
         additional_costs: `$${additionalCosts}`,
         total_amount: `$${totalAmount}`,
-        total_price: `$${totalAmount}`  // Added for clarity in templates
+        total_price: `$${totalAmount}`
       };
 
       console.log('Attempting to send customer email with params:', emailParams);
@@ -949,16 +961,36 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label htmlFor="adultCount" className="block text-sm font-medium text-gray-700 mb-1">Number of Adults *</label>
+                          <label htmlFor="basicAdultCount" className="block text-sm font-medium text-gray-700 mb-1">Basic Plan Adults ($50/person) *</label>
                           <Input
-                            id="adultCount"
+                            id="basicAdultCount"
                             type="number"
-                            value={adultCount}
-                            onChange={(e) => setAdultCount(e.target.value)}
+                            value={basicAdultCount}
+                            onChange={(e) => {
+                              setBasicAdultCount(e.target.value);
+                              setAdultCount(String(Number(e.target.value) + Number(deluxeAdultCount)));
+                            }}
                             required
-                            min="1"
-                            placeholder="Number of adults"
+                            min="0"
+                            placeholder="Number of basic plan adults"
                           />
+                          <p className="text-xs text-gray-500 mt-1">2 proteins per person</p>
+                        </div>
+                        <div>
+                          <label htmlFor="deluxeAdultCount" className="block text-sm font-medium text-gray-700 mb-1">Deluxe Plan Adults ($65/person) *</label>
+                          <Input
+                            id="deluxeAdultCount"
+                            type="number"
+                            value={deluxeAdultCount}
+                            onChange={(e) => {
+                              setDeluxeAdultCount(e.target.value);
+                              setAdultCount(String(Number(basicAdultCount) + Number(e.target.value)));
+                            }}
+                            required
+                            min="0"
+                            placeholder="Number of deluxe plan adults"
+                          />
+                          <p className="text-xs text-gray-500 mt-1">3 proteins per person</p>
                         </div>
                         <div>
                           <label htmlFor="childrenCount" className="block text-sm font-medium text-gray-700 mb-1">Number of Children</label>
@@ -977,11 +1009,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                         <p>Total guests: <strong>{totalGuests}</strong></p>
                         <div className="mt-2 flex items-center">
                           <span className="mr-2">Total Price:</span>
-                          <span className="text-xl font-bold">${Number(adultCount) * 50 + Number(childrenCount) * 30 }</span>
+                          <span className="text-xl font-bold">${calculateTotalPrice()}</span>
                           <span className="ml-2 text-xs">($500 minimum for all parties)</span>
                         </div>
                         <div className="mt-2 text-xs text-gray-600 border-t border-yellow-200 pt-2">
-                          <p>Adults: ${Number(adultCount) * 50} (${50}/person)</p>
+                          <p>Basic Adults: ${Number(basicAdultCount) * 50} (${50}/person)</p>
+                          <p>Deluxe Adults: ${Number(deluxeAdultCount) * 65} (${65}/person)</p>
                           <p>Children: ${Number(childrenCount) * 30} (${30}/person)</p>
                           {additionalCosts > 0 && (
                             <p>Additional items: ${additionalCosts}</p>
@@ -989,8 +1022,22 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                         </div>
                       </div>
                       
-                      <div className="pt-4 border-t">
-                        <h4 className="font-medium mb-3">Contact Information</h4>
+                      <div className="mt-6">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Protein Choices</h3>
+                        <div className="bg-yellow-50 p-4 rounded-md border border-yellow-200 mb-4">
+                          <p className="text-sm text-yellow-800">
+                            <span className="font-semibold">Basic Plan Adults:</span> Select exactly {Number(basicAdultCount) * 2} proteins (2 per person)
+                          </p>
+                          <p className="text-sm text-yellow-800 mt-1">
+                            <span className="font-semibold">Deluxe Plan Adults:</span> Select exactly {Number(deluxeAdultCount) * 3} proteins (3 per person)
+                          </p>
+                          <p className="text-sm text-yellow-800 mt-1">
+                            <span className="font-semibold">Children:</span> Select exactly {Number(childrenCount) * 2} proteins (2 per person)
+                          </p>
+                          <p className="text-sm text-yellow-800 mt-2">
+                            Total proteins to select: {calculateRequiredProteinCount()}
+                          </p>
+                        </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
                             <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
@@ -1053,10 +1100,10 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                                       <span className="w-8 text-center">{proteinQuantities.chicken}</span>
                                       <button 
                                         type="button"
-                                        className={`w-6 h-6 flex items-center justify-center ${Object.values(proteinQuantities).reduce((sum, count) => sum + count, 0) >= totalGuests * 2 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200'} rounded-r-md`}
+                                        className={`w-6 h-6 flex items-center justify-center ${Object.values(proteinQuantities).reduce((sum, count) => sum + count, 0) >= calculateRequiredProteinCount() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200'} rounded-r-md`}
                                         onClick={() => {
                                           const currentTotal = Object.values(proteinQuantities).reduce((sum, count) => sum + count, 0);
-                                          if (currentTotal < totalGuests * 2) {
+                                          if (currentTotal < calculateRequiredProteinCount()) {
                                             setProteinQuantities(prev => ({
                                               ...prev, 
                                               chicken: prev.chicken + 1
@@ -1081,10 +1128,10 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                                       <span className="w-8 text-center">{proteinQuantities.steak}</span>
                                       <button 
                                         type="button"
-                                        className={`w-6 h-6 flex items-center justify-center ${Object.values(proteinQuantities).reduce((sum, count) => sum + count, 0) >= totalGuests * 2 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200'} rounded-r-md`}
+                                        className={`w-6 h-6 flex items-center justify-center ${Object.values(proteinQuantities).reduce((sum, count) => sum + count, 0) >= calculateRequiredProteinCount() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200'} rounded-r-md`}
                                         onClick={() => {
                                           const currentTotal = Object.values(proteinQuantities).reduce((sum, count) => sum + count, 0);
-                                          if (currentTotal < totalGuests * 2) {
+                                          if (currentTotal < calculateRequiredProteinCount()) {
                                             setProteinQuantities(prev => ({
                                               ...prev, 
                                               steak: prev.steak + 1
@@ -1622,8 +1669,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                             <div className="space-y-2">
                               <h5 className="font-medium text-gray-700">Order Details</h5>
                               <div className="flex justify-between">
-                                <span>Base Package ({totalGuests} guests)</span>
-                                <span>${Number(adultCount) * 50 + Number(childrenCount) * 30}</span>
+                                <span>Base Package ({Number(basicAdultCount) + Number(deluxeAdultCount)} adults, {childrenCount} children)</span>
+                                <span>${Number(basicAdultCount) * 50 + Number(deluxeAdultCount) * 65 + Number(childrenCount) * 30}</span>
                               </div>
                               
                               {/* Add travel fee line */}

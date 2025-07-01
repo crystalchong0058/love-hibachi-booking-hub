@@ -167,6 +167,8 @@ const Pricing = () => {
           <div className="mb-4">
             <h4 className="font-semibold text-lg mb-3 text-hibachi-red">Side Orders</h4>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Fried Rice (+$5)</li>
+            <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> White Rice (+$5)</li>
               <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Chicken (+$10)</li>
               <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Steak (+$10)</li>
               <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Shrimp (+$10)</li>

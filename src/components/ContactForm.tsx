@@ -8,12 +8,12 @@ const ContactForm = () => {
       <div className="container">
         <h2 className="section-title">Contact Us</h2>
         <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12">
-          Reach out to us directly using the contact information below.
+          Reach out to us directly using the contact form below or our contact information.
         </p>
         
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-gray-50 p-8 rounded-lg border border-border">
-            
+        <div className="max-w-4xl mx-auto">
+        <div className="bg-gray-50 p-8 rounded-lg border border-border">
+            <h3 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Contact Information</h3>
             
             <div className="space-y-8">
               <div className="flex items-start">
@@ -58,6 +58,28 @@ const ContactForm = () => {
               </div>
             </div>
           </div>
+          {/* Google Forms Contact Form */}
+          <div className="mb-12">
+            <div className="bg-white p-8 rounded-lg border border-border shadow-sm">
+  
+              <div className="flex justify-center">
+                <iframe 
+                  src="https://docs.google.com/forms/d/e/1FAIpQLSe54Ky-bQOLgdWR8uceFF60IBHKkhxEVTBx6lOFw0WyEP9MbA/viewform?embedded=true" 
+                  width={640} 
+                  height={670} 
+                  frameBorder="0" 
+                  marginHeight={0} 
+                  marginWidth={0}
+                  title="Contact Form"
+                  className="w-full max-w-2xl"
+                >
+                  Loading…
+                </iframe>
+              </div>
+            </div>
+          </div>
+          
+
         </div>
       </div>
     </section>
