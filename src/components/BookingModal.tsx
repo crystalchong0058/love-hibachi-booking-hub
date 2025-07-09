@@ -360,6 +360,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
       const emailDeluxeAdultTotal = Number(deluxeAdultCount) * 65;
       const emailChildTotal = Number(childrenCount) * 30;
       const emailSubtotal = emailBasicAdultTotal + emailDeluxeAdultTotal + emailChildTotal + additionalCosts;
+      const emailTax = calculateTax(emailSubtotal);
+      const emailTotalWithTax = emailSubtotal + emailTax;
       const gratuity20 = Math.round(emailSubtotal * 0.20);
       const gratuity25 = Math.round(emailSubtotal * 0.25);
       
@@ -403,12 +405,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
         
         // Pricing details
         additional_costs: `$${additionalCosts}`,
-        total_amount: `$${totalAmount}`,
-        total_price: `$${totalAmount}`,
+        total_amount: `$${emailTotalWithTax}`,
+        total_price: `$${emailTotalWithTax}`,
         fee_breakdown: `$${emailSubtotal}`,
         gratuity_20: `$${gratuity20}`,
         gratuity_25: `$${gratuity25}`,
-        plan_details: `Basic Plan Adults: ${basicAdultCount} × $50 = $${emailBasicAdultTotal}\nDeluxe Plan Adults: ${deluxeAdultCount} × $65 = $${emailDeluxeAdultTotal}\nChildren: ${childrenCount} × $30 = $${emailChildTotal}\nAdditional Items: $${additionalCosts}\nSubtotal: $${emailSubtotal}`
+        plan_details: `Basic Plan Adults: ${basicAdultCount} × $50 = $${emailBasicAdultTotal}\nDeluxe Plan Adults: ${deluxeAdultCount} × $65 = $${emailDeluxeAdultTotal}\nChildren: ${childrenCount} × $30 = $${emailChildTotal}\nAdditional Items: $${additionalCosts}\nSubtotal: $${emailSubtotal}\nSales Tax: $${emailTax.toFixed(2)}\nTotal: $${emailTotalWithTax.toFixed(2)}`
       };
 
       console.log('Attempting to send customer email with params:', emailParams);
@@ -1840,6 +1842,10 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                                   <span>Total Amount</span>
                                   <span>${calculateTotalPrice().toFixed(2)}</span>
                                 </div>
+                                <div className="text-xs text-gray-500 mt-1">
+                                  <p>Subtotal: ${(Number(basicAdultCount) * 50 + Number(deluxeAdultCount) * 65 + Number(childrenCount) * 30 + additionalCosts).toFixed(2)}</p>
+                                  <p>Sales Tax: ${calculateTax(Number(basicAdultCount) * 50 + Number(deluxeAdultCount) * 65 + Number(childrenCount) * 30 + additionalCosts).toFixed(2)}</p>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -1847,7 +1853,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
 
                         <Button 
                           type="submit" 
-                          disabled={!selectedDate || !startTime || (Number(adultCount) * 50 + Number(childrenCount) * 30 + additionalCosts) < 500 || isLoading}
+                          disabled={!selectedDate || !startTime || calculateTotalPrice() < 500 || isLoading}
                           className="w-full bg-hibachi-red hover:bg-hibachi-red/90 text-white"
                         >
                           {isLoading ? 'Processing...' : 'Complete Booking'}
