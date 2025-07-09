@@ -173,7 +173,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     
     // Appetizers
     additionalCost += appetizers.gyoza * 10;
-    additionalCost += appetizers.edamame * 5;
+    additionalCost += appetizers.edamame * 10;
     
     // Side orders
     additionalCost += sideOrders.chickenSide * 10;
@@ -332,7 +332,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
         .map(([appetizer, quantity]) => {
           switch(appetizer) {
             case 'gyoza': return 'Gyoza $10 (6pcs)';
-            case 'edamame': return 'Edamame $5';
+            case 'edamame': return 'Edamame $10';
             default: return '';
           }
         }).join(', ');
@@ -354,6 +354,14 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
             default: return '';
           }
         }).join(', ');
+      
+      // Calculate fee breakdown and gratuity
+      const emailBasicAdultTotal = Number(basicAdultCount) * 50;
+      const emailDeluxeAdultTotal = Number(deluxeAdultCount) * 65;
+      const emailChildTotal = Number(childrenCount) * 30;
+      const emailSubtotal = emailBasicAdultTotal + emailDeluxeAdultTotal + emailChildTotal + additionalCosts;
+      const gratuity20 = Math.round(emailSubtotal * 0.20);
+      const gratuity25 = Math.round(emailSubtotal * 0.25);
       
       // Prepare email template parameters
       const emailParams = {
@@ -396,7 +404,11 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
         // Pricing details
         additional_costs: `$${additionalCosts}`,
         total_amount: `$${totalAmount}`,
-        total_price: `$${totalAmount}`
+        total_price: `$${totalAmount}`,
+        fee_breakdown: `$${emailSubtotal}`,
+        gratuity_20: `$${gratuity20}`,
+        gratuity_25: `$${gratuity25}`,
+        plan_details: `Basic Plan Adults: ${basicAdultCount} × $50 = $${emailBasicAdultTotal}\nDeluxe Plan Adults: ${deluxeAdultCount} × $65 = $${emailDeluxeAdultTotal}\nChildren: ${childrenCount} × $30 = $${emailChildTotal}\nAdditional Items: $${additionalCosts}\nSubtotal: $${emailSubtotal}`
       };
 
       console.log('Attempting to send customer email with params:', emailParams);
@@ -738,7 +750,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                               .map(([appetizer, quantity]) => {
                                 switch(appetizer) {
                                   case 'gyoza': return 'Gyoza $10 (6pcs)';
-                                  case 'edamame': return 'Edamame $5';
+                                  case 'edamame': return 'Edamame $10';
                                   default: return '';
                                 }
                               }).join(', ')}
@@ -1495,7 +1507,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                                 </div>
                               </div>
                               <div className="flex items-center justify-between border rounded-md p-2">
-                                <span className="text-sm">Edamame<br/><span className="text-xs text-gray-500">($5 per order)</span></span>
+                                <span className="text-sm">Edamame<br/><span className="text-xs text-gray-500">($10 per order)</span></span>
                                 <div className="flex items-center">
                                   <button 
                                     type="button"
@@ -1673,6 +1685,138 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                                 <span>${Number(basicAdultCount) * 50 + Number(deluxeAdultCount) * 65 + Number(childrenCount) * 30}</span>
                               </div>
                               
+                              {/* Premium Proteins */}
+                              {(proteinQuantities.filetMignon > 0 || proteinQuantities.lobsterTail > 0) && (
+                                <>
+                                  {proteinQuantities.filetMignon > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Filet Mignon ({proteinQuantities.filetMignon} × $5)</span>
+                                      <span>+${proteinQuantities.filetMignon * 5}</span>
+                                    </div>
+                                  )}
+                                  {proteinQuantities.lobsterTail > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Lobster Tail ({proteinQuantities.lobsterTail} × $15)</span>
+                                      <span>+${proteinQuantities.lobsterTail * 15}</span>
+                                    </div>
+                                  )}
+                                </>
+                              )}
+
+                              {/* Additional Food Options */}
+                              {(additionalFood.additionalNoodles > 0 || additionalFood.whiteRice > 0 || additionalFood.friedRice > 0 || additionalFood.sushi > 0 || additionalFood.sashimi > 0) && (
+                                <>
+                                  {additionalFood.additionalNoodles > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Extra Noodles ({additionalFood.additionalNoodles} × $5)</span>
+                                      <span>+${additionalFood.additionalNoodles * 5}</span>
+                                    </div>
+                                  )}
+                                  {additionalFood.whiteRice > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Extra White Rice ({additionalFood.whiteRice} × $5)</span>
+                                      <span>+${additionalFood.whiteRice * 5}</span>
+                                    </div>
+                                  )}
+                                  {additionalFood.friedRice > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Extra Fried Rice ({additionalFood.friedRice} × $5)</span>
+                                      <span>+${additionalFood.friedRice * 5}</span>
+                                    </div>
+                                  )}
+                                  {additionalFood.sushi > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Sushi ({additionalFood.sushi} × $15)</span>
+                                      <span>+${additionalFood.sushi * 15}</span>
+                                    </div>
+                                  )}
+                                  {additionalFood.sashimi > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Sashimi ({additionalFood.sashimi} × $20)</span>
+                                      <span>+${additionalFood.sashimi * 20}</span>
+                                    </div>
+                                  )}
+                                </>
+                              )}
+
+                              {/* Appetizers */}
+                              {(appetizers.gyoza > 0 || appetizers.edamame > 0) && (
+                                <>
+                                  {appetizers.gyoza > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Gyoza ({appetizers.gyoza} × $10)</span>
+                                      <span>+${appetizers.gyoza * 10}</span>
+                                    </div>
+                                  )}
+                                  {appetizers.edamame > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Edamame ({appetizers.edamame} × $10)</span>
+                                      <span>+${appetizers.edamame * 10}</span>
+                                    </div>
+                                  )}
+                                </>
+                              )}
+
+                              {/* Side Orders */}
+                              {(sideOrders.chickenSide > 0 || sideOrders.steakSide > 0 || sideOrders.shrimpSide > 0 || sideOrders.scallopsSide > 0 || sideOrders.salmonSide > 0 || sideOrders.vegetableSide > 0 || sideOrders.noodles > 0 || sideOrders.filetMignonSide > 0 || sideOrders.lobsterTailSide > 0) && (
+                                <>
+                                  {sideOrders.chickenSide > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Chicken Side ({sideOrders.chickenSide} × $10)</span>
+                                      <span>+${sideOrders.chickenSide * 10}</span>
+                                    </div>
+                                  )}
+                                  {sideOrders.steakSide > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Steak Side ({sideOrders.steakSide} × $10)</span>
+                                      <span>+${sideOrders.steakSide * 10}</span>
+                                    </div>
+                                  )}
+                                  {sideOrders.shrimpSide > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Shrimp Side ({sideOrders.shrimpSide} × $10)</span>
+                                      <span>+${sideOrders.shrimpSide * 10}</span>
+                                    </div>
+                                  )}
+                                  {sideOrders.scallopsSide > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Scallops Side ({sideOrders.scallopsSide} × $10)</span>
+                                      <span>+${sideOrders.scallopsSide * 10}</span>
+                                    </div>
+                                  )}
+                                  {sideOrders.salmonSide > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Salmon Side ({sideOrders.salmonSide} × $10)</span>
+                                      <span>+${sideOrders.salmonSide * 10}</span>
+                                    </div>
+                                  )}
+                                  {sideOrders.vegetableSide > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Vegetable Side ({sideOrders.vegetableSide} × $10)</span>
+                                      <span>+${sideOrders.vegetableSide * 10}</span>
+                                    </div>
+                                  )}
+                                  {sideOrders.noodles > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Noodles ({sideOrders.noodles} × $4)</span>
+                                      <span>+${sideOrders.noodles * 4}</span>
+                                    </div>
+                                  )}
+                                  {sideOrders.filetMignonSide > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Filet Mignon Side ({sideOrders.filetMignonSide} × $15)</span>
+                                      <span>+${sideOrders.filetMignonSide * 15}</span>
+                                    </div>
+                                  )}
+                                  {sideOrders.lobsterTailSide > 0 && (
+                                    <div className="flex justify-between">
+                                      <span>Lobster Tail Side ({sideOrders.lobsterTailSide} × $15)</span>
+                                      <span>+${sideOrders.lobsterTailSide * 15}</span>
+                                    </div>
+                                  )}
+                                </>
+                              )}
+                              
                               {/* Add travel fee line */}
                               <div className="flex justify-between">
                                 <span>Travel Fee</span>
@@ -1688,13 +1832,13 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                               {/* Add tax line */}
                               <div className="flex justify-between">
                                 <span>Sales Tax ({state ? (stateTaxRates[state] * 100).toFixed(2) : '0'}%)</span>
-                                <span>+${calculateTax(Number(adultCount) * 50 + Number(childrenCount) * 30).toFixed(2)}</span>
+                                <span>+${calculateTax(Number(basicAdultCount) * 50 + Number(deluxeAdultCount) * 65 + Number(childrenCount) * 30 + additionalCosts).toFixed(2)}</span>
                               </div>
 
                               <div className="border-t border-gray-200 pt-2 mt-2">
                                 <div className="flex justify-between font-semibold">
                                   <span>Total Amount</span>
-                                  <span>${(Number(adultCount) * 50 + Number(childrenCount) * 30+ TRAVEL_FEE + PROPANE_TANK_FEE + calculateTax(Number(adultCount) * 50 + Number(childrenCount) * 30)).toFixed(2)}</span>
+                                  <span>${calculateTotalPrice().toFixed(2)}</span>
                                 </div>
                               </div>
                             </div>

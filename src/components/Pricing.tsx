@@ -160,7 +160,7 @@ const Pricing = () => {
             <h4 className="font-semibold text-lg mb-3 text-hibachi-red">Appetizers</h4>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
               <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Gyoza $10 (6pcs)</li>
-              <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Edamame $5</li>
+              <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Edamame $10</li>
             </ul>
           </div>
 
@@ -175,7 +175,7 @@ const Pricing = () => {
               <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Scallops (+$10)</li>
               <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Salmon (+$10)</li>
               <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Vegetable (+Tofu) (+$10)</li>
-              <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Noodles (+$4)</li>
+              <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Noodles (+$5)</li>
               <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Filet Mignon (+$15)</li>
               <li className="flex items-center"><Check className="w-4 h-4 text-hibachi-gold mr-2" /> Lobster Tail (+$15)</li>
             </ul>
