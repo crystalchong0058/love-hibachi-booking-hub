@@ -805,7 +805,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                       <Phone className="w-5 h-5 text-hibachi-red mt-0.5 mr-3 flex-shrink-0" />
                       <div>
                         <span className="font-medium block">Business Contact</span>
-                        <span>Jason: (929) 688-1138 | Alex: (718)666-7955</span>
+                        <span>Sake +1(929)652-9222  | Jason +1(929)688-1138 </span>
                       </div>
                     </li>
                     {comments && (
