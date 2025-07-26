@@ -14,6 +14,60 @@ const MomentsGallery = () => {
     // Latest Videos
     {
       type: 'video',
+      src: '/videos/moments/863_1753504866.mp4',
+      alt: 'Hibachi cooking show',
+      orientation: 'portrait',
+      size: 'large'
+    },
+    {
+      type: 'video',
+      src: '/videos/moments/867_1753504868.mp4',
+      alt: 'Hibachi performance',
+      orientation: 'portrait',
+      size: 'large'
+    },
+    {
+      type: 'video',
+      src: '/videos/moments/868_1753504876.mp4',
+      alt: 'Special event',
+      orientation: 'portrait'
+    },
+    {
+      type: 'video',
+      src: '/videos/moments/869_1753504876.mp4',
+      alt: 'Hibachi experience',
+      orientation: 'portrait'
+    },
+    {
+      type: 'video',
+      src: '/videos/moments/870_1753504878.mp4',
+      alt: 'Group celebration',
+      orientation: 'portrait'
+    },
+    // Latest Images
+    {
+      type: 'image',
+      src: '/images/moments/8661753504867_.pic.jpg',
+      alt: 'Culinary art'
+    },
+    {
+      type: 'image',
+      src: '/images/moments/8651753504867_.pic.jpg',
+      alt: 'Happy guests'
+    },
+    {
+      type: 'image',
+      src: '/images/moments/8641753504866_.pic.jpg',
+      alt: 'Hibachi experience'
+    },
+    {
+      type: 'image',
+      src: '/images/moments/8621753504865_.pic.jpg',
+      alt: 'Delicious cuisine'
+    },
+    // Previous Latest Videos
+    {
+      type: 'video',
       src: '/videos/moments/755_1748294117.mp4',
       alt: 'Hibachi cooking show',
       orientation: 'portrait',
@@ -62,7 +116,7 @@ const MomentsGallery = () => {
       alt: 'Corporate events',
       orientation: 'portrait'
     },
-    // Latest Images
+    // Previous Latest Images
     {
       type: 'image',
       src: '/images/moments/8051749493136_.pic.jpg',
