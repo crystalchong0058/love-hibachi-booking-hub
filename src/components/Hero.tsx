@@ -70,11 +70,21 @@ const Hero = () => {
         </video>
       </div>
       <div className="container relative py-20 md:py-28 flex flex-col items-center text-center">
+        <div className="flex justify-center mb-6">
+          <img 
+            src="/images/moments/profilepic/logo.png" 
+            alt="Logo" 
+            className="max-w-xs md:max-w-md h-auto"
+          />
+        </div>
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
           Private Hibachi Catering
         </h1>
+        <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
+         Serving All Locations in the USA!
+        </h1>
         <div className="relative mb-6 overflow-hidden">
-          <p className="text-2xl md:text-3xl font-bold text-hibachi-gold animate-slide-in">
+          <p className="text-4xl md:text-3xl font-bold text-hibachi-gold animate-slide-in">
             Eat Fresh, Stay Healthy
           </p>
           <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-hibachi-red via-hibachi-gold to-hibachi-red"></div>
@@ -91,10 +101,22 @@ const Hero = () => {
            }}>
           More Sake, More Happy, More Happy, More Sexy!
         </p>
-        
+        <div className="flex flex-col sm:flex-row gap-4">
+          <button 
+            onClick={() => handleOpenModal('Premium')} 
+            className="btn-primary flex items-center justify-center"
+          >
+            <Calendar className="w-5 h-5 mr-2" /> Book Now
+          </button>
+          <Link to="/#pricing" className="btn-secondary flex items-center justify-center space-x-2">
+            <span>View Pricing</span>
+          </Link>
+        </div>
+
         <p className="text-xl text-white mb-8 max-w-2xl animate-fade-in">
           Professional chefs bringing the excitement and flavors of hibachi cooking directly to your celebration. Serving both East and West Coast locations.
         </p>
+
         <div className="bg-black/30 backdrop-blur-sm rounded-lg p-4 mb-6">
           <div className="text-2xl font-bold text-hibachi-gold mb-2">Pricing</div>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 text-lg">
@@ -114,17 +136,7 @@ const Hero = () => {
 
           </div>
         </div>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <button 
-            onClick={() => handleOpenModal('Premium')} 
-            className="btn-primary flex items-center justify-center"
-          >
-            <Calendar className="w-5 h-5 mr-2" /> Book Now
-          </button>
-          <Link to="/#pricing" className="btn-secondary flex items-center justify-center space-x-2">
-            <span>View Pricing</span>
-          </Link>
-        </div>
+
         {/* Contact Info Bar */}
         <div className="flex flex-wrap justify-center gap-6 mb-8">
           <div className="flex items-center gap-2">

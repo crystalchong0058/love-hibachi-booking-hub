@@ -19,33 +19,15 @@ const Services = () => {
     {
       icon: ChefHat,
       title: "Expert Hibachi Chefs",
-      description: "Our professional chefs bring years of experience and entertainment to your event."
+      description: "Our professional chefs bring years of culinary expertise and engaging entertainment to every event. Perfect for birthdays, anniversaries, corporate gatherings, and other special celebrations. We also offer enhanced service packages tailored for weddings, milestone birthdays, and significant anniversaries."
     },
-    {
-      icon: Users,
-      title: "Private & Corporate Events",
-      description: "Perfect for birthdays, anniversaries, corporate gatherings and special celebrations."
-    },
+
     {
       icon: MapPin,
       title: "Providing Service Anywhere in the USA",
       description: "We are proud to serve your event anywhere in the USA."
     },
-    {
-      icon: Calendar,
-      title: "Flexible Scheduling",
-      description: "Book your hibachi experience at a time that works for your event."
-    },
-    {
-      icon: Utensils,
-      title: "Customized Menus",
-      description: "Tailor your hibachi experience with personalized menu options for all guests."
-    },
-    {
-      icon: Gift,
-      title: "Special Occasion Packages",
-      description: "Enhanced service options for weddings, milestone birthdays, and anniversaries."
-    }
+ 
   ];
 
   return (
