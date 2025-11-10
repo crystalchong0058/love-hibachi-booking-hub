@@ -32,7 +32,6 @@ const Testimonials = () => {
       <div className="container">
         <h2 className="section-title">Customer Reviews</h2>
         <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12">
-          Don't just take our word for it. Here's what our happy customers have to say about their 4 U Sake Hibachi experience.
         </p>
         
         {/* Google Reviews Widget */}

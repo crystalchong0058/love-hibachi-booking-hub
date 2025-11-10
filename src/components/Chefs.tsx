@@ -144,9 +144,7 @@ const Chefs = () => {
     <section id="chef" className="py-16 bg-gray-50">
       <div className="container">
         <h2 className="section-title">Our Master Chef</h2>
-        <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12">
-          Meet the culinary artist who transforms every hibachi experience into an unforgettable celebration of flavor and entertainment.
-        </p>
+
         
         <ChefCard chef={chef} />
       </div>

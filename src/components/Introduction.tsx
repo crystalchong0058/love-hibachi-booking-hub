@@ -2,11 +2,11 @@ import React from 'react';
 
 const Introduction = () => {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-black">
       <div className="container max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="section-title">Experience the Magic</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h2 className="section-title text-white">Experience the Magic</h2>
+          <p className="text-lg text-gray-200 max-w-2xl mx-auto">
             Watch our professional chefs create an unforgettable dining experience right in your home or venue.
           </p>
         </div>

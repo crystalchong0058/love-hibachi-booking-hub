@@ -324,7 +324,6 @@ const MomentsGallery = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-foreground mb-4">Our Moments</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Capturing the joy and excitement of our hibachi experiences
           </p>
         </div>
 
