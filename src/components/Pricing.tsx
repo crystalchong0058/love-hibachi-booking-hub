@@ -13,10 +13,10 @@ const Pricing = () => {
   };
 
   return (
-    <section id="pricing" className="py-16">
+    <section id="pricing" className="py-16 bg-red-900">
       <div className="container">
-        <h2 className="section-title">Hibachi Pricing</h2>
-        <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12">
+        <h2 className="section-title text-white">Hibachi Pricing</h2>
+        <p className="text-center text-gray-200 max-w-2xl mx-auto mb-12">
           Our hibachi catering packages are designed to provide an exceptional experience for all your guests.
         </p>
 
@@ -193,7 +193,7 @@ const Pricing = () => {
             >
               <X className="w-6 h-6" />
             </button>
-            <BookingModal plan={selectedPlan} />
+            <BookingModal plan={selectedPlan} setIsModalOpen={(isOpen) => setIsBookingOpen(isOpen)} />
           </div>
         </div>
       )}

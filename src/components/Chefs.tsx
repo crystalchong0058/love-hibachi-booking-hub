@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Star, MapPin, Play } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Star, MapPin, Play, Pause } from 'lucide-react';
 
 type Chef = {
   name: string;
@@ -14,11 +14,41 @@ const ChefCard = ({ chef }: { chef: Chef }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      const handleLoadedMetadata = () => {
+        if (video.readyState >= 2) {
+          setIsPlaying(!video.paused);
+        }
+      };
+      video.addEventListener('loadedmetadata', handleLoadedMetadata);
+      return () => {
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      };
+    }
+  }, []);
+
   const handlePlay = () => {
     if (videoRef.current) {
       videoRef.current.muted = false;
       videoRef.current.play();
       setIsPlaying(true);
+    }
+  };
+
+  const handlePause = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const handleTogglePlayPause = () => {
+    if (isPlaying) {
+      handlePause();
+    } else {
+      handlePlay();
     }
   };
 
@@ -38,14 +68,23 @@ const ChefCard = ({ chef }: { chef: Chef }) => {
             const videoElement = e.target as HTMLVideoElement;
             videoElement.style.display = 'none';
           }}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
         />
+        <button
+          onClick={handleTogglePlayPause}
+          className="absolute bottom-4 left-4 bg-black bg-opacity-60 hover:bg-opacity-80 rounded-full p-3 transition-all duration-300 flex items-center justify-center z-10"
+        >
+          {isPlaying ? (
+            <Pause className="w-8 h-8 text-white" />
+          ) : (
+            <Play className="w-8 h-8 text-white" />
+          )}
+        </button>
         {!isPlaying && (
-          <button
-            onClick={handlePlay}
-            className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 hover:bg-opacity-50 transition-all duration-300"
-          >
-            <Play className="w-16 h-16 text-white" />
-          </button>
+          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 pointer-events-none">
+            <Play className="w-20 h-20 text-white opacity-50" />
+          </div>
         )}
         <div className="absolute top-4 right-4 bg-hibachi-red text-white text-xs font-medium py-1 px-2 rounded">
           Master Chef
