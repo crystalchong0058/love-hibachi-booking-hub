@@ -30,7 +30,7 @@ const Pricing = () => {
               <h3 className="text-2xl font-bold">Adults</h3>
             </div>
             <div className="mb-6">
-              <p className="text-4xl font-bold">$50<span className="text-base font-normal text-gray-600">/person</span></p>
+              <p className="text-4xl font-bold">$55<span className="text-base font-normal text-gray-600">/person</span></p>
             </div>
             <ul className="space-y-3 mb-8">
               <li className="flex items-start">

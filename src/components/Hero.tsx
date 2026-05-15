@@ -122,7 +122,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 text-lg">
             <div className="flex items-center gap-2">
               <span className="text-white">Adults:</span>
-              <span className="text-hibachi-gold font-bold">$50/person</span>
+              <span className="text-hibachi-gold font-bold">$55/person</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-white">Children:</span>

@@ -385,7 +385,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
         booking_time: startTime,
         booking_location: `${state} - ${location}`,
         package_type: plan,
-        basic_adult_price: "$50/person",
+        basic_adult_price: "$55/person",
         deluxe_adult_price: "$65/person",
         basic_adult_subtotal: `$${Number(basicAdultCount) * 50}`,
         deluxe_adult_subtotal: `$${Number(deluxeAdultCount) * 65}`,
@@ -410,7 +410,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
         fee_breakdown: `$${emailSubtotal}`,
         gratuity_20: `$${gratuity20}`,
         gratuity_25: `$${gratuity25}`,
-        plan_details: `Basic Plan Adults: ${basicAdultCount} × $50 = $${emailBasicAdultTotal}\nDeluxe Plan Adults: ${deluxeAdultCount} × $65 = $${emailDeluxeAdultTotal}\nChildren: ${childrenCount} × $30 = $${emailChildTotal}\nAdditional Items: $${additionalCosts}\nSubtotal: $${emailSubtotal}\nSales Tax: $${emailTax.toFixed(2)}\nTotal: $${emailTotalWithTax.toFixed(2)}`
+        plan_details: `Basic Plan Adults: ${basicAdultCount} × $55 = $${emailBasicAdultTotal}\nDeluxe Plan Adults: ${deluxeAdultCount} × $65 = $${emailDeluxeAdultTotal}\nChildren: ${childrenCount} × $30 = $${emailChildTotal}\nAdditional Items: $${additionalCosts}\nSubtotal: $${emailSubtotal}\nSales Tax: $${emailTax.toFixed(2)}\nTotal: $${emailTotalWithTax.toFixed(2)}`
       };
 
       console.log('Attempting to send customer email with params:', emailParams);
@@ -975,7 +975,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label htmlFor="basicAdultCount" className="block text-sm font-medium text-gray-700 mb-1">Basic Plan Adults ($50/person) *</label>
+                          <label htmlFor="basicAdultCount" className="block text-sm font-medium text-gray-700 mb-1">Basic Plan Adults ($55/person) *</label>
                           <Input
                             id="basicAdultCount"
                             type="number"
