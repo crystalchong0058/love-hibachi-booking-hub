@@ -282,8 +282,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ plan: initialPlan, setIsMod
     // Check if the booking meets the $500 minimum requirement
     const totalAmount = calculateTotalPrice();
     
-    if (totalAmount < 500) {
-      toast.error("Booking must meet the $500 minimum requirement");
+    if (totalAmount < 1) {
+      toast.error("Booking must have a value");
       return;
     }
 
