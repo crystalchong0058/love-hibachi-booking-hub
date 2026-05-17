@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4U Sake Hibachi Catering | Premium Private Hibachi Chefs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        :root {
+            --gold: #dfb76c;
+            --dark-bg: #121212;
+            --card-bg: #1c1c1c;
+            --text-light: #f5f5f5;
+            --text-muted: #aaa;
+            --red-accent: #bc2c3d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=1600') no-repeat center center/cover;
+            padding: 100px 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .header-tagline {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+        }
+
+        .sake-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--red-accent);
+            font-weight: bold;
+            background: rgba(255,255,255,0.05);
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border-left: 4px solid var(--gold);
+            border-right: 4px solid var(--gold);
+            margin-top: 15px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #2a2a2a;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Menu Styling */
+        .menu-section-title {
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin: 15px 0 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .menu-list {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+        .menu-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px dashed #333;
+            font-size: 0.95rem;
+        }
+        .price-badge {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* Contacts & Info Box */
+        .info-item {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .info-item i {
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-top: 4px;
+        }
+        .contact-link {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .contact-link:hover {
+            color: var(--gold);
+        }
+
+        .btn-review {
+            display: inline-block;
+            background-color: #4285F4;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 15px;
+            text-align: center;
+            transition: background 0.3s;
+            width: 100%;
+        }
+        .btn-review:hover {
+            background-color: #357ae8;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: #252525;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .btn-submit {
+            background-color: var(--gold);
+            color: #000;
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            background-color: #cfaa5c;
+            transform: translateY(-2px);
+        }
+        .note-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* Provision lists */
+        .provide-list {
+            list-style: none;
+        }
+        .provide-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .provide-list.we i { color: #2ecc71; }
+        .provide-list.you i { color: #e74c3c; }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: #0a0a0a;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid #222;
+        }
+
+        /* Hidden PDF receipt section container */
+        #pdf-template {
+            display: none;
+            background: white;
+            color: #333;
+            padding: 40px;
+            font-family: Arial, sans-serif;
+        }
+        #pdf-template h1 { color: #111; border-bottom: 2px solid #dfb76c; padding-bottom: 10px; }
+        #pdf-template table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        #pdf-template th, #pdf-template td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        #pdf-template th { background-color: #f5f5f5; }
+
+        @media (max-width: 768px) {
+            .header-title { font-size: 2.3rem; }
+            .form-row { grid-template-columns: 1fr; gap: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 class="header-title">4U Sake Hibachi Catering</h1>
+        <p class="header-tagline">Bring the Premium Live Steakhouse Experience Directly To Your Backyard!</p>
+        <div class="sake-quote">
+            "More Sake, More Happy. More Happy, More Sexy. More Sexy, More Baby!"
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div class="grid-2">
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fa-solid fa-tags"></i> Packages & Pricing</h2>
+                <div class="menu-list">
+                    <li>
+                        <span><strong>Basic Adult Plan</strong><br><small style="color:var(--text-muted)">2 Proteins per person</small></span>
+                        <span class="price-badge">$55 / person</span>
+                    </li>
+                    <li>
+                        <span><strong>Deluxe Adult Plan</strong><br><small style="color:var(--text-muted)">3 Proteins per person</small></span>
+                        <span class="price-badge">$65 / person</span>
+                    </li>
+                    <li>
+                        <span><strong>Children Plan</strong><br><small style="color:var(--text-muted)">2 Proteins per person</small></span>
+                        <span class="price-badge">$30 / person</span>
+                    </li>
+                </div>
+                <div style="background: rgba(223, 183, 108, 0.1); padding: 15px; border-radius: 5px; border: 1px solid var(--gold); margin-top: 15px;">
+                    <p style="color: var(--gold); font-weight: bold; text-align: center; margin-bottom: 5px;">
+                        <i class="fa-solid fa-wine-glass"></i> FREE PREMIUM SAKE INCLUDED
+                    </p>
+                    <p style="font-size: 0.85rem; text-align: center; color: #ddd;">
+                        We provide premium sake at no additional cost to enhance your dining experience! Fresh salad is also included for all guests.
+                    </p>
+                </div>
+                <p class="note-text" style="margin-top: 15px; text-align: center;"><i class="fa-solid fa-percent"></i> Sales tax will be calculated based on event location.</p>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title"><i class="fa-solid fa-clock"></i> Availability & Contacts</h2>
+                <div class="info-item">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <div>
+                        <strong>Hours of Operation:</strong><br>
+                        11:30 AM - 10:00 PM<br>7 Days a Week
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <div>
+                        <strong>Call or Text to Book:</strong><br>
+                        <a href="tel:8287197700" class="contact-link">828-719-7700 (Tony / Jason)</a><br>
+                        <a href="tel:9296881138" class="contact-link">+1 (929) 688-1138</a><br>
+                        <a href="tel:6467507992" class="contact-link">646-750-7992 (Jimmy)</a>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-car"></i>
+                    <div>
+                        <strong>Travel Fee Policy:</strong><br>
+                        <span style="color: #2ecc71; font-weight: bold;">Richmond: NO travel fee!</span>
+                    </div>
+                </div>
+                
+                <a href="https://maps.app.goo.gl/nrnQKFXsAHUNkjsd6?g_st=ic" target="_blank" class="btn-review">
+                    <i class="fa-solid fa-star"></i> Leave Us a Google Review
+                </a>
+            </div>
+
+        </div>
+
+        <div class="card" style="margin-bottom: 40px;">
+            <h2 class="card-title"><i class="fa-solid fa-utensils"></i> Full Catering Menu Options</h2>
+            
+            <div class="grid-2" style="margin-bottom: 0; gap: 20px;">
+                <div>
+                    <h3 class="menu-section-title">Protein Choices</h3>
+                    <ul class="menu-list">
+                        <li><span>Chicken</span><span>Included</span></li>
+                        <li><span>Steak</span><span>Included</span></li>
+                        <li><span>Shrimp</span><span>Included</span></li>
+                        <li><span>Scallops</span><span>Included</span></li>
+                        <li><span>Salmon</span><span>Included</span></li>
+                        <li><span>Vegetable (+Tofu)</span><span>Included</span></li>
+                        <li><span>Filet Mignon</span><span class="price-badge">+$5 upgrade</span></li>
+                        <li><span>Lobster Tail</span><span class="price-badge">+$10 upgrade</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="menu-section-title">Appetizers</h3>
+                    <ul class="menu-list">
+                        <li><span>Gyoza (6pcs)</span><span class="price-badge">$10</span></li>
+                        <li><span>Edamame</span><span class="price-badge">$10</span></li>
+                    </ul>
+
+                    <h3 class="menu-section-title">Side Orders</h3>
+                    <div style="max-height: 200px; overflow-y: auto; padding-right: 5px;">
+                        <ul class="menu-list">
+                            <li><span>Fried Rice</span><span class="price-badge">+$5</span></li>
+                            <li><span>White Rice</span><span class="price-badge">+$5</span></li>
+                            <li><span>Noodles</span><span class="price-badge">+$5</span></li>
+                            <li><span>Chicken Side</span><span class="price-badge">+$10</span></li>
+                            <li><span>Steak Side</span><span class="price-badge">+$10</span></li>
+                            <li><span>Shrimp Side</span><span class="price-badge">+$10</span></li>
+                            <li><span>Scallops Side</span><span class="price-badge">+$10</span></li>
+                            <li><span>Salmon Side</span><span class="price-badge">+$10</span></li>
+                            <li><span>Vegetable (+Tofu) Side</span><span class="price-badge">+$10</span></li>
+                            <li><span>Filet Mignon Side</span><span class="price-badge">+$15</span></li>
+                            <li><span>Lobster Tail Side</span><span class="price-badge">+$15</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h2 class="card-title"><i class="fa-solid fa-handshake"></i> What to Expect</h2>
+                <div class="grid-2" style="gap:15px; margin-bottom:0;">
+                    <div>
+                        <h4 style="color:#2ecc71; margin-bottom:10px;"><i class="fa-solid fa-circle-check"></i> We Bring:</h4>
+                        <ul class="provide-list we">
+                            <li><i class="fa-solid fa-check"></i> Professional Chef</li>
+                            <li><i class="fa-solid fa-check"></i> Cooking gear & setup</li>
+                            <li><i class="fa-solid fa-check"></i> All food ingredients</li>
+                            <li><i class="fa-solid fa-check"></i> Hibachi Grill</li>
+                            <li><i class="fa-solid fa-check"></i> Premium sake</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color:#e74c3c; margin-bottom:10px;"><i class="fa-solid fa-circle-plus"></i> You Provide:</h4>
+                        <ul class="provide-list you">
+                            <li><i class="fa-solid fa-angles-right"></i> Tables & chairs</li>
+                            <li><i class="fa-solid fa-angles-right"></i> Plates, bowls & utensils</li>
+                            <li><i class="fa-solid fa-angles-right"></i> Drinks for your guests</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title"><i class="fa-solid fa-shield-halved"></i> Payment & Cancellation</h2>
+                <p><strong>Accepted Payment Methods:</strong></p>
+                <p style="color: var(--gold); margin-bottom: 12px; font-weight: 600;">Cash, Zelle, Venmo, PayPal</p>
+                
+                <p><strong>Deposit Required:</strong> 20% of the calculated total amount.</p>
+                
+                <div style="border-top: 1px solid #333; margin-top: 15px; padding-top: 10px;">
+                    <p style="color: var(--red-accent); font-weight: bold;"><i class="fa-solid fa-triangle-exclamation"></i> Cancellation Policy:</p>
+                    <p style="font-size: 0.9rem;">Cancellations must be made at least <strong>72 hours prior</strong> to the scheduled event time to receive a full deposit refund. Cancellations inside the 72-hour window are strictly non-refundable.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="booking-section">
+            <h2 class="card-title"><i class="fa-solid fa-calendar-check"></i> Online Instant Booking Request</h2>
+            <form id="hibachiBookingForm">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fullName">Your Full Name *</label>
+                        <input type="text" id="fullName" name="from_name" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="reply_to" required placeholder="john@example.com">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone_num" required placeholder="(123) 456-7890">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDate">Event Date *</label>
+                        <input type="date" id="eventDate" name="event_date" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startTime">Start Time * <span class="note-text">(Available 11:30 AM - 10:00 PM)</span></label>
+                        <select id="startTime" name="start_time" required>
+                            <option value="" disabled selected>Select start time</option>
+                            <option value="11:30 AM">11:30 AM</option>
+                            <option value="12:00 PM">12:00 PM</option>
+                            <option value="1:00 PM">01:00 PM</option>
+                            <option value="2:00 PM">02:00 PM</option>
+                            <option value="3:00 PM">03:00 PM</option>
+                            <option value="4:00 PM">04:00 PM</option>
+                            <option value="5:00 PM">05:00 PM</option>
+                            <option value="6:00 PM">06:00 PM</option>
+                            <option value="7:00 PM">07:00 PM</option>
+                            <option value="8:00 PM">08:00 PM</option>
+                            <option value="9:00 PM">09:00 PM</option>
+                            <option value="10:00 PM">10:00 PM</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="stateSelect">State *</label>
+                        <select id="stateSelect" name="state_loc" required>
+                            <option value="" disabled selected>Select your state</option>
+                            <option value="NY">New York (NY)</option>
+                            <option value="NJ">New Jersey (NJ)</option>
+                            <option value="VA">Virginia (VA)</option>
+                            <option value="Other">Other State</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Full Venue Address *</label>
+                    <input type="text" id="address" name="full_address" required placeholder="Street Address, City, Zip Code">
+                    <p class="note-text"><i class="fa-solid fa-tree"></i> Note: We can cook both inside or outside venues, including residential properties, parks, or by the sea!</p>
+                </div>
+
+                <div style="background: #252525; padding: 20px; border-radius: 5px; margin-bottom: 20px;">
+                    <h4 style="color:var(--gold); margin-bottom: 15px;"><i class="fa-solid fa-users"></i> Guest Counts & Plans</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="basicAdults">Basic Plan Adults ($55/ea) * <br><small style="font-weight:normal;color:var(--text-muted);">2 proteins per person</small></label>
+                            <input type="number" id="basicAdults" name="count_basic_adults" min="0" value="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="deluxeAdults">Deluxe Plan Adults ($65/ea) * <br><small style="font-weight:normal;color:var(--text-muted);">3 proteins per person</small></label>
+                            <input type="number" id="deluxeAdults" name="count_deluxe_adults" min="0" value="0" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label for="childrenCount">Children ($30/ea) * <br><small style="font-weight:normal;color:var(--text-muted);">2 proteins per person</small></label>
+                            <input type="number" id="childrenCount" name="count_children" min="0" value="0" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="specialRequests">Special Requests / Preferred Proteins / Allergies</label>
+                    <textarea id="specialRequests" name="special_requests" rows="3" placeholder="List your selected protein choices per guest or any notes..."></textarea>
+                </div>
+
+                <input type="hidden" id="pdfDataUri" name="pdf_attachment">
+
+                <button type="submit" class="btn-submit" id="submitBtn">Complete & Submit Booking Request</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div id="pdf-template">
+        <h1 id="pdf-header">Booking Form Request Receipt</h1>
+        <p><strong>4U Sake Hibachi Catering Services</strong></p>
+        <p>Thank you for submitting your booking. Below are your event submission details:</p>
+        <table>
+            <tr><th>Detail Field</th><th>Client Entry Value</th></tr>
+            <tr><td>Client Name</td><td id="pdf-name"></td></tr>
+            <tr><td>Contact Email</td><td id="pdf-email"></td></tr>
+            <tr><td>Contact Phone</td><td id="pdf-phone"></td></tr>
+            <tr><td>Event Date</td><td id="pdf-date"></td></tr>
+            <tr><td>Target Start Time</td><td id="pdf-time"></td></tr>
+            <tr><td>State Location</td><td id="pdf-state"></td></tr>
+            <tr><td>Full Cook Address</td><td id="pdf-address"></td></tr>
+            <tr><td>Basic Plan Adults ($55)</td><td id="pdf-basic"></td></tr>
+            <tr><td>Deluxe Plan Adults ($65)</td><td id="pdf-deluxe"></td></tr>
+            <tr><td>Children Amount ($30)</td><td id="pdf-child"></td></tr>
+            <tr><td>Special Requests / Choices</td><td id="pdf-requests"></td></tr>
+        </table>
+        <p style="margin-top:20px; font-size:11px; color:#666;">* Final quotes incorporating local geographic regional taxes & adjustments will be sent during client confirmation follow-up calls.</p>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 4U Sake Hibachi Catering. All Rights Reserved.</p>
+        <p style="font-size:0.8rem; margin-top:5px; color:#555;">Premium Mobile Hibachi Chefs & Dynamic Home Events.</p>
+    </footer>
+
+    <script>
+        // Initialize EmailJS with your active individual credentials
+        (function() {
+            // CRITICAL STEP: Replace with your actual EmailJS Public Key
+            emailjs.init("YOUR_PUBLIC_KEY"); 
+        })();
+
+        document.getElementById('hibachiBookingForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const submitButton = document.getElementById('submitBtn');
+            submitButton.innerText = "Processing & Saving Form...";
+            submitButton.disabled = true;
+
+            // Step 1: Map form values directly into the hidden styling structure for PDF extraction
+            document.getElementById('pdf-name').innerText = document.getElementById('fullName').value;
+            document.getElementById('pdf-email').innerText = document.getElementById('email').value;
+            document.getElementById('pdf-phone').innerText = document.getElementById('phone').value;
+            document.getElementById('pdf-date').innerText = document.getElementById('eventDate').value;
+            document.getElementById('pdf-time').innerText = document.getElementById('startTime').value;
+            document.getElementById('pdf-state').innerText = document.getElementById('stateSelect').value;
+            document.getElementById('pdf-address').innerText = document.getElementById('address').value;
+            document.getElementById('pdf-basic').innerText = document.getElementById('basicAdults').value;
+            document.getElementById('pdf-deluxe').innerText = document.getElementById('deluxeAdults').value;
+            document.getElementById('pdf-child').innerText = document.getElementById('childrenCount').value;
+            document.getElementById('pdf-requests').innerText = document.getElementById('specialRequests').value || 'None specified';
+
+            // Step 2: Extract layout elements to produce the PDF document
+            const element = document.getElementById('pdf-template');
+            element.style.display = 'block'; // Temporarily unhide element for capture context
+
+            const opt = {
+                margin:       10,
+                filename:     'Hibachi_Booking_Summary.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Generate raw PDF output as a Data URI 
+            html2pdf().from(element).set(opt).outputPdf('datauristring').then(function(pdfDataUriString) {
+                // Hide printable document away from user viewports again
+                element.style.display = 'none';
+
+                // Assign the generated URI directly into the hidden template parameter form element
+                document.getElementById('pdfDataUri').value = pdfDataUriString;
+
+                // Step 3: Trigger the EmailJS dispatch mechanism using the form bindings
+                // CRITICAL STEP: Replace "YOUR_SERVICE_ID" and "YOUR_TEMPLATE_ID" with your real keys
+                emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', event.target)
+                    .then(function() {
+                        alert('Success! Your booking request has been securely sent. We will review your requests and follow up with you shortly!');
+                        document.getElementById('hibachiBookingForm').reset();
+                        submitButton.innerText = "Complete & Submit Booking Request";
+                        submitButton.disabled = false;
+                    }, function(error) {
+                        alert('Email dispatch processing failed. Please call our team directly via phone line details above. Error info: ' + JSON.stringify(error));
+                        submitButton.innerText = "Complete & Submit Booking Request";
+                        submitButton.disabled = false;
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
